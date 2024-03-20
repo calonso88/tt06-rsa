@@ -8,10 +8,6 @@ module mux1_unit (a, b, sel, out);
   
   reg [9:0] out;
   
-  //supply0 [9:0] zero;
-  //supply0 [8:0] one_array;
-  //supply1 one_bit;
-
   wire [9:0] zero;
   wire [8:0] one_array;
   wire one_bit;
