@@ -9,12 +9,12 @@ You can also include images in this folder and reference them in the markdown. E
 
 ## How it works
 
-Explain how your project works
+This project consists of ...
 
 ## How to test
 
-Explain how to use your project
+You can test this project with ...
 
 ## External hardware
 
-List external hardware used in your project (e.g. PMOD, LED display, etc), if any
+You may need to write SW to insert data through SPI to the design ...
