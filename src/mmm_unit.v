@@ -10,10 +10,10 @@ module mmm_unit (en, rstb, clk, rst_mmm, ld_a, ld_r, lock, A, B, M, R);
   input ld_r;
   input lock;
 
-  input [1025:0] A;
-  input [1025:0] B;
-  input [1025:0] M;
-  output [1025:0] R;
+  input [9:0] A;
+  input [9:0] B;
+  input [9:0] M;
+  output [9:0] R;
 
   wire en_i;
   wire rstb_i;
@@ -28,25 +28,25 @@ module mmm_unit (en, rstb, clk, rst_mmm, ld_a, ld_r, lock, A, B, M, R);
   buf U2 (clk_i, clk);
   buf U3 (rst_mmm_i, rst_mmm_int);
 
-  wire [1025:0] MB;
+  wire [9:0] MB;
   wire [2:0] carry_adder;
 
-  kogge_stone_adder adder1 (.a(B[1023:0]), .b(M[1023:0]), .ci(1'b0), .sum(MB[1023:0]), .co(carry_adder[0])); //1024bits
-  full_adder FA1 (.a(B[1024]), .b(M[1024]), .ci(carry_adder[0]), .sum(MB[1024]), .co(carry_adder[1])); //1bit
-  full_adder FA2 (.a(B[1025]), .b(M[1025]), .ci(carry_adder[1]), .sum(MB[1025]), .co(carry_adder[2])); //1bit
+  kogge_stone_adder adder1 (.a(B[7:0]), .b(M[7:0]), .ci(1'b0), .sum(MB[7:0]), .co(carry_adder[0])); //8bits
+  full_adder FA1 (.a(B[8]), .b(M[8]), .ci(carry_adder[0]), .sum(MB[8]), .co(carry_adder[1])); //1bit
+  full_adder FA2 (.a(B[9]), .b(M[9]), .ci(carry_adder[1]), .sum(MB[9]), .co(carry_adder[2])); //1bit
 
   wire A_bit;
-  wire [1025:0] reg_rji;
-  wire [1025:0] rjo;
+  wire [9:0] reg_rji;
+  wire [9:0] rjo;
 
   wire [2:0] carry_adder2;
-  wire [1025:0] mux_out;
+  wire [9:0] mux_out;
   wire qj;
 
   genvar j;
   generate 
-    for (j=0; j<=1025; j=j+1) begin : processing_elements_array_loop
-      if (j==0) begin
+    for (j=0; j<=9; j=j+1) begin : processing_elements_array_loop
+      if (j == 0) begin
         processing_element_mux_right_border	PE (.mi(M[j]), .bi(B[j]), .mbi(MB[j]), .ai(A_bit), .ri(reg_rji[j]), .qo(qj), .mux_out(mux_out[j]));
       end else begin
         processing_element_mux PE (.mi(M[j]), .bi(B[j]), .mbi(MB[j]), .ai(A_bit), .qi(qj), .mux_out(mux_out[j]));
@@ -54,9 +54,9 @@ module mmm_unit (en, rstb, clk, rst_mmm, ld_a, ld_r, lock, A, B, M, R);
     end
   endgenerate
 
-  kogge_stone_adder adder2 (.a(reg_rji[1023:0]), .b(mux_out[1023:0]), .ci(1'b0), .sum(rjo[1023:0]), .co(carry_adder2[0])); //1024bits
-  full_adder FA3 (.a(reg_rji[1024]), .b(mux_out[1024]), .ci(carry_adder2[0]), .sum(rjo[1024]), .co(carry_adder2[1])); //1bit
-  full_adder FA4 (.a(reg_rji[1025]), .b(mux_out[1025]), .ci(carry_adder2[1]), .sum(rjo[1025]), .co(carry_adder2[2])); //1bit
+  kogge_stone_adder adder2 (.a(reg_rji[7:0]), .b(mux_out[7:0]), .ci(1'b0), .sum(rjo[7:0]), .co(carry_adder2[0])); //8bits
+  full_adder FA3 (.a(reg_rji[8]), .b(mux_out[8]), .ci(carry_adder2[0]), .sum(rjo[8]), .co(carry_adder2[1])); //1bit
+  full_adder FA4 (.a(reg_rji[9]), .b(mux_out[9]), .ci(carry_adder2[1]), .sum(rjo[9]), .co(carry_adder2[2])); //1bit
 
   wire [1025:0] R_i;
 
