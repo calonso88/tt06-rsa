@@ -1,5 +1,3 @@
-`timescale 1ns / 1ps
-
 module register_crypt (en, rstb, clk, eoc, R_i, C_ex);
 
   input en;
