@@ -1,5 +1,3 @@
-`timescale 1ns / 1ps
-
 module fsm_control_unit (en, rstb, clk, expE, rst_mmm, ld_a, ld_r, lock1, lock2, sel1, sel2, eoc);
 
   input en;
