@@ -29,7 +29,7 @@ module kogge_stone_adder (a, b, ci, sum, co);
         if ((j-2**(i-1)) >= 0) begin : parallel_prefix_condicional
           assign g[i][j] = g[i-1][j] | (p[i-1][j] & g[i-1][j-(2**(i-1))]);
           assign p[i][j] = p[i-1][j] & p[i-1][j-(2**(i-1))];
-        end	else begin
+        end else begin
           assign g[i][j] = g[i-1][j];
           assign p[i][j] = p[i-1][j];
         end
