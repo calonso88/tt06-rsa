@@ -47,7 +47,7 @@ module mmm_unit (en, rstb, clk, rst_mmm, ld_a, ld_r, lock, A, B, M, R);
   generate 
     for (j=0; j<=9; j=j+1) begin : processing_elements_array_loop
       if (j == 0) begin
-        processing_element_mux_right_border	PE (.mi(M[j]), .bi(B[j]), .mbi(MB[j]), .ai(A_bit), .ri(reg_rji[j]), .qo(qj), .mux_out(mux_out[j]));
+        processing_element_mux_right_border PE (.mi(M[j]), .bi(B[j]), .mbi(MB[j]), .ai(A_bit), .ri(reg_rji[j]), .qo(qj), .mux_out(mux_out[j]));
       end else begin
         processing_element_mux PE (.mi(M[j]), .bi(B[j]), .mbi(MB[j]), .ai(A_bit), .qi(qj), .mux_out(mux_out[j]));
       end
