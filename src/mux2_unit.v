@@ -17,12 +17,12 @@ module mux2_unit (a, b, sel, out);
   wire [1025:0] one = {one_array, one_bit};
   
   always @(a or b or one or zero or sel) begin
-		case (sel)
+    case (sel)
       2'b00 : out = one; 
       2'b01 : out = a;
       2'b10 : out = b;
       default out = zero;
-		endcase
+    endcase
   end
 
 endmodule
