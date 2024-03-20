@@ -127,8 +127,8 @@ module fsm_control_unit (en, rstb, clk, expE, rst_mmm, ld_a, ld_r, lock1, lock2,
           f2 <= 1'b1;
           eoc <= 1'b0;
           ld_e <= 1'b1;
-       end else if ((counter == 32'd23) || (counter == 32'd35) || (counter == 32'd47 || (counter == 32'd59) ||
-                    (counter == 32'd71) || (counter == 32'd83) || (counter == 32'd95) || (counter == 32'd107)) begin
+	end else if ((counter == 32'd23) || (counter == 32'd35) || (counter == 32'd47) || (counter == 32'd59) || 
+		     (counter == 32'd71) || (counter == 32'd83) || (counter == 32'd95) || (counter == 32'd107)) begin
           rst_mmm <= 1'b1;
           ld_a <= 1'b0;
           ld_r <= 1'b1;
