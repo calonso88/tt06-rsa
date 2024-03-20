@@ -6,12 +6,12 @@ module rsa_unit (en, rstb, clk, P, E, M, Const, eoc, C);
   input rstb; 
   input clk;
 
-  input [1023:0] P;
-  input [1023:0] E;
-  input [1023:0] M;
-  input [1023:0] Const;
+  input [7:0] P;
+  input [7:0] E;
+  input [7:0] M;
+  input [7:0] Const;
 
-  output [1023:0] C;
+  output [7:0] C;
   output eoc;
 
   wire rst_mmm;
@@ -21,20 +21,20 @@ module rsa_unit (en, rstb, clk, P, E, M, Const, eoc, C);
   wire lock2;
   wire [1:0] sel1;
   wire sel2;
-  wire [1025:0] multilpy_a;
-  wire [1025:0] multilpy_b;
-  wire [1025:0] square_a;
-  wire [1025:0] square_b;
-  wire [1025:0] R_i;
-  wire [1025:0] P_i;
+  wire [9:0] multilpy_a;
+  wire [9:0] multilpy_b;
+  wire [9:0] square_a;
+  wire [9:0] square_b;
+  wire [9:0] R_i;
+  wire [9:0] P_i;
   wire eoc;
-  wire [1023:0] C;
+  wire [9:0] C;
 
-  wire [1025:0] P_ex;
-  wire [1025:0] E_ex;
-  wire [1025:0] M_ex;
-  wire [1025:0] C_ex;
-  wire [1025:0] Const_ex;
+  wire [9:0] P_ex;
+  wire [9:0] E_ex;
+  wire [9:0] M_ex;
+  wire [9:0] C_ex;
+  wire [9:0] Const_ex;
 
   wire en_i;
   wire rstb_i;
@@ -48,8 +48,8 @@ module rsa_unit (en, rstb, clk, P, E, M, Const, eoc, C);
 
   genvar i;
   generate
-    for (i=0; i<=1025; i=i+1) begin : mapping
-      if ((i==1025) || (i==1024)) begin
+    for (i=0; i<=9; i=i+1) begin : mapping
+      if ((i==9) || (i==8)) begin
         assign P_ex[i] = 1'b0;
         assign E_ex[i] = 1'b0;
         assign M_ex[i] = 1'b0;
@@ -81,7 +81,7 @@ module rsa_unit (en, rstb, clk, P, E, M, Const, eoc, C);
 
   genvar j;
   generate
-    for (j=0; j<=1023; j=j+1) begin : cripto
+    for (j=0; j<=7; j=j+1) begin : cripto
       assign C[j] = C_ex[j];
     end
   endgenerate
