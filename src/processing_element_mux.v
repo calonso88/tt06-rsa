@@ -1,5 +1,3 @@
-`timescale 1ns / 1ps
-
 module processing_element_mux (mi, bi, mbi, ai, qi, mux_out);
 
   input mi, bi, mbi, ai, qi;
