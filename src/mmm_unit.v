@@ -56,7 +56,7 @@ module mmm_unit (en, rstb, clk, rst_mmm, ld_a, ld_r, lock, A, B, M, R);
   full_adder FA3 (.a(reg_rji[8]), .b(mux_out[8]), .ci(carry_adder2[0]), .sum(rjo[8]), .co(carry_adder2[1])); //1bit
   full_adder FA4 (.a(reg_rji[9]), .b(mux_out[9]), .ci(carry_adder2[1]), .sum(rjo[9]), .co(carry_adder2[2])); //1bit
 
-  wire [1025:0] R_i;
+  wire [9:0] R_i;
 
   shiftreg1 shiftreg_A_aux   (.en(en_i), .rstb(rstb_i), .clk(clk_i), .rst_mmm_i(rst_mmm_i), .ld_a(ld_a), .A(A), .A_bit(A_bit));
   shiftreg2 shiftreg_reg_rji (.en(en_i), .rstb(rstb_i), .clk(clk_i), .rst_mmm_i(rst_mmm_i), .ld_a(ld_a), .rjo(rjo), .reg_rji(reg_rji));
