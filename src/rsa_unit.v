@@ -28,7 +28,7 @@ module rsa_unit (en, rstb, clk, P, E, M, Const, eoc, C);
   wire [9:0] R_i;
   wire [9:0] P_i;
   wire eoc;
-  wire [9:0] C;
+  wire [7:0] C;
 
   wire [9:0] P_ex;
   wire [9:0] E_ex;
