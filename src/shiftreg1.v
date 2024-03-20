@@ -23,12 +23,13 @@ module shiftreg1 (en, rstb, clk, rst_mmm_i, ld_a, A, A_bit);
   buf U0 (rstb_i, rstb);
   buf U1 (clk_i, clk);
   buf U2 (rst_mmm_int_buf, rst_mmm_int);
+  buf U3 (en_i, en);
 
   always @(negedge(rst_mmm_int_buf) or posedge(clk_i)) begin
     if (!rst_mmm_int_buf) begin
       A_aux <= {10{1'b0}};
     end else begin 
-      if (en) begin
+      if (en_i) begin
         if (ld_a == 1'b1) begin 
           A_aux <= A;
         end else begin 
