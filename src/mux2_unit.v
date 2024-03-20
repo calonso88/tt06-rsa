@@ -1,5 +1,3 @@
-`timescale 1ns / 1ps
-
 module mux2_unit (a, b, sel, out);
   
   input [9:0] a;
