@@ -1,5 +1,3 @@
-`timescale 1ns / 1ps
-
 module mmm_unit (en, rstb, clk, rst_mmm, ld_a, ld_r, lock, A, B, M, R);
 
   input en;
