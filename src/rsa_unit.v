@@ -1,5 +1,3 @@
-`timescale 1ns / 1ps
-
 module rsa_unit (en, rstb, clk, P, E, M, Const, eoc, C);
 
   input en;
