@@ -22,6 +22,6 @@ module tt_um_calonso88_rsa_top (
   assign uio_oe  = 0;
 
   // Instance
-  rsa_unit rsa_i (.en(ena), .rstb(rst_n), .P(ui_in), .E(ui_in), .M(ui_in), .Const(ui_in), .eoc(uio_out[0]), .C(uo_out));
+  rsa_unit rsa_i (.en(ena), .rstb(rst_n), .clk(clk), .P(ui_in), .E(ui_in), .M(ui_in), .Const(ui_in), .eoc(uio_out[0]), .C(uo_out));
     
 endmodule
