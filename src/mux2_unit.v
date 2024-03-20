@@ -17,7 +17,7 @@ module mux2_unit (a, b, sel, out);
   assign one_array = '1;
   assign one_bit = 1'b1;
   
-  assign one = {one_array, one_bit}
+  assign one = {one_array, one_bit};
   
   always @(a or b or one or zero or sel) begin
     case (sel)
