@@ -5,7 +5,7 @@ module fsm_control_unit (en, rstb, clk, expE, rst_mmm, ld_a, ld_r, lock1, lock2,
   input en;
   input rstb;
   input clk;
-  input [1025:0] expE;
+  input [9:0] expE;
 
   output rst_mmm;
   output ld_a;
@@ -32,7 +32,7 @@ module fsm_control_unit (en, rstb, clk, expE, rst_mmm, ld_a, ld_r, lock1, lock2,
   reg lock2;
   reg [1:0] sel1;
   reg sel2;
-  reg [1025:0] reg_exp;
+  reg [9:0] reg_exp;
   reg [31:0] counter;
   reg rst_exp_flop;
   reg f2;
@@ -46,11 +46,11 @@ module fsm_control_unit (en, rstb, clk, expE, rst_mmm, ld_a, ld_r, lock1, lock2,
   buf U4 (rst_counter_i, rst_counter);
 
   assign rst_exp = rst_exp_flop & rstb_i;
-  assign rst_counter = ((counter == 32'd67166221) ? 1'b0 : 1'b1) & rstb_i;
+  assign rst_counter = ((counter == 32'd133) ? 1'b0 : 1'b1) & rstb_i;
 
   always @(negedge(rst_exp_i) or posedge(clk_i)) begin
     if (!rst_exp_i) begin 
-      reg_exp <= {1026{1'b0}};
+      reg_exp <= {10{1'b0}};
     end else begin
       if (en_i) begin
         if (ld_e == 1'b1) begin 
