@@ -1,6 +1,7 @@
 `timescale 1ns / 1ps
 
 module mux1_unit (a, b, sel, out);
+
   input [9:0] a;
   input [9:0] b;
   input [1:0] sel;
