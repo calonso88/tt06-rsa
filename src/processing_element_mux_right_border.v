@@ -1,5 +1,3 @@
-`timescale 1ns / 1ps
-
 module processing_element_mux_right_border (mi, bi, mbi, ai, ri, qo, mux_out);
 
   input mi, bi, mbi, ai, ri;
