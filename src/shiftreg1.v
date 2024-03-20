@@ -1,5 +1,3 @@
-`timescale 1ns / 1ps
-
 module shiftreg1 (en, rstb, clk, rst_mmm_i, ld_a, A, A_bit);
 
   input en;
