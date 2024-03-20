@@ -8,12 +8,21 @@ module mux1_unit (a, b, sel, out);
   
   reg [9:0] out;
   
-  supply0 [9:0] zero;
-  supply0 [8:0] one_array;
-  supply1 one_bit;
+  //supply0 [9:0] zero;
+  //supply0 [8:0] one_array;
+  //supply1 one_bit;
+
+  wire [9:0] zero;
+  wire [8:0] one_array;
+  wire one_bit;
+  wire [9:0] one;
+
+  assign zero = '0; 
+  assign one_array = '1;
+  assign one_bit = 1'b1;
   
-  wire [9:0] one = {one_array, one_bit};
-  
+  assign one = {one_array, one_bit};
+    
   always @(a or b or one or zero or sel) begin
     case (sel)
       2'b00 : out = a; 
