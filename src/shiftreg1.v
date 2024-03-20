@@ -15,6 +15,7 @@ module shiftreg1 (en, rstb, clk, rst_mmm_i, ld_a, A, A_bit);
 
   wire clk_i;
   wire rstb_i;
+  wire en_i;
   wire rst_mmm_int;
   wire rst_mmm_int_buf;
 
