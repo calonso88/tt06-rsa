@@ -21,7 +21,18 @@ module tt_um_calonso88_rsa_top (
   assign uio_out[7:1] = 0;
   assign uio_oe  = 0;
 
+  // SPI PINs
+  wire spi_cs_n;
+  wire spi_clk;
+  wire spi_miso;
+  wire spi_mosi;
+  assign spi_cs_n = ui_in[0];
+  assign spi_clk  = ui_in[1];
+  assign spi_mosi = ui_in[2];
+  assign uo_out[3] = spi_miso;
+  assign spi_miso = 1'b0;
+  
   // Instance
-  rsa_unit rsa_i (.en(ena), .rstb(rst_n), .clk(clk), .P(ui_in), .E(ui_in), .M(ui_in), .Const(ui_in), .eoc(uio_out[0]), .C(uo_out));
+  //rsa_unit rsa_i (.en(ena), .rstb(rst_n), .clk(clk), .P(ui_in), .E(ui_in), .M(ui_in), .Const(ui_in), .eoc(uio_out[0]), .C(uo_out));
     
 endmodule
