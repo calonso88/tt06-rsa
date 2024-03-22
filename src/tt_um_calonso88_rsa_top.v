@@ -30,9 +30,58 @@ module tt_um_calonso88_rsa_top (
   assign spi_clk  = ui_in[1];
   assign spi_mosi = ui_in[2];
   assign uo_out[3] = spi_miso;
-  assign spi_miso = 1'b0;
+
+localparam integer ADDR_WIDTH = 3;
+localparam integer REG_WIDTH = 8;
+
+wire [ADDR_WIDTH-1:0] reg_addr;
+wire [REG_WIDTH-1:0] reg_data_i, reg_data_o;
+wire reg_data_o_vld;
+wire [7:0] status;
+reg [REG_WIDTH-1:0] mem [0:(2**ADDR_WIDTH-1)];
+
+spireg #(
+    .ADDR_W(ADDR_WIDTH),
+    .REG_W(REG_WIDTH)
+) spireg_inst(
+    .clk(clk),
+    .nrst(nrst),
+    .mosi(spi_mosi),
+    .miso(spi_miso),
+    .sclk(spi_clk),
+    .nss(spi_cs_n),
+    .reg_addr(reg_addr),
+    .reg_data_i(reg_data_i),
+    .reg_data_o(reg_data_o),
+    .reg_data_o_vld(reg_data_o_vld),
+    .status(status),
+    .fastcmd(),
+    .fastcmd_vld()
+);
+
+//register read access
+assign reg_data_i = mem[reg_addr];
+
+//status signals
+assign status = mem[0][7:0];
+
+//register write and fastcmd access
+integer i;
+always @(posedge clk or negedge nrst)
+if(!nrst) begin
+    for(i = 0; i < 2**ADDR_WIDTH; i = i+1) begin
+        mem[i] <= 0;
+    end
+end else begin
+    if(reg_data_o_vld) begin
+    //register write access
+        mem[reg_addr] <= reg_data_o;
+    end
+end
+
+endmodule
   
   // Instance
   //rsa_unit rsa_i (.en(ena), .rstb(rst_n), .clk(clk), .P(ui_in), .E(ui_in), .M(ui_in), .Const(ui_in), .eoc(uio_out[0]), .C(uo_out));
-    
+  
 endmodule
