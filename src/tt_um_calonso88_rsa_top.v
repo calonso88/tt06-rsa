@@ -46,7 +46,7 @@ spireg #(
     .REG_W(REG_WIDTH)
 ) spireg_inst(
     .clk(clk),
-    .nrst(nrst),
+  .nrst(rst_n),
     .mosi(spi_mosi),
     .miso(spi_miso),
     .sclk(spi_clk),
