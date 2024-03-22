@@ -68,7 +68,7 @@ assign status = mem[0][7:0];
 
 //register write and fastcmd access
 integer i;
-always @(posedge clk or negedge nrst)
+  always @(posedge clk or negedge rst_n)
 if(!nrst) begin
     for(i = 0; i < 2**ADDR_WIDTH; i = i+1) begin
         mem[i] <= 0;
