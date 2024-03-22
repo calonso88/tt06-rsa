@@ -31,6 +31,8 @@ project:
     - "shiftreg2.v"
     - "shiftreg3.v"
     - "register_crypt.v"
+    - "spireg.v"
+    - "spireg_wrapper.v"
 
 # The pinout of your project. Leave unused pins blank. DO NOT delete or add any pins.
 pinout:
