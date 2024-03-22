@@ -79,7 +79,6 @@ end else begin
     end
 end
 
-endmodule
   
   // Instance
   //rsa_unit rsa_i (.en(ena), .rstb(rst_n), .clk(clk), .P(ui_in), .E(ui_in), .M(ui_in), .Const(ui_in), .eoc(uio_out[0]), .C(uo_out));
