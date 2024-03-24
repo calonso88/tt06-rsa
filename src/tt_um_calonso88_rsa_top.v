@@ -68,20 +68,42 @@ assign status = mem[0][7:0];
 
 //register write and fastcmd access
 integer i;
-  always @(posedge clk or negedge rst_n)
-    if(!rst_n) begin
-    for(i = 0; i < 2**ADDR_WIDTH; i = i+1) begin
-        mem[i] <= 0;
+always @(posedge clk or negedge rst_n) begin
+  if (!rst_n) begin
+    for (i = 0; i < 2**ADDR_WIDTH; i=i+1) begin
+      mem[i] <= 0;
     end
-end else begin
-    if(reg_data_o_vld) begin
-    //register write access
-        mem[reg_addr] <= reg_data_o;
+  end else begin
+    if (reg_data_o_vld) begin
+      //register write access
+      mem[reg_addr] <= reg_data_o;
+    end else if (rsa_eoc) begin
+      mem[6] <= result;
     end
+  end
 end
 
+/*
+In this example:
+*  total 8 registers available, each 8bits wide
+
+   Addr 0 - Status, Bit0 (EOC);
+   Addr 1 - Actions, Bit0 (Start)
+   Addr 2 - P;
+   Addr 3 - E;
+   Addr 4 - M;
+   Addr 5 - Const;
+   Addr 6 - C;
+   Addr 7 - Spare; 
+*/
+
+  wire rsa_eoc;
+  wire [7:0] result;
+
+  assign uio_out[0] = rsa_eoc;
   
-  // Instance
-  //rsa_unit rsa_i (.en(ena), .rstb(rst_n), .clk(clk), .P(ui_in), .E(ui_in), .M(ui_in), .Const(ui_in), .eoc(uio_out[0]), .C(uo_out));
-  
+// Instance
+//rsa_unit rsa_i (.en(ena), .rstb(rst_n), .clk(clk), .P(ui_in), .E(ui_in), .M(ui_in), .Const(ui_in), .eoc(uio_out[0]), .C(uo_out));
+rsa_unit rsa_i (.en(ena), .rstb(rst_n), .clk(clk), .P(mem[2]), .E(mem[3]), .M(mem[4]), .Const(mem[5]), .eoc(rsa_eoc), .C(result));
+
 endmodule
