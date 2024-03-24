@@ -18,7 +18,7 @@ module tt_um_calonso88_rsa_top (
 
   // All output pins must be assigned. If not used, assign to 0.
   assign uo_out[2:0]  = 0;
-  assign uo_out[7:4]  = 0;
+  assign uo_out[6:4]  = 0;
   assign uio_out[7:0] = 0;
   assign uio_oe  = 0;
 
@@ -100,7 +100,7 @@ In this example:
   wire rsa_eoc;
   wire [7:0] result;
 
-  assign uio_out[0] = rsa_eoc;
+  assign uio_out[7] = rsa_eoc;
   
 // Instance
 //rsa_unit rsa_i (.en(ena), .rstb(rst_n), .clk(clk), .P(ui_in), .E(ui_in), .M(ui_in), .Const(ui_in), .eoc(uio_out[0]), .C(uo_out));
