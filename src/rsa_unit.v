@@ -34,11 +34,11 @@ module rsa_unit #(parameter WIDTH = 8) (en, rstb, clk, P, E, M, Const, C, eoc);
   wire [WIDTH+1:0] C_ex;
   wire [WIDTH+1:0] Const_ex;
 
-  assign P_ex = {((WIDTH+1)-(WIDTH-1)){1'b0}, P};
-  assign E_ex = {((WIDTH+1)-(WIDTH-1)){1'b0}, E};
-  assign M_ex = {((WIDTH+1)-(WIDTH-1)){1'b0}, M};
-  assign Const_ex = {((WIDTH+1)-(WIDTH-1)){1'b0}, Const};
-  assign C = C_ex [WIDTH-1:0];
+  assign P_ex = {{((WIDTH+1)-(WIDTH-1)){1'b0}}, P};
+  assign E_ex = {{((WIDTH+1)-(WIDTH-1)){1'b0}}, E};
+  assign M_ex = {{((WIDTH+1)-(WIDTH-1)){1'b0}}, M;
+  assign Const_ex = {{((WIDTH+1)-(WIDTH-1)){1'b0}}, Const};
+  assign C = C_ex[WIDTH-1:0];
 
   mux1_unit #(.WIDTH(WIDTH)) mux_multiply_a (.a(Const_ex), .b(R_i), .sel(sel1), .out(multilpy_a));
 
