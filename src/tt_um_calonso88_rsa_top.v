@@ -105,6 +105,6 @@ assign result[7] = 1'b0;
 
 // Instance
 //rsa_unit rsa_i (.en(ena), .rstb(rst_n), .clk(clk), .P(ui_in), .E(ui_in), .M(ui_in), .Const(ui_in), .eoc(uio_out[0]), .C(uo_out));
-rsa_unit #(.WIDTH(7)) rsa_i (.en(ena), .rstb(rst_n), .clk(clk), .P(mem[2][6:0]), .E(mem[3][6:0]), .M(mem[4][6:0]), .Const(mem[5])[6:0], .eoc(rsa_eoc), .C(result[6:0]));
+rsa_unit #(.WIDTH(7)) rsa_i (.en(ena), .rstb(rst_n), .clk(clk), .P(mem[2][6:0]), .E(mem[3][6:0]), .M(mem[4][6:0]), .Const(mem[5][6:0]), .eoc(rsa_eoc), .C(result[6:0]));
 
 endmodule
