@@ -30,9 +30,9 @@ module mmm_unit #(parameter WIDTH = 4) (en, rstb, clk, rst_mmm, ld_a, ld_r, lock
   genvar j;
   generate 
     for ( j=0; j<=(WIDTH-1); j=j+1 ) begin : processing_elements_array_loop
-      if (j == 0) begin
+      if (j == 0) begin : right_border_element
         processing_element_mux_right_border PE (.mi(M[j]), .bi(B[j]), .mbi(MB[j]), .ai(A_bit), .ri(reg_rji[j]), .qo(qj), .mux_out(mux_out[j]));
-      end else begin
+      end else begin : normal_element
         processing_element_mux PE (.mi(M[j]), .bi(B[j]), .mbi(MB[j]), .ai(A_bit), .qi(qj), .mux_out(mux_out[j]));
       end
     end
