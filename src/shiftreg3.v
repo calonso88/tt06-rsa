@@ -1,4 +1,4 @@
-module shiftreg3 (en, rstb, clk, rst_mmm_i, lock, ld_r, reg_rji, A, R_i);
+module shiftreg3 #(parameter WIDTH = 4) (en, rstb, clk, rst_mmm_i, lock, ld_r, reg_rji, A, R_i);
 
   input en;
   input rstb;
@@ -6,39 +6,28 @@ module shiftreg3 (en, rstb, clk, rst_mmm_i, lock, ld_r, reg_rji, A, R_i);
   input rst_mmm_i;
   input lock;
   input ld_r;
-  input [9:0] reg_rji;
-  input [9:0] A;
+  input [WIDTH-1:0] reg_rji;
+  input [WIDTH-1:0] A;
+  output [WIDTH-1:0] R_i;
 
-  output [9:0] R_i;
-
-  reg [9:0] R_i;
-
-  wire clk_i;
-  wire rstb_i;
-  wire en_i;
   wire rst_mmm_int;
-  wire rst_mmm_int_buf;
+  reg [WIDTH-1:0] R_i;
 
-  assign rst_mmm_int = rstb_i & rst_mmm_i;
-
-  buf U0 (rstb_i, rstb);
-  buf U1 (clk_i, clk);
-  buf U2 (rst_mmm_int_buf, rst_mmm_int);
-  buf U3 (en_i, en);
-
-  always @(negedge(rst_mmm_int_buf) or posedge(clk_i)) begin
-    if (!rst_mmm_int_buf) begin 
-      R_i <= {10{1'b0}};
+  assign rst_mmm_int = rstb & rst_mmm_i;
+  
+  always @(negedge(rst_mmm_int) or posedge(clk)) begin
+    if (!rst_mmm_int) begin 
+      R_i <= '0;
     end else begin 
-      if (en_i) begin
+      if (en == 1'b1) begin
         if ((lock == 1'b1) && (ld_r == 1'b1)) begin
           R_i <= reg_rji;
         end else begin 
           if (ld_r == 1'b1) begin
             R_i <= A;
-          end else begin 
+          end /*else begin 
             R_i <= R_i;
-          end
+          end*/
         end
       end
     end

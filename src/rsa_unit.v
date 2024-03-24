@@ -1,17 +1,17 @@
-module rsa_unit (en, rstb, clk, P, E, M, Const, eoc, C);
+module rsa_unit #(parameter WIDTH = 8) (en, rstb, clk, P, E, M, Const, C, eoc);
 
   input en;
   input rstb; 
   input clk;
 
-  input [7:0] P;
-  input [7:0] E;
-  input [7:0] M;
-  input [7:0] Const;
+  input [WIDTH-1:0] P;
+  input [WIDTH-1:0] E;
+  input [WIDTH-1:0] M;
+  input [WIDTH-1:0] Const;
 
-  output [7:0] C;
+  output [WIDTH-1:0] C;
   output eoc;
-
+  
   wire rst_mmm;
   wire ld_a;
   wire ld_r;
@@ -19,69 +19,41 @@ module rsa_unit (en, rstb, clk, P, E, M, Const, eoc, C);
   wire lock2;
   wire [1:0] sel1;
   wire sel2;
-  wire [9:0] multilpy_a;
-  wire [9:0] multilpy_b;
-  wire [9:0] square_a;
-  wire [9:0] square_b;
-  wire [9:0] R_i;
-  wire [9:0] P_i;
+  wire [WIDTH+1:0] multilpy_a;
+  wire [WIDTH+1:0] multilpy_b;
+  wire [WIDTH+1:0] square_a;
+  wire [WIDTH+1:0] square_b;
+  wire [WIDTH+1:0] R_i;
+  wire [WIDTH+1:0] P_i;
   wire eoc;
-  wire [7:0] C;
+  wire [WIDTH-1:0] C;
 
-  wire [9:0] P_ex;
-  wire [9:0] E_ex;
-  wire [9:0] M_ex;
-  wire [9:0] C_ex;
-  wire [9:0] Const_ex;
+  wire [WIDTH+1:0] P_ex;
+  wire [WIDTH+1:0] E_ex;
+  wire [WIDTH+1:0] M_ex;
+  wire [WIDTH+1:0] C_ex;
+  wire [WIDTH+1:0] Const_ex;
 
-  wire en_i;
-  wire rstb_i;
-  wire clk_i;
-  wire eoc_i;
+  assign P_ex = {((WIDTH+1)-(WIDTH-1)){1'b0}, P};
+  assign E_ex = {((WIDTH+1)-(WIDTH-1)){1'b0}, E};
+  assign M_ex = {((WIDTH+1)-(WIDTH-1)){1'b0}, M};
+  assign Const_ex = {((WIDTH+1)-(WIDTH-1)){1'b0}, Const};
+  assign C = C_ex [WIDTH-1:0];
 
-  buf U0 (en_i, en);
-  buf U1 (rstb_i, rstb);
-  buf U2 (clk_i, clk);
-  buf U3 (eoc_i, eoc);
+  mux1_unit #(.WIDTH(WIDTH)) mux_multiply_a (.a(Const_ex), .b(R_i), .sel(sel1), .out(multilpy_a));
 
-  genvar i;
-  generate
-    for (i=0; i<=9; i=i+1) begin : mapping
-      if ((i==9) || (i==8)) begin
-        assign P_ex[i] = 1'b0;
-        assign E_ex[i] = 1'b0;
-        assign M_ex[i] = 1'b0;
-        assign Const_ex[i] = 1'b0;
-      end else begin
-        assign P_ex[i] = P[i];
-        assign E_ex[i] = E[i];
-        assign M_ex[i] = M[i];
-        assign Const_ex[i] = Const[i];
-      end
-    end
-  endgenerate
-
-  mux1_unit mux_multiply_a (.a(Const_ex), .b(R_i), .sel(sel1), .out(multilpy_a));
-
-  mux2_unit mux_multiply_b (.a(P_i), .b(R_i), .sel(sel1), .out(multilpy_b));
+  mux2_unit #(.WIDTH(WIDTH)) mux_multiply_b (.a(P_i), .b(R_i), .sel(sel1), .out(multilpy_b));
   
-  mmm_unit mmm_multiply (.en(en_i), .rstb(rstb_i), .clk(clk_i), .rst_mmm(rst_mmm), .ld_a(ld_a), .ld_r(ld_r), .lock(lock1), .A(multilpy_a), .B(multilpy_b), .M(M_ex), .R(R_i));	
+  mmm_unit #(.WIDTH(WIDTH)) mmm_multiply (.en(en), .rstb(rstb), .clk(clk), .rst_mmm(rst_mmm), .ld_a(ld_a), .ld_r(ld_r), .lock(lock1), .A(multilpy_a), .B(multilpy_b), .M(M_ex), .R(R_i));	
 
-  mux3_unit mux_square_a (.a(Const_ex), .b(P_i), .sel(sel2), .out(square_a));
+  mux3_unit #(.WIDTH(WIDTH)) mux_square_a (.a(Const_ex), .b(P_i), .sel(sel2), .out(square_a));
 
-  mux3_unit mux_square_b (.a(P_ex), .b(P_i), .sel(sel2), .out(square_b));
+  mux3_unit #(.WIDTH(WIDTH)) mux_square_b (.a(P_ex), .b(P_i), .sel(sel2), .out(square_b));
 
-  mmm_unit mmm_square (.en(en_i), .rstb(rstb_i), .clk(clk_i), .rst_mmm(rst_mmm), .ld_a(ld_a), .ld_r(ld_r), .lock(lock2), .A(square_a), .B(square_b), .M(M_ex), .R(P_i));	
+  mmm_unit #(.WIDTH(WIDTH)) mmm_square (.en(en), .rstb(rstb), .clk(clk), .rst_mmm(rst_mmm), .ld_a(ld_a), .ld_r(ld_r), .lock(lock2), .A(square_a), .B(square_b), .M(M_ex), .R(P_i));	
 
-  fsm_control_unit rsa_control (.en(en_i), .rstb(rstb_i), .clk(clk_i), .expE(E_ex), .rst_mmm(rst_mmm), .ld_a(ld_a), .ld_r(ld_r), .lock1(lock1), .lock2(lock2), .sel1(sel1), .sel2(sel2), .eoc(eoc));
+  fsm_control_unit rsa_control (.en(en), .rstb(rstb), .clk(clk), .expE(E_ex), .rst_mmm(rst_mmm), .ld_a(ld_a), .ld_r(ld_r), .lock1(lock1), .lock2(lock2), .sel1(sel1), .sel2(sel2), .eoc(eoc));
 
-  register_crypt reg_crypt (.en(en_i), .rstb(rstb_i), .clk(clk_i), .eoc(eoc_i), .R_i(R_i), .C_ex(C_ex));
-
-  genvar j;
-  generate
-    for (j=0; j<=7; j=j+1) begin : cripto
-      assign C[j] = C_ex[j];
-    end
-  endgenerate
+  register_crypt #(.WIDTH(WIDTH)) reg_crypt (.en(en), .rstb(rstb), .clk(clk), .eoc(eoc), .R_i(R_i), .C_ex(C_ex));
 
 endmodule

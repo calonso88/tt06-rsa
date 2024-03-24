@@ -19,6 +19,7 @@ project:
     - "fsm_control_unit.v"
     - "full_adder.v"
     - "half_adder.v"
+    - "ripple_carry_adder.v"
     - "kogge_stone_adder.v"
     - "mmm_unit.v"
     - "mux1_unit.v"

@@ -1,13 +1,13 @@
-module mux3_unit (a, b, sel, out);
+module mux3_unit #(parameter WIDTH = 4) (a, b, sel, out);
 
-  input [9:0] a;
-  input [9:0] b;
+  input [WIDTH-1:0] a;
+  input [WIDTH-1:0] b;
   input sel;
 
-  output [9:0] out;
+  output [WIDTH-1:0] out;
 
-  wire [9:0] zero;
-  reg [9:0] out;
+  wire [WIDTH-1:0] zero;
+  reg [WIDTH-1:0] out;
   
   assign zero = '0; 
   

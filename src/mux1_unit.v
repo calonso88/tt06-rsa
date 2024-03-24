@@ -1,17 +1,17 @@
-module mux1_unit (a, b, sel, out);
+module mux1_unit #(parameter WIDTH = 4) (a, b, sel, out);
 
-  input [9:0] a;
-  input [9:0] b;
+  input [WIDTH-1:0] a;
+  input [WIDTH-1:0] b;
   input [1:0] sel;
 
-  output [9:0] out;
+  output [WIDTH-1:0] out;
   
-  reg [9:0] out;
+  reg [WIDTH-1:0] out;
   
-  wire [9:0] zero;
-  wire [8:0] one_array;
+  wire [WIDTH-1:0] zero;
+  wire [WIDTH-2:0] one_array;
   wire one_bit;
-  wire [9:0] one;
+  wire [WIDTH-1:0] one;
 
   assign zero = '0; 
   assign one_array = '1;
