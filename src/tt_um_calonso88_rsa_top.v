@@ -67,7 +67,7 @@ module tt_um_calonso88_rsa_top (
   assign reg_data_i = mem[reg_addr];
 
   //status signals
-  assign status = {1'b0, mem[0]};
+  assign status = mem[0][7:0];
 
   //register write and fastcmd access
   integer i;
@@ -101,9 +101,10 @@ In this example:
 */
 
 assign uo_out[7] = rsa_eoc;
-  
+assign result[7] = 1'b0;
+
 // Instance
 //rsa_unit rsa_i (.en(ena), .rstb(rst_n), .clk(clk), .P(ui_in), .E(ui_in), .M(ui_in), .Const(ui_in), .eoc(uio_out[0]), .C(uo_out));
-rsa_unit #(.WIDTH(REG_WIDTH)) rsa_i (.en(ena), .rstb(rst_n), .clk(clk), .P(mem[2]), .E(mem[3]), .M(mem[4]), .Const(mem[5]), .eoc(rsa_eoc), .C(result));
+rsa_unit #(.WIDTH(7)) rsa_i (.en(ena), .rstb(rst_n), .clk(clk), .P(mem[2][6:0]), .E(mem[3][6:0]), .M(mem[4][6:0]), .Const(mem[5])[6:0], .eoc(rsa_eoc), .C(result[6:0]));
 
 endmodule
