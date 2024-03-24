@@ -40,6 +40,9 @@ wire [REG_WIDTH-1:0] reg_data_i, reg_data_o;
 wire reg_data_o_vld;
 wire [7:0] status;
 reg [REG_WIDTH-1:0] mem [0:(2**ADDR_WIDTH-1)];
+wire rsa_eoc;
+wire [7:0] result;
+
 
 spireg #(
     .ADDR_W(ADDR_WIDTH),
@@ -97,10 +100,7 @@ In this example:
    Addr 7 - Spare; 
 */
 
-  wire rsa_eoc;
-  wire [7:0] result;
-
-  assign uio_out[7] = rsa_eoc;
+assign uo_out[7] = rsa_eoc;
   
 // Instance
 //rsa_unit rsa_i (.en(ena), .rstb(rst_n), .clk(clk), .P(ui_in), .E(ui_in), .M(ui_in), .Const(ui_in), .eoc(uio_out[0]), .C(uo_out));
