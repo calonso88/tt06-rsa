@@ -17,7 +17,6 @@ module fsm_control_unit (en, rstb, clk, expE, rst_mmm, ld_a, ld_r, lock1, lock2,
 
   wire rst_counter;
   wire rst_exp;
-  wire rst_counter_i;
   
   reg rst_mmm;
   reg ld_a;
@@ -65,8 +64,8 @@ module fsm_control_unit (en, rstb, clk, expE, rst_mmm, ld_a, ld_r, lock1, lock2,
     end
   end
 
-  always @(negedge(rst_counter_i) or posedge(clk)) begin
-    if (!rst_counter_i) begin
+  always @(negedge(rst_counter) or posedge(clk)) begin
+    if (!rst_counter) begin
       rst_mmm <= 1'b0;
       ld_a <= 1'b0;
       ld_r <= 1'b0;
