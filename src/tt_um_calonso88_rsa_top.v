@@ -101,10 +101,10 @@ In this example:
 */
 
 assign uo_out[7] = rsa_eoc;
-assign result[7:6] = '0;
+assign result[7:5] = '0;
 
 // Instance
 //rsa_unit rsa_i (.en(ena), .rstb(rst_n), .clk(clk), .P(ui_in), .E(ui_in), .M(ui_in), .Const(ui_in), .eoc(uio_out[0]), .C(uo_out));
-rsa_unit #(.WIDTH(6)) rsa_i (.en(ena), .rstb(rst_n), .clk(clk), .P(mem[2][5:0]), .E(mem[3][5:0]), .M(mem[4][5:0]), .Const(mem[5][5:0]), .eoc(rsa_eoc), .C(result[5:0]));
+rsa_unit #(.WIDTH(5)) rsa_i (.en(ena), .rstb(rst_n), .clk(clk), .P(mem[2][4:0]), .E(mem[3][4:0]), .M(mem[4][4:0]), .Const(mem[5][4:0]), .eoc(rsa_eoc), .C(result[4:0]));
 
 endmodule
