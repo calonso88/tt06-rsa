@@ -3,7 +3,8 @@ module fsm_control_unit (en, rstb, clk, expE, rst_mmm, ld_a, ld_r, lock1, lock2,
   input en;
   input rstb;
   input clk;
-  input [9:0] expE;
+  //input [9:0] expE;
+  input [8:0] expE;
 
   output rst_mmm;
   output ld_a;
@@ -14,15 +15,10 @@ module fsm_control_unit (en, rstb, clk, expE, rst_mmm, ld_a, ld_r, lock1, lock2,
   output sel2;
   output eoc;
 
-  wire en_i;
-  wire rstb_i;
-  wire clk_i;
-
   wire rst_counter;
   wire rst_exp;
   wire rst_counter_i;
-  wire rst_exp_i;
-
+  
   reg rst_mmm;
   reg ld_a;
   reg ld_r;
@@ -30,27 +26,22 @@ module fsm_control_unit (en, rstb, clk, expE, rst_mmm, ld_a, ld_r, lock1, lock2,
   reg lock2;
   reg [1:0] sel1;
   reg sel2;
-  reg [9:0] reg_exp;
-  reg [31:0] counter;
+  //reg [9:0] reg_exp;
+  reg [8:0] reg_exp;
+  reg [7:0] counter;
   reg rst_exp_flop;
   reg f2;
   reg eoc;
   reg ld_e;
 
-  buf U0 (en_i, en);
-  buf U1 (rstb_i, rstb);
-  buf U2 (clk_i, clk);
-  buf U3 (rst_exp_i, rst_exp);
-  buf U4 (rst_counter_i, rst_counter);
+  assign rst_exp = rst_exp_flop & rstb;
+  assign rst_counter = ((counter == 8'd133) ? 1'b0 : 1'b1) & rstb;
 
-  assign rst_exp = rst_exp_flop & rstb_i;
-  assign rst_counter = ((counter == 32'd133) ? 1'b0 : 1'b1) & rstb_i;
-
-  always @(negedge(rst_exp_i) or posedge(clk_i)) begin
-    if (!rst_exp_i) begin 
-      reg_exp <= {10{1'b0}};
+  always @(negedge(rst_exp) or posedge(clk)) begin
+    if (!rst_exp) begin 
+      reg_exp <= '0;
     end else begin
-      if (en_i) begin
+      if (en == 1'b1) begin
         if (ld_e == 1'b1) begin 
           reg_exp <= expE;
         end else begin
@@ -64,17 +55,17 @@ module fsm_control_unit (en, rstb, clk, expE, rst_mmm, ld_a, ld_r, lock1, lock2,
     end
   end
 
-  always @(negedge(rst_counter_i) or posedge(clk_i)) begin
-    if (!rst_counter_i) begin 
-      counter <= {(32){1'b0}};
+  always @(negedge(rst_counter) or posedge(clk)) begin
+    if (!rst_counter) begin 
+      counter <= '0;
     end else begin 
-      if (en_i) begin
+      if (en == 1'b1) begin
         counter <= counter + 1'b1;
       end
     end
   end
 
-  always @(negedge(rst_counter_i) or posedge(clk_i)) begin
+  always @(negedge(rst_counter_i) or posedge(clk)) begin
     if (!rst_counter_i) begin
       rst_mmm <= 1'b0;
       ld_a <= 1'b0;
@@ -88,8 +79,8 @@ module fsm_control_unit (en, rstb, clk, expE, rst_mmm, ld_a, ld_r, lock1, lock2,
       eoc <= 1'b0;
       ld_e <= 1'b0;
     end else begin
-      if (en_i) begin
-        if (counter == 32'd0) begin
+      if (en == 1'b1) begin
+        if (counter == 8'd0) begin
           rst_mmm <= 1'b1;  
           ld_a <= 1'b1;
           ld_r <= 1'b0;
@@ -101,7 +92,7 @@ module fsm_control_unit (en, rstb, clk, expE, rst_mmm, ld_a, ld_r, lock1, lock2,
           f2 <= 1'b0;
           eoc <= 1'b0;
           ld_e <= 1'b0;
-        end else if ((counter > 32'd0) && (counter < 32'd11)) begin
+        end else if ((counter > 8'd0) && (counter < 8'd11)) begin
           rst_mmm <= 1'b1;
           ld_a <= 1'b0;
           ld_r <= 1'b0;
@@ -113,7 +104,7 @@ module fsm_control_unit (en, rstb, clk, expE, rst_mmm, ld_a, ld_r, lock1, lock2,
           f2 <= 1'b0;
           eoc <= 1'b0;
           ld_e <= 1'b0;
-        end else if (counter == 32'd11) begin
+        end else if (counter == 8'd11) begin
           rst_mmm <= 1'b1;
           ld_a <= 1'b0;
           ld_r <= 1'b1;
@@ -125,8 +116,8 @@ module fsm_control_unit (en, rstb, clk, expE, rst_mmm, ld_a, ld_r, lock1, lock2,
           f2 <= 1'b1;
           eoc <= 1'b0;
           ld_e <= 1'b1;
-	end else if ((counter == 32'd23) || (counter == 32'd35) || (counter == 32'd47) || (counter == 32'd59) || 
-		     (counter == 32'd71) || (counter == 32'd83) || (counter == 32'd95) || (counter == 32'd107)) begin
+       	end else if ((counter == 8'd23) || (counter == 8'd35) || (counter == 8'd47) || (counter == 8'd59) || 
+		                 (counter == 8'd71) || (counter == 8'd83) || (counter == 8'd95) || (counter == 8'd107)) begin
           rst_mmm <= 1'b1;
           ld_a <= 1'b0;
           ld_r <= 1'b1;
@@ -138,9 +129,9 @@ module fsm_control_unit (en, rstb, clk, expE, rst_mmm, ld_a, ld_r, lock1, lock2,
           f2 <= 1'b1;
           eoc <= 1'b0;
           ld_e <= 1'b0;
-        end else if ((counter == 32'd12) || (counter == 32'd24) || (counter == 32'd36) || (counter == 32'd48) ||
-                     (counter == 32'd60) || (counter == 32'd72) || (counter == 32'd84) || (counter == 32'd96) ||
-                     (counter == 32'd108)) begin
+        end else if ((counter == 8'd12) || (counter == 8'd24) || (counter == 8'd36) || (counter == 8'd48) ||
+                     (counter == 8'd60) || (counter == 8'd72) || (counter == 8'd84) || (counter == 8'd96) ||
+                     (counter == 8'd108)) begin
           rst_mmm <= 1'b1;
           ld_a <= 1'b1;
           ld_r <= 1'b0;
@@ -152,7 +143,7 @@ module fsm_control_unit (en, rstb, clk, expE, rst_mmm, ld_a, ld_r, lock1, lock2,
           f2 <= 1'b0;
           eoc <= 1'b0;
           ld_e <= 1'b0;
-	end else if (counter == 32'd120) begin
+	end else if (counter == 8'd120) begin
           rst_mmm <= 1'b1;
           ld_a <= 1'b1;
           ld_r <= 1'b0;
@@ -164,7 +155,7 @@ module fsm_control_unit (en, rstb, clk, expE, rst_mmm, ld_a, ld_r, lock1, lock2,
           f2 <= 1'b0;
           eoc <= 1'b0;
           ld_e <= 1'b0;
-	end else if ((counter > 32'd120) && (counter < 32'd131)) begin	
+	end else if ((counter > 8'd120) && (counter < 8'd131)) begin	
           rst_mmm <= 1'b1;
           ld_a <= 1'b0;
           ld_r <= 1'b0;
@@ -176,7 +167,7 @@ module fsm_control_unit (en, rstb, clk, expE, rst_mmm, ld_a, ld_r, lock1, lock2,
           f2 <= 1'b0;
           eoc <= 1'b0;
           ld_e <= 1'b0;
-        end else if (counter == 32'd131) begin
+        end else if (counter == 8'd131) begin
           rst_mmm <= 1'b1;
           ld_a <= 1'b0;
           ld_r <= 1'b1;
@@ -188,7 +179,7 @@ module fsm_control_unit (en, rstb, clk, expE, rst_mmm, ld_a, ld_r, lock1, lock2,
           f2 <= 1'b0;
           eoc <= 1'b0;
           ld_e <= 1'b0;
-        end else if (counter == 32'd132) begin
+        end else if (counter == 8'd132) begin
           rst_mmm <= 1'b1;
           ld_a <= 1'b0;
           ld_r <= 1'b1;
