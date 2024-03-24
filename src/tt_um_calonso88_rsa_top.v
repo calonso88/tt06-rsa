@@ -38,10 +38,10 @@ module tt_um_calonso88_rsa_top (
   wire [ADDR_WIDTH-1:0] reg_addr;
   wire [REG_WIDTH-1:0] reg_data_i, reg_data_o;
   wire reg_data_o_vld;
-  wire [7:0] status;
+  wire [REG_WIDTH-1:0] status;
   reg [REG_WIDTH-1:0] mem [0:(2**ADDR_WIDTH-1)];
   wire rsa_eoc;
-  wire [7:0] result;
+  wire [REG_WIDTH-1:0] result;
 
 
   spireg #(
@@ -67,7 +67,7 @@ module tt_um_calonso88_rsa_top (
   assign reg_data_i = mem[reg_addr];
 
   //status signals
-  assign status = mem[0][7:0];
+  assign status = {1'b0, mem[0]};
 
   //register write and fastcmd access
   integer i;
@@ -104,6 +104,6 @@ assign uo_out[7] = rsa_eoc;
   
 // Instance
 //rsa_unit rsa_i (.en(ena), .rstb(rst_n), .clk(clk), .P(ui_in), .E(ui_in), .M(ui_in), .Const(ui_in), .eoc(uio_out[0]), .C(uo_out));
-rsa_unit #(.WIDTH(8)) rsa_i (.en(ena), .rstb(rst_n), .clk(clk), .P(mem[2]), .E(mem[3]), .M(mem[4]), .Const(mem[5]), .eoc(rsa_eoc), .C(result));
+rsa_unit #(.WIDTH(REG_WIDTH)) rsa_i (.en(ena), .rstb(rst_n), .clk(clk), .P(mem[2]), .E(mem[3]), .M(mem[4]), .Const(mem[5]), .eoc(rsa_eoc), .C(result));
 
 endmodule
