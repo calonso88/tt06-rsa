@@ -12,13 +12,13 @@ module ripple_carry_adder #(parameter WIDTH = 4) (a, b, ci, sum, co);
   
   genvar i;
   generate
-    for (i = 1; i < SIZE; i = i+1) begin
+    for (i = 1; i < WIDTH; i = i+1) begin
       full_adder fa (a[i], b[i], carry[i-1], sum[i], carry[i]);
     end
   endgenerate
 
   assign co = carry[WIDTH-1];
-  
+
 endmodule
 
 
