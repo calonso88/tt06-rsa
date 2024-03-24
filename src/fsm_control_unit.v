@@ -4,7 +4,8 @@ module fsm_control_unit (en, rstb, clk, expE, rst_mmm, ld_a, ld_r, lock1, lock2,
   input rstb;
   input clk;
   //input [9:0] expE;
-  input [8:0] expE;
+  //input [8:0] expE;
+  input [7:0] expE;
 
   output rst_mmm;
   output ld_a;
@@ -26,7 +27,8 @@ module fsm_control_unit (en, rstb, clk, expE, rst_mmm, ld_a, ld_r, lock1, lock2,
   reg [1:0] sel1;
   reg sel2;
   //reg [9:0] reg_exp;
-  reg [8:0] reg_exp;
+  //reg [8:0] reg_exp;
+  reg [7:0] reg_exp;
   reg [7:0] counter;
   reg rst_exp_flop;
   reg f2;
