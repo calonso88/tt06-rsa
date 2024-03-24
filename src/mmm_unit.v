@@ -40,9 +40,9 @@ module mmm_unit #(parameter WIDTH = 4) (en, rstb, clk, rst_mmm, ld_a, ld_r, lock
 
   ripple_carry_adder #(.WIDTH(WIDTH)) adder2 (.a(reg_rji), .b(mux_out), .ci(1'b0), .sum(rjo), .co());
 
-  shiftreg1 shiftreg_A_aux   (.en(en), .rstb(rstb), .clk(clk), .rst_mmm_i(rst_mmm_i), .ld_a(ld_a), .A(A), .A_bit(A_bit));
-  shiftreg2 shiftreg_reg_rji (.en(en), .rstb(rstb), .clk(clk), .rst_mmm_i(rst_mmm_i), .ld_a(ld_a), .rjo(rjo), .reg_rji(reg_rji));
-  shiftreg3 shiftreg_result  (.en(en), .rstb(rstb), .clk(clk), .rst_mmm_i(rst_mmm_i), .lock(lock), .ld_r(ld_r), .reg_rji(reg_rji), .A(A), .R_i(R_i));
+  shiftreg1 #(.WIDTH(WIDTH)) shiftreg_A_aux   (.en(en), .rstb(rstb), .clk(clk), .rst_mmm_i(rst_mmm_i), .ld_a(ld_a), .A(A), .A_bit(A_bit));
+  shiftreg2 #(.WIDTH(WIDTH)) shiftreg_reg_rji (.en(en), .rstb(rstb), .clk(clk), .rst_mmm_i(rst_mmm_i), .ld_a(ld_a), .rjo(rjo), .reg_rji(reg_rji));
+  shiftreg3 #(.WIDTH(WIDTH)) shiftreg_result  (.en(en), .rstb(rstb), .clk(clk), .rst_mmm_i(rst_mmm_i), .lock(lock), .ld_r(ld_r), .reg_rji(reg_rji), .A(A), .R_i(R_i));
 
   assign R = R_i;
 
