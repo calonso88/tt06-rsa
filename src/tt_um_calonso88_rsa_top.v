@@ -25,7 +25,6 @@ module tt_um_calonso88_rsa_top (
   wire start;
   wire start_cmd;
   wire stop_cmd;
-  wire stop_pos_edge;
   wire rsa_eoc;
   wire en_rsa;
   wire rst_rsa;
