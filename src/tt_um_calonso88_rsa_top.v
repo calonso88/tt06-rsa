@@ -75,6 +75,8 @@ module tt_um_calonso88_rsa_top (
   //Status signals
   assign status[0] = irq;
   assign status[1] = eoc_mem;
+  assign status[7:2] = '0;
+  
 
   // Controller
   rsa_en_logic rsa_en_logic_i (.rstb(rst_n), .clk(clk), .ena(ena), .start(start), .start_cmd(start_cmd), .stop_cmd(stop_cmd), .eoc_int(rsa_eoc), .en_rsa(en_rsa), .rst_rsa(rst_rsa), .eoc(irq), .eocp(eoc_mem));
