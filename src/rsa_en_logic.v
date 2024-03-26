@@ -25,6 +25,7 @@ module rsa_en_logic (rstb, clk, ena, start, start_cmd, stop_cmd, eoc_int, en_rsa
 
 // Wires
     wire start_comb;
+    wire stop_comb;
     wire [2:0] state;
 
 // Registers
