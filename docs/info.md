@@ -13,7 +13,7 @@ This project consists of an 8-bit RSA verilog design that implements the RSA (ht
 
 The design implements modular exponentiation (https://en.wikipedia.org/wiki/Modular_exponentiation) through a series of Montgomery modular multiplication (https://en.wikipedia.org/wiki/Montgomery_modular_multiplication) operations to encrypt a message using an 8-bit private key.
 
-An SPI interface is used to interface to the design due a limited number of I/O availables in the TinyTapeout project.
+A SPI interface is used to interface the design due a limited number of I/O availables in the TinyTapeout project.
 
 ## How to test
 
