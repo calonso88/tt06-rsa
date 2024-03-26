@@ -47,7 +47,7 @@ module tt_um_calonso88_rsa_top (
   spireg #(
     .ADDR_W(ADDR_WIDTH),
     .REG_W(REG_WIDTH)
-  ) spireg_inst(
+  ) spireg_inst (
     .clk(clk),
     .nrst(rst_n),
     .mosi(spi_mosi),
@@ -73,9 +73,10 @@ module tt_um_calonso88_rsa_top (
   integer i;
   always @(posedge clk or negedge rst_n) begin
     if (!rst_n) begin
-      for (i = 0; i < 2**ADDR_WIDTH; i=i+1) begin
+      /*for (i = 0; i < 2**ADDR_WIDTH; i=i+1) begin
         mem[i] <= 0;
-      end
+      end*/
+      mem <= '{default:0};
     end else begin
       if (reg_data_o_vld) begin
         //register write access
