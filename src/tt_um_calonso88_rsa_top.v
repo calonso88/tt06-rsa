@@ -117,7 +117,7 @@ module tt_um_calonso88_rsa_top (
       if (reg_data_o_vld) begin
         //register write access
         mem[reg_addr] <= reg_data_o;
-      end else if (eoc_spi) begin
+      end else if (eoc_mem) begin
         mem[6] <= C;
       end
     end
