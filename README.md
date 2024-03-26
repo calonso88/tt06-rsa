@@ -1,14 +1,5 @@
 ![](../../workflows/gds/badge.svg) ![](../../workflows/docs/badge.svg) ![](../../workflows/test/badge.svg)
 
-# 8-bit RSA
-
-8-bit RSA is a verilog design that implements the RSA (https://en.wikipedia.org/wiki/RSA_(cryptosystem)) encryption/decryption scheme with an 8-bit private/public key lenght.
-
-The 8-bit RSA design is a scaled down version of a master thesis project of at 1024-bit RSA design, specifically made to tryout the TinyTapeout project.
-The design implements a modular exponentiation (https://en.wikipedia.org/wiki/Modular_exponentiation) through a series of Montgomery modular multiplication (https://en.wikipedia.org/wiki/Montgomery_modular_multiplication) rounds to encrypt a message using a private key.
-
-An SPI interface is used to interface to the design due a limited number of I/O availables in the TinyTapeout project.
-
 ## Tiny Tapeout Verilog Project Template
 
 - [Read the documentation for project](docs/info.md)
