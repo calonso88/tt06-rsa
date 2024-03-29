@@ -34,6 +34,7 @@ project:
     - "spireg.v"
     - "spireg_wrapper.v"
     - "rising_edge_detector.v"
+    - "falling_edge_detector.v"
     - "rsa_en_logic.v"
 
 # The pinout of your project. Leave unused pins blank. DO NOT delete or add any pins.
