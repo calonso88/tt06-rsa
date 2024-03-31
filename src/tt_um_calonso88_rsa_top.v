@@ -91,8 +91,7 @@ module tt_um_calonso88_rsa_top (
 
   // Controller
   rsa_en_logic rsa_en_logic_i (.rstb(rst_n), .clk(clk), .ena(ena), .gpio_start(gpio_start_cmd), .spi_start(gpio_start_cmd), .gpio_stop(gpio_stop_cmd), .spi_stop(gpio_stop_cmd), .en_rsa(en_rsa), .rst_rsa(rst_rsa), .eoc_rsa_unit(rsa_eoc), .eoc(irq));
-                                                                                                                              (rstb, clk, ena, gpio_start, spi_start, gpio_stop, spi_stop, en_rsa, rst_rsa, eoc_rsa_unit, eoc);
-  
+ 
   assign rsa_eoc = 1'b0;
   // RSA Instance
   //rsa_unit #(.WIDTH(REG_WIDTH)) rsa_i (.en(en_rsa), .rstb(rst_rsa), .clk(clk), .P(P), .E(E), .M(M), .Const(Const), .eoc(rsa_eoc), .C(C));
