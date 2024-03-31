@@ -96,6 +96,7 @@ module tt_um_calonso88_rsa_top (
   // RSA Instance
   //rsa_unit #(.WIDTH(REG_WIDTH)) rsa_i (.en(en_rsa), .rstb(rst_rsa), .clk(clk), .P(P), .E(E), .M(M), .Const(Const), .eoc(rsa_eoc), .C(C));
 
+  assign spi_miso = 1'b0;
 /*
   // Serial interface
   spireg #(
