@@ -21,7 +21,7 @@ module gpio_wrapper (rstb, clk, ena, gpio_start, gpio_stop, gpio_start_cmd, gpio
   synchronizer sync_gpio_stop (.rstb(rstb), .clk(clk), .ena(ena), .data_in(gpio_stop), .data_out(gpio_stop_sync));
 
   // GPIO commands
-  rising_edge_detector gprio_start_cmd_i (.rstb(rstb), .clk(clk), .ena(ena), .data(gpio_start_sync), .pos_edge(gpio_start_cmd));
-  rising_edge_detector gprio_stop_cmd_i (.rstb(rstb), .clk(clk), .ena(ena), .data(gpio_stop_sync), .pos_edge(gpio_stop_cmd));
+  rising_edge_detector gpio_start_cmd_i (.rstb(rstb), .clk(clk), .ena(ena), .data(gpio_start_sync), .pos_edge(gpio_start_cmd));
+  rising_edge_detector gpio_stop_cmd_i (.rstb(rstb), .clk(clk), .ena(ena), .data(gpio_stop_sync), .pos_edge(gpio_stop_cmd));
   
 endmodule
