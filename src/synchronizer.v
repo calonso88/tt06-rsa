@@ -1,8 +1,8 @@
-module synchronizer (rstb, clk, en, data_in, data_out);
+module synchronizer (rstb, clk, ena, data_in, data_out);
 
   input rstb;
   input clk;
-  input en;
+  input ena;
   input data_in;
   
   output data_out;
@@ -15,7 +15,7 @@ module synchronizer (rstb, clk, en, data_in, data_out);
       data_sync <= '0;
       data_sync2 <= '0;
     end else begin 
-      if (en == 1'b1) begin
+      if (ena == 1'b1) begin
         data_sync <= data_in;
         data_sync2 <= data_sync;
       end
