@@ -80,7 +80,7 @@ module rsa_en_logic (rstb, clk, ena, gpio_start, spi_start, gpio_stop, spi_stop,
       STATE_4 : begin
         next_state = STATE_RESET;
       end
-  end
+  endcase
 
 /*
   always @(negedge(rstb) or posedge(clk)) begin
