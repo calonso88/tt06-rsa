@@ -12,7 +12,8 @@ module synchronizer (rstb, clk, en, data_in, data_out);
 
   always @(negedge(rstb) or posedge(clk)) begin
     if (!rstb) begin
-      data_dly <= '0;
+      data_sync <= '0;
+      data_sync2 <= '0;
     end else begin 
       if (en == 1'b1) begin
         data_sync <= data_in;
