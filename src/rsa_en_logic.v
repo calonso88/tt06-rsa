@@ -132,9 +132,5 @@ module rsa_en_logic (rstb, clk, ena, gpio_start, spi_start, gpio_stop, spi_stop,
             end
         end
     end
-<<<<<<< Updated upstream
-
-=======
 */
->>>>>>> Stashed changes
 endmodule
