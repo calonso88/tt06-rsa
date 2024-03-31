@@ -22,15 +22,21 @@ module tt_um_calonso88_rsa_top (
   wire spi_miso;
   wire spi_mosi;
   // Auxiliars
-  wire start;
-  wire start_cmd;
-  wire stop_cmd;
+  wire gpio_start;
+  wire gpio_stop;
+  wire gpio_irq;
+  wire gpio_start_cmd;
+  wire gpio_stop_cmd;
+/*
+  wire start_pos_edge;
+  wire stop_pos_edge;
   wire rsa_eoc;
   wire en_rsa;
   wire rst_rsa;
-  wire irq;
   wire eoc_mem;
+*/
 
+/*
   // SPIREG
   localparam integer ADDR_WIDTH = 3;
   localparam integer REG_WIDTH = 8;
@@ -47,23 +53,26 @@ module tt_um_calonso88_rsa_top (
   wire [REG_WIDTH-1:0] M;
   wire [REG_WIDTH-1:0] Const;
   wire [REG_WIDTH-1:0] C;
-
+*/
   // All output pins must be assigned. If not used, assign to 0.
   assign uo_out[2:0]  = 0;
   assign uo_out[7:5]  = 0;
   assign uio_out[7:0] = 0;
-  assign uio_oe  = 0;
-
-  // Input ports
-  assign spi_cs_n = ui_in[0];
-  assign spi_clk  = ui_in[1];
-  assign spi_mosi = ui_in[2];
-  assign start = ui_in[3]; /////TBD TBD TBD
+  assign uio_oe       = 0;
 
   // Output ports
   assign uo_out[3] = spi_miso;
-  assign uo_out[4] = irq; /////TBD TBD TBD
+  assign uo_out[4] = gpio_irq;
 
+  // Input ports
+  assign spi_cs_n   = ui_in[0];
+  assign spi_clk    = ui_in[1];
+  assign spi_mosi   = ui_in[2];
+  assign gpio_start = ui_in[3];
+  assign gpio_stop  = ui_in[4];
+
+
+/*
   // Map registers to RSA signals
   assign P = mem[2];
   assign E = mem[3];
@@ -75,15 +84,18 @@ module tt_um_calonso88_rsa_top (
   //Status signals
   assign status[0] = irq;
   assign status[1] = eoc_mem;
-  assign status[7:2] = '0;
-  
+*/
+
+  // GPIO wrapper
+  gpio_wrapper gprio_wrapper_i (.rstb(rst_n), .clk(clk), .ena(ena), .gpio_start(gpio_start), .gpio_stop(gpio_stop), .gpio_start_cmd(gpio_start_cmd), .gpio_stop_cmd(gpio_stop_cmd));
 
   // Controller
-  rsa_en_logic rsa_en_logic_i (.rstb(rst_n), .clk(clk), .ena(ena), .start(start), .start_cmd(start_cmd), .stop_cmd(stop_cmd), .eoc_int(rsa_eoc), .en_rsa(en_rsa), .rst_rsa(rst_rsa), .eoc(irq), .eocp(eoc_mem));
+  rsa_en_logic rsa_en_logic_i (.rstb(rst_n), .clk(clk), .ena(ena), .gpio_start(gpio_start_cmd), .spi_start(gpio_start_cmd), .gpio_stop(gpio_stop_cmd), .spi_stop(gpio_stop_cmd), .en_rsa(en_rsa), .rst_rsa(rst_rsa), .eoc_int(rsa_eoc), .eoc(irq));
 
   // RSA Instance
-  rsa_unit #(.WIDTH(REG_WIDTH)) rsa_i (.en(en_rsa), .rstb(rst_rsa), .clk(clk), .P(P), .E(E), .M(M), .Const(Const), .eoc(rsa_eoc), .C(C));
+  //rsa_unit #(.WIDTH(REG_WIDTH)) rsa_i (.en(en_rsa), .rstb(rst_rsa), .clk(clk), .P(P), .E(E), .M(M), .Const(Const), .eoc(rsa_eoc), .C(C));
 
+/*
   // Serial interface
   spireg #(
     .ADDR_W(ADDR_WIDTH),
@@ -123,6 +135,7 @@ module tt_um_calonso88_rsa_top (
       end
     end
   end
+*/
 
 /*
 In this example:
