@@ -87,7 +87,7 @@ module tt_um_calonso88_rsa_top (
 */
 
   // GPIO wrapper
-  gpio_wrapper gprio_wrapper_i (.rstb(rst_n), .clk(clk), .ena(ena), .gpio_start(gpio_start), .gpio_stop(gpio_stop), .gpio_start_cmd(gpio_start_cmd), .gpio_stop_cmd(gpio_stop_cmd));
+  gpio_wrapper gpio_wrapper_i (.rstb(rst_n), .clk(clk), .ena(ena), .gpio_start(gpio_start), .gpio_stop(gpio_stop), .gpio_start_cmd(gpio_start_cmd), .gpio_stop_cmd(gpio_stop_cmd));
 
   // Controller
   rsa_en_logic rsa_en_logic_i (.rstb(rst_n), .clk(clk), .ena(ena), .gpio_start(gpio_start_cmd), .spi_start(gpio_start_cmd), .gpio_stop(gpio_stop_cmd), .spi_stop(gpio_stop_cmd), .en_rsa(en_rsa), .rst_rsa(rst_rsa), .eoc_rsa_unit(rsa_eoc), .eoc(gpio_irq));

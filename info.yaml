@@ -19,6 +19,7 @@ project:
     - "falling_edge_detector.v"
     - "fsm_control_unit.v"
     - "full_adder.v"
+    - "gpio_wrapper.v"
     - "half_adder.v"
     - "kogge_stone_adder.v"
     - "mmm_unit.v"
