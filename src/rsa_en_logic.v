@@ -24,12 +24,15 @@ module rsa_en_logic (rstb, clk, ena, gpio_start, spi_start, gpio_stop, spi_stop,
   
   // Parameters - FSM states
   typedef enum {
-    STATE_RESET, STATE_0, STATE_1, STATE_2, STATE_3, STATE_4
+    STATE_RESET, STATE_IDLE, STATE_EN, STATE_RST_RELEASE, STATE_WAIT_EOC, STATE_EOC, STATE_4
   } rsa_fsm_state;
   
   // Wires
   wire start_comb;
   wire stop_comb;
+  wire en_rsa_i;
+  wire rst_rsa_i;
+  wire eoc_i;
   
   // FSM states
   rsa_fsm_state state, next_state;
@@ -38,16 +41,12 @@ module rsa_en_logic (rstb, clk, ena, gpio_start, spi_start, gpio_stop, spi_stop,
   assign start_comb = gpio_start | spi_start;
   assign stop_comb = gpio_stop & spi_stop;
     
-  /*
+  // Outputs
   assign en_rsa = en_rsa_i;
   assign rst_rsa = rst_rsa_i;
   assign eoc = eoc_i;
-  assign eocp = eoc_i_p;
-  */
-  assign en_rsa = 1'b1;
-  assign rst_rsa = 1'b1;
-  assign eoc = 1'b1;
-  
+    
+  // Next state transition 
   always @(negedge(rstb) or posedge(clk)) begin
     if (!rstb) begin
       state <= STATE_RESET;
@@ -61,77 +60,56 @@ module rsa_en_logic (rstb, clk, ena, gpio_start, spi_start, gpio_stop, spi_stop,
   always @(*) begin
     case (state)
       STATE_RESET : begin
+        en_rsa_i = 1'b0;
+        rst_rsa_i = 1'b0;
+        eoc_i = 1'b0;
+        next_state = STATE_IDLE;
+      end
+      STATE_IDLE : begin
+        en_rsa_i = 1'b0;
+        rst_rsa_i = 1'b0;
+        eoc_i = 1'b0;
         if (start_comb == 1'b1) begin
-          next_state = STATE_0;
+          next_state = STATE_EN;
+        end else begin
+          next_state = STATE_IDLE;
+        end 
+      end 
+      STATE_EN : begin
+        en_rsa_i = 1'b1;
+        rst_rsa_i = 1'b0;
+        eoc_i = 1'b0;
+        next_state = STATE_RST_RELEASE;
+      end
+      STATE_RST_RELEASE : begin
+        en_rsa_i = 1'b1;
+        rst_rsa_i = 1'b1;
+        eoc_i = 1'b0;
+        if (stop_comb == 1'b1) begin
+          next_state = STATE_IDLE;
+        end else begin
+          next_state = STATE_WAIT_EOC;
         end
       end
-      STATE_0 : begin
-        next_state = STATE_1;
+      STATE_WAIT_EOC : begin
+        en_rsa_i = 1'b1;
+        rst_rsa_i = 1'b1;
+        eoc_i = 1'b0;
+        if (stop_comb == 1'b1) begin
+          next_state = STATE_IDLE;
+        end elsif (eoc_rsa_unit == 1'b1) begin
+          next_state = STATE_EOC;
+        end else begin
+          next_state = STATE_WAIT_EOC;
+        end
       end
-      STATE_1 : begin
-        next_state = STATE_2;
-      end
-      STATE_2 : begin
-        next_state = STATE_3;
-      end
-      STATE_3 : begin
-        next_state = STATE_4;
-      end
-      STATE_4 : begin
-        next_state = STATE_RESET;
+      STATE_EOC : begin
+        en_rsa_i = 1'b1;
+        rst_rsa_i = 1'b1;
+        eoc_i = 1'b1;
+        next_state = STATE_IDLE;
       end
     endcase
   end
 
-/*
-  always @(negedge(rstb) or posedge(clk)) begin
-    if (!rstb) begin
-      reg_state <= STATE_RESET;
-      en_rsa_i <= 1'b0;
-      rst_rsa_i <= 1'b0;
-      eoc_i <= 1'b0;
-      eoc_i_p <= 1'b0;
-    end else begin
-      if (ena == 1'b1) begin
-        if ((state == STATE_RESET) && start_comb) begin
-          reg_state <= STATE_0;
-          en_rsa_i <= 1'b1;
-          rst_rsa_i <= 1'b0;
-          eoc_i <= 1'b0;
-          eoc_i_p <= 1'b0;
-        end else if (state == STATE_0) begin
-          reg_state <= STATE_1;
-                    en_rsa_i <= 1'b1;
-                    rst_rsa_i <= 1'b1;
-                    eoc_i <= 1'b0;
-                    eoc_i_p <= 1'b0;
-                end else if ((state == STATE_1) && eoc_int) begin
-                    reg_state <= STATE_2;
-                    en_rsa_i <= 1'b1;
-                    rst_rsa_i <= 1'b1;
-                    eoc_i <= 1'b0;
-                    eoc_i_p <= 1'b0;
-                end else if (state == STATE_2) begin
-                    reg_state <= STATE_3;
-                    en_rsa_i <= 1'b1;
-                    rst_rsa_i <= 1'b1;
-                    eoc_i <= 1'b0;
-                    eoc_i_p <= 1'b1;
-                end else if (state == STATE_3) begin
-                    reg_state <= STATE_4;
-                    en_rsa_i <= 1'b1;
-                    rst_rsa_i <= 1'b1;
-                    eoc_i <= 1'b1;
-                    eoc_i_p <= 1'b0;
-                end else if (state == STATE_4) begin
-                    reg_state <= STATE_RESET;
-                    en_rsa_i <= 1'b0;
-                    rst_rsa_i <= 1'b1;
-                    eoc_i <= 1'b1;
-                    eoc_i_p <= 1'b0;
-                end
-            end
-        end
-    end
-*/
 endmodule
