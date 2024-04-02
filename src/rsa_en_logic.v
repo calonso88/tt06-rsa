@@ -97,10 +97,12 @@ module rsa_en_logic (rstb, clk, ena, gpio_start, spi_start, gpio_stop, spi_stop,
         eoc_i = 1'b0;
         if (stop_comb == 1'b1) begin
           next_state = STATE_IDLE;
-        end elsif (eoc_rsa_unit == 1'b1) begin
-          next_state = STATE_EOC;
         end else begin
-          next_state = STATE_WAIT_EOC;
+          if (eoc_rsa_unit == 1'b1) begin
+            next_state = STATE_EOC;
+          end else begin
+            next_state = STATE_WAIT_EOC;
+          end
         end
       end
       STATE_EOC : begin
