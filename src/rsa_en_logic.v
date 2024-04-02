@@ -67,6 +67,13 @@ module rsa_en_logic (rstb, clk, ena, gpio_start, spi_start, gpio_stop, spi_stop,
 
   //always @(*) begin
   always_comb begin
+    
+    // defautl assingments
+    en_rsa_i = 1'b0;
+    rst_rsa_i = 1'b0;
+    eoc_i = 1'b0;
+    next_state = state;
+
     case (state)
       STATE_RESET : begin
         en_rsa_i = 1'b0;
