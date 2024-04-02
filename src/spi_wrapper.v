@@ -24,7 +24,7 @@ module spi_wrapper #(parameter WIDTH = 8) (rstb, clk, ena, spi_cs_n, spi_clk, sp
 
   // Address width for register bank
   localparam integer ADDR_WIDTH = 3;
-
+  localparam integer REG_WIDTH = WIDTH;
   /*
     Address map:
     Addr 0 - Read Status, Write is Spare register
