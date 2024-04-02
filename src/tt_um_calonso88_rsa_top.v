@@ -36,17 +36,8 @@ module tt_um_calonso88_rsa_top (
   wire rst_rsa;
   wire rsa_eoc;
 
-/*
-  // SPIREG
-  localparam integer ADDR_WIDTH = 3;
+  // RSA Unit size
   localparam integer REG_WIDTH = 8;
-
-  wire [ADDR_WIDTH-1:0] reg_addr;
-  wire [REG_WIDTH-1:0] reg_data_i, reg_data_o;
-  wire reg_data_o_vld;
-  wire [REG_WIDTH-1:0] status;
-  reg  [REG_WIDTH-1:0] mem [0:(2**ADDR_WIDTH-1)];
-*/
   
   // RSA Unit P, E, M, Const and C
   wire [REG_WIDTH-1:0] rsa_p;
@@ -72,20 +63,6 @@ module tt_um_calonso88_rsa_top (
   assign gpio_start = ui_in[3];
   assign gpio_stop  = ui_in[4];
 
-/*
-  // Map registers to RSA signals
-  assign P = mem[2];
-  assign E = mem[3];
-  assign M = mem[4];
-  assign Const = mem[5];
-  assign start_cmd = mem[1][0];
-  assign stop_cmd = mem[1][1];
-  
-  //Status signals
-  assign status[0] = irq;
-  assign status[1] = eoc_mem;
-*/
-
   // GPIO wrapper
   gpio_wrapper gpio_wrapper_i (.rstb(rst_n), .clk(clk), .ena(ena), .gpio_start(gpio_start), .gpio_stop(gpio_stop), .gpio_start_cmd(gpio_start_cmd), .gpio_stop_cmd(gpio_stop_cmd));
 
@@ -98,61 +75,4 @@ module tt_um_calonso88_rsa_top (
   // RSA Instance
   rsa_unit #(.WIDTH(REG_WIDTH)) rsa_i (.en(en_rsa), .rstb(rst_rsa), .clk(clk), .P(rsa_p), .E(rsa_e), .M(rsa_m), .Const(rsa_const), .eoc(rsa_eoc), .C(rsa_c));
 
-  //assign spi_miso = 1'b0;
-/*
-  // Serial interface
-  spireg #(
-    .ADDR_W(ADDR_WIDTH),
-    .REG_W(REG_WIDTH)
-  ) spireg_inst (
-    .clk(clk),
-    .nrst(rst_n),
-    .mosi(spi_mosi),
-    .miso(spi_miso),
-    .sclk(spi_clk),
-    .nss(spi_cs_n),
-    .reg_addr(reg_addr),
-    .reg_data_i(reg_data_i),
-    .reg_data_o(reg_data_o),
-    .reg_data_o_vld(reg_data_o_vld),
-    .status(status),
-    .fastcmd(),
-    .fastcmd_vld()
-  );
-
-  // Register read access
-  assign reg_data_i = (reg_addr == 0) ? status : mem[reg_addr];
-
-  //register write and fastcmd access
-  integer i;
-  always @(posedge clk or negedge rst_n) begin
-    if (!rst_n) begin
-      for (i = 0; i < 2**ADDR_WIDTH; i=i+1) begin
-        mem[i] <= 0;
-      end
-    end else begin
-      if (reg_data_o_vld) begin
-        //register write access
-        mem[reg_addr] <= reg_data_o;
-      end else if (eoc_mem) begin
-        mem[6] <= C;
-      end
-    end
-  end
-*/
-
-/*
-In this example:
-*  total 8 registers available, each 8bits wide
-
-   Addr 0 - Read Status, Write is Spare register
-   Addr 1 - Actions, Bit0 (Start), Bit1 (Stop)
-   Addr 2 - P;
-   Addr 3 - E;
-   Addr 4 - M;
-   Addr 5 - Const;
-   Addr 6 - C;
-   Addr 7 - Spare;
-*/
-  
 endmodule
