@@ -16,22 +16,22 @@ module tt_um_calonso88_rsa_top (
   input  wire       rst_n     // reset_n - low to reset
 );
 
-  // SPI PINs
+  // SPI Auxiliars
   wire spi_cs_n;
   wire spi_clk;
   wire spi_miso;
   wire spi_mosi;
-  // Auxiliars
+  wire spi_start_cmd;
+  wire spi_stop_cmd;
+
+  // GPIO Auxiliars
   wire gpio_start;
   wire gpio_stop;
   wire gpio_irq;
   wire gpio_start_cmd;
   wire gpio_stop_cmd;
-/*
-  wire start_pos_edge;
-  wire stop_pos_edge;
-  wire eoc_mem;
-*/
+
+  // RSA En FSM Auxiliars
   wire en_rsa;
   wire rst_rsa;
   wire rsa_eoc;
@@ -46,14 +46,15 @@ module tt_um_calonso88_rsa_top (
   wire reg_data_o_vld;
   wire [REG_WIDTH-1:0] status;
   reg  [REG_WIDTH-1:0] mem [0:(2**ADDR_WIDTH-1)];
-  
-  // RSA P, E, M, Const and C
-  wire [REG_WIDTH-1:0] P;
-  wire [REG_WIDTH-1:0] E;
-  wire [REG_WIDTH-1:0] M;
-  wire [REG_WIDTH-1:0] Const;
-  wire [REG_WIDTH-1:0] C;
 */
+  
+  // RSA Unit P, E, M, Const and C
+  wire [REG_WIDTH-1:0] rsa_p;
+  wire [REG_WIDTH-1:0] rsa_e;
+  wire [REG_WIDTH-1:0] rsa_m;
+  wire [REG_WIDTH-1:0] rsa_const;
+  wire [REG_WIDTH-1:0] rsa_c;
+
   // All output pins must be assigned. If not used, assign to 0.
   assign uo_out[2:0]  = 0;
   assign uo_out[7:5]  = 0;
@@ -70,7 +71,6 @@ module tt_um_calonso88_rsa_top (
   assign spi_mosi   = ui_in[2];
   assign gpio_start = ui_in[3];
   assign gpio_stop  = ui_in[4];
-
 
 /*
   // Map registers to RSA signals
@@ -89,14 +89,16 @@ module tt_um_calonso88_rsa_top (
   // GPIO wrapper
   gpio_wrapper gpio_wrapper_i (.rstb(rst_n), .clk(clk), .ena(ena), .gpio_start(gpio_start), .gpio_stop(gpio_stop), .gpio_start_cmd(gpio_start_cmd), .gpio_stop_cmd(gpio_stop_cmd));
 
-  // Controller
-  rsa_en_logic rsa_en_logic_i (.rstb(rst_n), .clk(clk), .ena(ena), .gpio_start(gpio_start_cmd), .spi_start(gpio_start_cmd), .gpio_stop(gpio_stop_cmd), .spi_stop(gpio_stop_cmd), .en_rsa(en_rsa), .rst_rsa(rst_rsa), .eoc_rsa_unit(rsa_eoc), .eoc(gpio_irq));
- 
-  assign rsa_eoc = 1'b0;
-  // RSA Instance
-  //rsa_unit #(.WIDTH(REG_WIDTH)) rsa_i (.en(en_rsa), .rstb(rst_rsa), .clk(clk), .P(P), .E(E), .M(M), .Const(Const), .eoc(rsa_eoc), .C(C));
+  // SPI wrapper
+  spi_wrapper #(.WIDTH(REG_WIDTH)) spi_wrapper_i (.rstb(rst_n), .clk(clk), .ena(ena), spi_cs_n(spi_cs_n), spi_clk(spi_clk), spi_mosi(spi_mosi), spi_miso(spi_miso), spi_start_cmd(spi_start_cmd), spi_stop_cmd(spi_stop_cmd), rsa_p(rsa_p), rsa_e(rsa_e), rsa_m(rsa_m), rsa_const(rsa_const), rsa_c(rsa_c), status('0), spare());
 
-  assign spi_miso = 1'b0;
+  // Controller
+  rsa_en_logic rsa_en_logic_i (.rstb(rst_n), .clk(clk), .ena(ena), .gpio_start(gpio_start_cmd), .spi_start(spi_start_cmd), .gpio_stop(gpio_stop_cmd), .spi_stop(spi_stop_cmd), .en_rsa(en_rsa), .rst_rsa(rst_rsa), .eoc_rsa_unit(rsa_eoc), .eoc(gpio_irq));
+ 
+  // RSA Instance
+  rsa_unit #(.WIDTH(REG_WIDTH)) rsa_i (.en(en_rsa), .rstb(rst_rsa), .clk(clk), .P(rsa_p), .E(rsa_e), .M(rsa_m), .Const(rsa_const), .eoc(rsa_eoc), .C(rsa_c));
+
+  //assign spi_miso = 1'b0;
 /*
   // Serial interface
   spireg #(

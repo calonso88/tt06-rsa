@@ -36,6 +36,7 @@ project:
     - "shiftreg1.v"
     - "shiftreg2.v"
     - "shiftreg3.v"
+    - "spi_wrapper.v"
     - "spireg_wrapper.v"
     - "spireg.v"
     - "synchronizer.v"
