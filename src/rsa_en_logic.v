@@ -28,11 +28,18 @@ module rsa_en_logic (rstb, clk, ena, gpio_start, spi_start, gpio_stop, spi_stop,
   } rsa_fsm_state;
   
   // Wires
+  /*
   wire start_comb;
   wire stop_comb;
   wire en_rsa_i;
   wire rst_rsa_i;
   wire eoc_i;
+  */
+  logic start_comb;
+  logic stop_comb;
+  logic en_rsa_i;
+  logic rst_rsa_i;
+  logic eoc_i;
   
   // FSM states
   rsa_fsm_state state, next_state;
@@ -47,7 +54,8 @@ module rsa_en_logic (rstb, clk, ena, gpio_start, spi_start, gpio_stop, spi_stop,
   assign eoc = eoc_i;
     
   // Next state transition 
-  always @(negedge(rstb) or posedge(clk)) begin
+  //always @(negedge(rstb) or posedge(clk)) begin
+  always_ff @(negedge(rstb), posedge(clk)) begin
     if (!rstb) begin
       state <= STATE_RESET;
     end else begin
@@ -57,7 +65,8 @@ module rsa_en_logic (rstb, clk, ena, gpio_start, spi_start, gpio_stop, spi_stop,
     end 
   end
 
-  always @(*) begin
+  //always @(*) begin
+  always_comb begin
     case (state)
       STATE_RESET : begin
         en_rsa_i = 1'b0;
