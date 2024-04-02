@@ -103,7 +103,7 @@ module spi_wrapper #(parameter WIDTH = 8) (rstb, clk, ena, spi_cs_n, spi_clk, sp
   assign rsa_const = mem[5];
 
   // Status
-  assign status[0] = irq;
+  assign status[0] = eoc;
   assign status[REG_WIDTH-1:1] = '0;
 
   // Spare
