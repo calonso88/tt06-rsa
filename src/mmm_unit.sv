@@ -28,7 +28,7 @@ module mmm_unit #(parameter int WIDTH = 4) (en, rstb, clk, rst_mmm, ld_a, ld_r, 
   ripple_carry_adder #(.WIDTH(WIDTH)) adder1 (.a(B), .b(M), .ci(1'b0), .sum(MB), .co());
 
   generate
-    for (genvar int j=0; j<=(WIDTH-1); j++ ) begin : processing_elements_array_loop
+    for ( j=0; j<=(WIDTH-1); j++) begin : processing_elements_array_loop
       if (j == 0) begin : processing_element_right_border
         processing_element_mux_right_border PE (.mi(M[j]), .bi(B[j]), .mbi(MB[j]), .ai(A_bit), .ri(reg_rji[j]), .qo(qj), .mux_out(mux_out[j]));
       end else begin : processing_element
