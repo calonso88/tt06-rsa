@@ -11,7 +11,7 @@ module ripple_carry_adder #(parameter int WIDTH = 4) (a, b, ci, sum, co);
   full_adder addr_bit0 (.a(a[0]), .b(b[0]), .ci(ci), .sum(sum[0]), .co(carry[0]));
 
   generate
-    for (genvar int i = 1; i < WIDTH; i = i+1) begin : gen_ripple_carry_adder_fa
+    for (i = 1; i < WIDTH; i = i+1) begin : gen_ripple_carry_adder_fa
       full_adder fa (.a(a[i]), .b(b[i]), .ci(carry[i-1]), .sum(sum[i]), .co(carry[i]));
     end
   endgenerate
