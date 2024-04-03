@@ -70,6 +70,9 @@ module spi_wrapper #(parameter int WIDTH = 8) (rstb, clk, ena, spi_cs_n, spi_clk
   // Register read access
   assign reg_data_i = (reg_addr == 0) ? status : mem[reg_addr];
 
+  // Index for reset unpacked register array
+  int i;
+
   // Register write and update encryption with eoc
   always_ff @(posedge clk or negedge rstb) begin
     if (!rstb) begin
