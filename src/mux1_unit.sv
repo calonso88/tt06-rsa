@@ -6,7 +6,7 @@ module mux1_unit #(parameter int WIDTH = 4) (a, b, sel, dout);
 
   output [WIDTH-1:0] dout;
 
-  logic [WIDTH-1:0] out_s;
+  logic [WIDTH-1:0] s_out;
 
   logic [WIDTH-1:0] zero;
   logic [WIDTH-2:0] one_array;
