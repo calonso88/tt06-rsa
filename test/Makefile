@@ -5,7 +5,8 @@
 SIM ?= icarus
 TOPLEVEL_LANG ?= verilog
 SRC_DIR = $(PWD)/../src
-PROJECT_SOURCES = fsm_control_unit.v full_adder.v half_adder.v mmm_unit.v mux1_unit.v mux2_unit.v mux3_unit.v processing_element_mux_right_border.v processing_element_mux.v register_crypt.v ripple_carry_adder.v rising_edge_detector.v rsa_en_logic.v rsa_unit.v shiftreg1.v shiftreg2.v shiftreg3.v spireg.v tt_um_calonso88_rsa_top.v
+#PROJECT_SOURCES = fsm_control_unit.v full_adder.v half_adder.v mmm_unit.v mux1_unit.v mux2_unit.v mux3_unit.v processing_element_mux_right_border.v processing_element_mux.v register_crypt.v ripple_carry_adder.v rising_edge_detector.v rsa_en_logic.v rsa_unit.v shiftreg1.v shiftreg2.v shiftreg3.v spireg.v tt_um_calonso88_rsa_top.v
+PROJECT_SOURCES = falling_edge_detector.sv fsm_control_unit.sv full_adder.sv gpio_wrapper.sv half_adder.sv kogge_stone_adder.sv mmm_unit.sv mux1_unit.sv mux2_unit.sv mux3_unit.sv processing_element_mux_right_border.sv processing_element_mux.sv register_crypt.sv ripple_carry_adder.sv rising_edge_detector.sv rsa_en_logic.sv rsa_unit.sv shiftreg1.sv shiftreg2.sv shiftreg3.sv spi_wrapper.sv spireg_wrapper.v spireg.v synchronizer.sv tt_um_calonso88_rsa_top.v
 
 ifneq ($(GATES),yes)
 
