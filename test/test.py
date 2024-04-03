@@ -32,6 +32,9 @@ async def test_spi(dut):
 
 
 
+
+
+
   # Assert low SPI_CS, assert high SPI_MOSI bit 7
   dut.ui_in.value = (0x0 + 0x4)
   await ClockCycles(dut.clk, 10)
@@ -91,39 +94,42 @@ async def test_spi(dut):
   await ClockCycles(dut.clk, 10)
 
 
-  # Assert low SPI_CS, assert low SPI_MOSI bit 2
-  dut.ui_in.value = (0x0 + 0x0)
+  # Assert low SPI_CS, assert high SPI_MOSI bit 2
+  dut.ui_in.value = (0x0 + 0x4)
   await ClockCycles(dut.clk, 10)
-  # Assert low SPI_CS, assert low SPI_MOSI bit 2, assert high SPI_CLK
-  dut.ui_in.value = (0x0 + 0x0 + 0x2)
+  # Assert low SPI_CS, assert high SPI_MOSI bit 2, assert high SPI_CLK
+  dut.ui_in.value = (0x0 + 0x4 + 0x2)
   await ClockCycles(dut.clk, 10)
-  # Assert low SPI_CS, assert low SPI_MOSI bit 2, assert low SPI_CLK
-  dut.ui_in.value = (0x0 + 0x0 + 0x0)
-  await ClockCycles(dut.clk, 10)
-
-
-
-  # Assert low SPI_CS, assert low SPI_MOSI bit 1
-  dut.ui_in.value = (0x0 + 0x0)
-  await ClockCycles(dut.clk, 10)
-  # Assert low SPI_CS, assert low SPI_MOSI bit 1, assert high SPI_CLK
-  dut.ui_in.value = (0x0 + 0x0 + 0x2)
-  await ClockCycles(dut.clk, 10)
-  # Assert low SPI_CS, assert low SPI_MOSI bit 1, assert low SPI_CLK
-  dut.ui_in.value = (0x0 + 0x0 + 0x0)
+  # Assert low SPI_CS, assert high SPI_MOSI bit 2, assert low SPI_CLK
+  dut.ui_in.value = (0x0 + 0x4 + 0x0)
   await ClockCycles(dut.clk, 10)
 
 
 
-  # Assert low SPI_CS, assert low SPI_MOSI bit 0
-  dut.ui_in.value = (0x0 + 0x0)
+  # Assert low SPI_CS, assert high SPI_MOSI bit 1
+  dut.ui_in.value = (0x0 + 0x4)
   await ClockCycles(dut.clk, 10)
-  # Assert low SPI_CS, assert low SPI_MOSI bit 0, assert high SPI_CLK
-  dut.ui_in.value = (0x0 + 0x0 + 0x2)
+  # Assert low SPI_CS, assert high SPI_MOSI bit 1, assert high SPI_CLK
+  dut.ui_in.value = (0x0 + 0x4 + 0x2)
   await ClockCycles(dut.clk, 10)
-  # Assert low SPI_CS, assert low SPI_MOSI bit 0, assert low SPI_CLK
-  dut.ui_in.value = (0x0 + 0x0 + 0x0)
+  # Assert low SPI_CS, assert high SPI_MOSI bit 1, assert low SPI_CLK
+  dut.ui_in.value = (0x0 + 0x4 + 0x0)
   await ClockCycles(dut.clk, 10)
+
+
+
+  # Assert low SPI_CS, assert high SPI_MOSI bit 0
+  dut.ui_in.value = (0x0 + 0x4)
+  await ClockCycles(dut.clk, 10)
+  # Assert low SPI_CS, assert high SPI_MOSI bit 0, assert high SPI_CLK
+  dut.ui_in.value = (0x0 + 0x4 + 0x2)
+  await ClockCycles(dut.clk, 10)
+  # Assert low SPI_CS, assert high SPI_MOSI bit 0, assert low SPI_CLK
+  dut.ui_in.value = (0x0 + 0x4 + 0x0)
+  await ClockCycles(dut.clk, 10)
+
+
+
 
 
 
@@ -214,6 +220,130 @@ async def test_spi(dut):
 
 
 
+  # Assert low SPI_CS, assert high SPI_MOSI bit 0
+  dut.ui_in.value = (0x0 + 0x4)
+  await ClockCycles(dut.clk, 10)
+  # Assert low SPI_CS, assert high SPI_MOSI bit 0, assert high SPI_CLK
+  dut.ui_in.value = (0x0 + 0x4 + 0x2)
+  await ClockCycles(dut.clk, 10)
+  # Assert low SPI_CS, assert high SPI_MOSI bit 0, assert low SPI_CLK
+  dut.ui_in.value = (0x0 + 0x4 + 0x0)
+  await ClockCycles(dut.clk, 10)
+
+
+
+
+  # Assert high SPI_CS
+  dut.ui_in.value = (0x1)
+  await ClockCycles(dut.clk, 10)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  # Assert low SPI_CS, assert low SPI_MOSI bit 7
+  dut.ui_in.value = (0x0 + 0x0)
+
+
+
+
+  # Assert low SPI_CS, assert low SPI_MOSI bit 7
+  dut.ui_in.value = (0x0 + 0x0)
+  await ClockCycles(dut.clk, 10)
+  # Assert low SPI_CS, assert low SPI_MOSI bit 7, assert high SPI_CLK
+  dut.ui_in.value = (0x0 + 0x0 + 0x2)
+  await ClockCycles(dut.clk, 10)
+  # Assert low SPI_CS, assert low SPI_MOSI bit 7, assert low SPI_CLK
+  dut.ui_in.value = (0x0 + 0x0 + 0x0)
+  await ClockCycles(dut.clk, 10)
+
+
+
+  # Assert low SPI_CS, assert low SPI_MOSI bit 6
+  dut.ui_in.value = (0x0 + 0x0)
+  await ClockCycles(dut.clk, 10)
+  # Assert low SPI_CS, assert low SPI_MOSI bit 6, assert high SPI_CLK
+  dut.ui_in.value = (0x0 + 0x0 + 0x2)
+  await ClockCycles(dut.clk, 10)
+  # Assert low SPI_CS, assert low SPI_MOSI bit 6, assert low SPI_CLK
+  dut.ui_in.value = (0x0 + 0x0 + 0x0)
+  await ClockCycles(dut.clk, 10)
+
+
+
+  # Assert low SPI_CS, assert low SPI_MOSI bit 5
+  dut.ui_in.value = (0x0 + 0x0)
+  await ClockCycles(dut.clk, 10)
+  # Assert low SPI_CS, assert low SPI_MOSI bit 5, assert high SPI_CLK
+  dut.ui_in.value = (0x0 + 0x0 + 0x2)
+  await ClockCycles(dut.clk, 10)
+  # Assert low SPI_CS, assert low SPI_MOSI bit 5, assert low SPI_CLK
+  dut.ui_in.value = (0x0 + 0x0 + 0x0)
+  await ClockCycles(dut.clk, 10)
+
+
+
+  # Assert low SPI_CS, assert low SPI_MOSI bit 4
+  dut.ui_in.value = (0x0 + 0x0)
+  await ClockCycles(dut.clk, 10)
+  # Assert low SPI_CS, assert low SPI_MOSI bit 4, assert high SPI_CLK
+  dut.ui_in.value = (0x0 + 0x0 + 0x2)
+  await ClockCycles(dut.clk, 10)
+  # Assert low SPI_CS, assert low SPI_MOSI bit 4, assert low SPI_CLK
+  dut.ui_in.value = (0x0 + 0x0 + 0x0)
+  await ClockCycles(dut.clk, 10)
+
+
+
+  # Assert low SPI_CS, assert low SPI_MOSI bit 3
+  dut.ui_in.value = (0x0 + 0x0)
+  await ClockCycles(dut.clk, 10)
+  # Assert low SPI_CS, assert low SPI_MOSI bit 3, assert high SPI_CLK
+  dut.ui_in.value = (0x0 + 0x0 + 0x2)
+  await ClockCycles(dut.clk, 10)
+  # Assert low SPI_CS, assert low SPI_MOSI bit 3, assert low SPI_CLK
+  dut.ui_in.value = (0x0 + 0x0 + 0x0)
+  await ClockCycles(dut.clk, 10)
+
+
+  # Assert low SPI_CS, assert high SPI_MOSI bit 2
+  dut.ui_in.value = (0x0 + 0x4)
+  await ClockCycles(dut.clk, 10)
+  # Assert low SPI_CS, assert high SPI_MOSI bit 2, assert high SPI_CLK
+  dut.ui_in.value = (0x0 + 0x4 + 0x2)
+  await ClockCycles(dut.clk, 10)
+  # Assert low SPI_CS, assert high SPI_MOSI bit 2, assert low SPI_CLK
+  dut.ui_in.value = (0x0 + 0x4 + 0x0)
+  await ClockCycles(dut.clk, 10)
+
+
+
+  # Assert low SPI_CS, assert high SPI_MOSI bit 1
+  dut.ui_in.value = (0x0 + 0x4)
+  await ClockCycles(dut.clk, 10)
+  # Assert low SPI_CS, assert high SPI_MOSI bit 1, assert high SPI_CLK
+  dut.ui_in.value = (0x0 + 0x4 + 0x2)
+  await ClockCycles(dut.clk, 10)
+  # Assert low SPI_CS, assert high SPI_MOSI bit 1, assert low SPI_CLK
+  dut.ui_in.value = (0x0 + 0x4 + 0x0)
+  await ClockCycles(dut.clk, 10)
+
+
 
   # Assert low SPI_CS, assert high SPI_MOSI bit 0
   dut.ui_in.value = (0x0 + 0x4)
@@ -227,7 +357,117 @@ async def test_spi(dut):
 
 
 
-  await ClockCycles(dut.clk, 1000)
+
+
+
+
+  # Assert low SPI_CS, assert low SPI_MOSI bit 7
+  dut.ui_in.value = (0x0 + 0x0)
+  await ClockCycles(dut.clk, 10)
+  # Assert low SPI_CS, assert low SPI_MOSI bit 7, assert high SPI_CLK
+  dut.ui_in.value = (0x0 + 0x0 + 0x2)
+  await ClockCycles(dut.clk, 10)
+  # Assert low SPI_CS, assert low SPI_MOSI bit 7, assert low SPI_CLK
+  dut.ui_in.value = (0x0 + 0x0 + 0x0)
+  await ClockCycles(dut.clk, 10)
+
+
+
+  # Assert low SPI_CS, assert low SPI_MOSI bit 6
+  dut.ui_in.value = (0x0 + 0x0)
+  await ClockCycles(dut.clk, 10)
+  # Assert low SPI_CS, assert low SPI_MOSI bit 6, assert high SPI_CLK
+  dut.ui_in.value = (0x0 + 0x0 + 0x2)
+  await ClockCycles(dut.clk, 10)
+  # Assert low SPI_CS, assert low SPI_MOSI bit 6, assert low SPI_CLK
+  dut.ui_in.value = (0x0 + 0x0 + 0x0)
+  await ClockCycles(dut.clk, 10)
+
+
+
+  # Assert low SPI_CS, assert low SPI_MOSI bit 5
+  dut.ui_in.value = (0x0 + 0x0)
+  await ClockCycles(dut.clk, 10)
+  # Assert low SPI_CS, assert low SPI_MOSI bit 5, assert high SPI_CLK
+  dut.ui_in.value = (0x0 + 0x0 + 0x2)
+  await ClockCycles(dut.clk, 10)
+  # Assert low SPI_CS, assert low SPI_MOSI bit 5, assert low SPI_CLK
+  dut.ui_in.value = (0x0 + 0x0 + 0x0)
+  await ClockCycles(dut.clk, 10)
+
+
+
+  # Assert low SPI_CS, assert low SPI_MOSI bit 4
+  dut.ui_in.value = (0x0 + 0x0)
+  await ClockCycles(dut.clk, 10)
+  # Assert low SPI_CS, assert low SPI_MOSI bit 4, assert high SPI_CLK
+  dut.ui_in.value = (0x0 + 0x0 + 0x2)
+  await ClockCycles(dut.clk, 10)
+  # Assert low SPI_CS, assert low SPI_MOSI bit 4, assert low SPI_CLK
+  dut.ui_in.value = (0x0 + 0x0 + 0x0)
+  await ClockCycles(dut.clk, 10)
+
+
+
+  # Assert low SPI_CS, assert low SPI_MOSI bit 3
+  dut.ui_in.value = (0x0 + 0x0)
+  await ClockCycles(dut.clk, 10)
+  # Assert low SPI_CS, assert low SPI_MOSI bit 3, assert high SPI_CLK
+  dut.ui_in.value = (0x0 + 0x0 + 0x2)
+  await ClockCycles(dut.clk, 10)
+  # Assert low SPI_CS, assert low SPI_MOSI bit 3, assert low SPI_CLK
+  dut.ui_in.value = (0x0 + 0x0 + 0x0)
+  await ClockCycles(dut.clk, 10)
+
+
+  # Assert low SPI_CS, assert low SPI_MOSI bit 2
+  dut.ui_in.value = (0x0 + 0x0)
+  await ClockCycles(dut.clk, 10)
+  # Assert low SPI_CS, assert low SPI_MOSI bit 2, assert high SPI_CLK
+  dut.ui_in.value = (0x0 + 0x0 + 0x2)
+  await ClockCycles(dut.clk, 10)
+  # Assert low SPI_CS, assert low SPI_MOSI bit 2, assert low SPI_CLK
+  dut.ui_in.value = (0x0 + 0x0 + 0x0)
+  await ClockCycles(dut.clk, 10)
+
+
+
+  # Assert low SPI_CS, assert low SPI_MOSI bit 1
+  dut.ui_in.value = (0x0 + 0x0)
+  await ClockCycles(dut.clk, 10)
+  # Assert low SPI_CS, assert low SPI_MOSI bit 1, assert high SPI_CLK
+  dut.ui_in.value = (0x0 + 0x0 + 0x2)
+  await ClockCycles(dut.clk, 10)
+  # Assert low SPI_CS, assert low SPI_MOSI bit 1, assert low SPI_CLK
+  dut.ui_in.value = (0x0 + 0x0 + 0x0)
+  await ClockCycles(dut.clk, 10)
+
+
+
+  # Assert low SPI_CS, assert low SPI_MOSI bit 0
+  dut.ui_in.value = (0x0 + 0x0)
+  await ClockCycles(dut.clk, 10)
+  # Assert low SPI_CS, assert low SPI_MOSI bit 0, assert high SPI_CLK
+  dut.ui_in.value = (0x0 + 0x0 + 0x2)
+  await ClockCycles(dut.clk, 10)
+  # Assert low SPI_CS, assert low SPI_MOSI bit 0, assert low SPI_CLK
+  dut.ui_in.value = (0x0 + 0x0 + 0x0)
+  await ClockCycles(dut.clk, 10)
+
+
+
+
+
+
+
+  # Assert high SPI_CS
+  dut.ui_in.value = (0x1)
+  await ClockCycles(dut.clk, 10)
+
+
+
+
+  await ClockCycles(dut.clk, 100)
 
 
 
