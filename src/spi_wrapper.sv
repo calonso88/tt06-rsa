@@ -1,4 +1,4 @@
-module spi_wrapper #(parameter WIDTH = 8) (rstb, clk, ena, spi_cs_n, spi_clk, spi_mosi, spi_miso, spi_start_cmd, spi_stop_cmd, rsa_p, rsa_e, rsa_m, rsa_const, rsa_c, eoc, spare);
+module spi_wrapper #(parameter int WIDTH = 8) (rstb, clk, ena, spi_cs_n, spi_clk, spi_mosi, spi_miso, spi_start_cmd, spi_stop_cmd, rsa_p, rsa_e, rsa_m, rsa_const, rsa_c, eoc, spare);
 
   input rstb;
   input clk;
@@ -21,28 +21,31 @@ module spi_wrapper #(parameter WIDTH = 8) (rstb, clk, ena, spi_cs_n, spi_clk, sp
   input eoc;
   output [WIDTH-1:0] spare;
 
-
   // Address width for register bank
-  localparam integer ADDR_WIDTH = 3;
-  localparam integer REG_WIDTH = WIDTH;
-  /*
-    Address map:
-    Addr 0 - Read Status, Write is Spare register
-    Addr 1 - Actions, Bit0 (Start), Bit1 (Stop)
-    Addr 2 - P;
-    Addr 3 - E;
-    Addr 4 - M;
-    Addr 5 - Const;
-    Addr 6 - C;
-    Addr 7 - Spare;
-  */
+  localparam int ADDR_WIDTH = 3;
+  localparam int REG_WIDTH = WIDTH;
+
+  //
+  //  Address map:
+  //  Addr 0 - Read Status, Write is Spare register
+  //  Addr 1 - Actions, Bit0 (Start), Bit1 (Stop)
+  //  Addr 2 - P;
+  //  Addr 3 - E;
+  //  Addr 4 - M;
+  //  Addr 5 - Const;
+  //  Addr 6 - C;
+  //  Addr 7 - Spare;
 
   // Auxiliar variables for SPIREG
-  wire [ADDR_WIDTH-1:0] reg_addr;
-  wire [REG_WIDTH-1:0] reg_data_i, reg_data_o;
-  wire reg_data_o_vld;
-  wire [REG_WIDTH-1:0] status;
-  reg  [REG_WIDTH-1:0] mem [0:(2**ADDR_WIDTH-1)];
+  logic [ADDR_WIDTH-1:0] reg_addr;
+  logic [REG_WIDTH-1:0] reg_data_i, reg_data_o;
+  logic reg_data_o_vld;
+  logic [REG_WIDTH-1:0] status;
+  logic [REG_WIDTH-1:0] mem [0:(2**ADDR_WIDTH-1)];
+
+  // Auxiliar start and stop commands through SPI
+  logic spi_start;
+  logic spi_stop;
 
   // Serial interface
   spireg #(
@@ -68,27 +71,23 @@ module spi_wrapper #(parameter WIDTH = 8) (rstb, clk, ena, spi_cs_n, spi_clk, sp
   assign reg_data_i = (reg_addr == 0) ? status : mem[reg_addr];
 
   // Register write and update encryption with eoc
-  integer i;
-  always @(posedge clk or negedge rstb) begin
+  always_ff @(posedge clk or negedge rstb) begin
     if (!rstb) begin
       for (i = 0; i < 2**ADDR_WIDTH; i=i+1) begin
         mem[i] <= 0;
       end
     end else begin
-      if (ena == 1'b1) begin  
+      if (ena == 1'b1) begin
         if (reg_data_o_vld) begin
           mem[reg_addr] <= reg_data_o;
         end else if (eoc == 1'b1) begin
           mem[6] <= rsa_c;
-        end 
+        end
       end
     end
   end
 
-  // Auxiliar start and stop commands through SPI
-  wire spi_start;
-  wire spi_stop;
-
+  // SPI start and stop commands
   assign spi_start = mem[1][0];
   assign spi_stop = mem[1][1];
 
@@ -107,6 +106,6 @@ module spi_wrapper #(parameter WIDTH = 8) (rstb, clk, ena, spi_cs_n, spi_clk, sp
   assign status[REG_WIDTH-1:1] = '0;
 
   // Spare
-  assign spare = mem[7]; 
-  
+  assign spare = mem[7];
+
 endmodule

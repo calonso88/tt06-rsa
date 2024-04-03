@@ -6,14 +6,12 @@ module kogge_stone_adder (a, b, ci, sum, co);
   output [7:0] sum;
   output co;
 
-  wire p [3:0][7:0];
-  wire g [3:0][7:0];
+  logic p [3:0][7:0];
+  logic g [3:0][7:0];
 
   assign g[0][0] = (a[0] & b[0]) | (ci & (a[0] ^ b[0]));
   assign p[0][0] = a[0] ^ b[0] ^ ci;
-	
-  genvar i;
-  genvar j;
+
   generate
     for (i=(7); i>0; i=i-1) begin : p_g_kogge_stone
       assign g[0][i] = a[i] & b[i];
@@ -27,7 +25,7 @@ module kogge_stone_adder (a, b, ci, sum, co);
         if ((j-2**(i-1)) >= 0) begin : parallel_prefix_condicional
           assign g[i][j] = g[i-1][j] | (p[i-1][j] & g[i-1][j-(2**(i-1))]);
           assign p[i][j] = p[i-1][j] & p[i-1][j-(2**(i-1))];
-        end else begin
+        end else begin : rest
           assign g[i][j] = g[i-1][j];
           assign p[i][j] = p[i-1][j];
         end

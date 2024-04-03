@@ -1,4 +1,4 @@
-module shiftreg1 #(parameter WIDTH = 4) (en, rstb, clk, rst_mmm_i, ld_a, A, A_bit);
+module shiftreg1 #(parameter int WIDTH = 4) (en, rstb, clk, rst_mmm_i, ld_a, A, A_bit);
 
   input en;
   input rstb;
@@ -8,19 +8,19 @@ module shiftreg1 #(parameter WIDTH = 4) (en, rstb, clk, rst_mmm_i, ld_a, A, A_bi
   input [WIDTH-1:0] A;
   output A_bit;
 
-  wire rst_mmm_int;
-  reg [WIDTH-1:0] A_aux;
+  logic rst_mmm_int;
+  logic [WIDTH-1:0] A_aux;
 
   assign rst_mmm_int = rstb & rst_mmm_i;
 
-  always @(negedge(rst_mmm_int) or posedge(clk)) begin
+  always_ff @(negedge(rst_mmm_int) or posedge(clk)) begin
     if (!rst_mmm_int) begin
       A_aux <= '0;
-    end else begin 
+    end else begin
       if (en == 1'b1) begin
-        if (ld_a == 1'b1) begin 
+        if (ld_a == 1'b1) begin
           A_aux <= A;
-        end else begin 
+        end else begin
           A_aux <= {A_aux >> 1};
         end
       end

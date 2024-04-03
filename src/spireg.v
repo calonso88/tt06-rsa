@@ -1,6 +1,6 @@
 module spireg #(
-    parameter ADDR_W = 6,   //1~6
-    parameter REG_W = 16    //8, 16, 24, 32, ..., 64
+    parameter int ADDR_W = 6,   //1~6
+    parameter int REG_W = 16    //8, 16, 24, 32, ..., 64
 ) (
     input clk,
     input nrst,

@@ -4,15 +4,15 @@ module rising_edge_detector (rstb, clk, ena, data, pos_edge);
   input clk;
   input ena;
   input data;
-  
+
   output pos_edge;
 
-  reg data_dly;
+  logic data_dly;
 
-  always @(negedge(rstb) or posedge(clk)) begin
+  always_ff @(negedge(rstb) or posedge(clk)) begin
     if (!rstb) begin
       data_dly <= '0;
-    end else begin 
+    end else begin
       if (ena == 1'b1) begin
         data_dly <= data;
       end

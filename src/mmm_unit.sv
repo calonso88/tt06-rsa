@@ -1,4 +1,4 @@
-module mmm_unit #(parameter WIDTH = 4) (en, rstb, clk, rst_mmm, ld_a, ld_r, lock, A, B, M, R);
+module mmm_unit #(parameter int WIDTH = 4) (en, rstb, clk, rst_mmm, ld_a, ld_r, lock, A, B, M, R);
 
   input en;
   input rstb;
@@ -13,26 +13,25 @@ module mmm_unit #(parameter WIDTH = 4) (en, rstb, clk, rst_mmm, ld_a, ld_r, lock
   input [WIDTH-1:0] M;
   output [WIDTH-1:0] R;
 
-  wire rst_mmm_i;
-  wire [WIDTH-1:0] MB;
+  logic rst_mmm_i;
+  logic [WIDTH-1:0] MB;
 
-  wire A_bit;
-  wire [WIDTH-1:0] reg_rji;
-  wire qj;
-  wire [WIDTH-1:0] mux_out;
-  wire [WIDTH-1:0] rjo;
-  wire [WIDTH-1:0] R_i;
-  
+  logic A_bit;
+  logic [WIDTH-1:0] reg_rji;
+  logic qj;
+  logic [WIDTH-1:0] mux_out;
+  logic [WIDTH-1:0] rjo;
+  logic[WIDTH-1:0] R_i;
+
   assign rst_mmm_i = rstb & rst_mmm;
-  
+
   ripple_carry_adder #(.WIDTH(WIDTH)) adder1 (.a(B), .b(M), .ci(1'b0), .sum(MB), .co());
-  
-  genvar j;
-  generate 
+
+  generate
     for ( j=0; j<=(WIDTH-1); j=j+1 ) begin : processing_elements_array_loop
-      if (j == 0) begin : right_border_element
+      if (j == 0) begin : processing_element_right_border
         processing_element_mux_right_border PE (.mi(M[j]), .bi(B[j]), .mbi(MB[j]), .ai(A_bit), .ri(reg_rji[j]), .qo(qj), .mux_out(mux_out[j]));
-      end else begin : normal_element
+      end else begin : processing_element
         processing_element_mux PE (.mi(M[j]), .bi(B[j]), .mbi(MB[j]), .ai(A_bit), .qi(qj), .mux_out(mux_out[j]));
       end
     end

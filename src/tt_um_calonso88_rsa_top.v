@@ -1,7 +1,7 @@
-/*
- * Copyright (c) 2024 Your Name
- * SPDX-License-Identifier: Apache-2.0
- */
+//
+// Copyright (c) 2024 Caio Alonso da Costa
+// SPDX-License-Identifier: Apache-2.0
+//
 
 `define default_netname none
 
@@ -38,8 +38,8 @@ module tt_um_calonso88_rsa_top (
   wire irq;
 
   // RSA Unit size
-  localparam integer REG_WIDTH = 8;
-  
+  localparam int REG_WIDTH = 8;
+
   // RSA Unit P, E, M, Const and C
   wire [REG_WIDTH-1:0] rsa_p;
   wire [REG_WIDTH-1:0] rsa_e;
@@ -73,7 +73,7 @@ module tt_um_calonso88_rsa_top (
 
   // Controller
   rsa_en_logic rsa_en_logic_i (.rstb(rst_n), .clk(clk), .ena(ena), .gpio_start(gpio_start_cmd), .spi_start(spi_start_cmd), .gpio_stop(gpio_stop_cmd), .spi_stop(spi_stop_cmd), .en_rsa(en_rsa), .rst_rsa(rst_rsa), .eoc_rsa_unit(rsa_eoc), .eoc(irq));
- 
+
   // RSA Instance
   rsa_unit #(.WIDTH(REG_WIDTH)) rsa_i (.en(en_rsa), .rstb(rst_rsa), .clk(clk), .P(rsa_p), .E(rsa_e), .M(rsa_m), .Const(rsa_const), .eoc(rsa_eoc), .C(rsa_c));
 

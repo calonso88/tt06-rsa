@@ -19,14 +19,14 @@ module rsa_en_logic (rstb, clk, ena, gpio_start, spi_start, gpio_stop, spi_stop,
   // End of convertion (encryption from rsa_unit)
   input eoc_rsa_unit;
 
-  // End of convertion (for GPIO and SPI)  
+  // End of convertion (for GPIO and SPI)
   output eoc;
-  
+
   // Parameters - FSM states
   typedef enum {
     STATE_RESET, STATE_IDLE, STATE_EN, STATE_RST_RELEASE, STATE_WAIT_EOC, STATE_EOC, STATE_4
   } rsa_fsm_state;
-  
+
   // FSM states
   rsa_fsm_state state, next_state;
 
@@ -36,25 +36,25 @@ module rsa_en_logic (rstb, clk, ena, gpio_start, spi_start, gpio_stop, spi_stop,
   logic en_rsa_i;
   logic rst_rsa_i;
   logic eoc_i;
-  
+
   // Combine both GPIO and SPI
   assign start_comb = gpio_start | spi_start;
   assign stop_comb = gpio_stop & spi_stop;
-    
+
   // Outputs
   assign en_rsa = en_rsa_i;
   assign rst_rsa = rst_rsa_i;
   assign eoc = eoc_i;
-    
-  // Next state transition 
-  always_ff @(negedge(rstb), posedge(clk)) begin
+
+  // Next state transition
+  always_ff @(negedge(rstb) or posedge(clk)) begin
     if (!rstb) begin
       state <= STATE_RESET;
     end else begin
       if (ena == 1'b1) begin
         state <= next_state;
-      end   
-    end 
+      end
+    end
   end
 
   always_comb begin
@@ -66,14 +66,14 @@ module rsa_en_logic (rstb, clk, ena, gpio_start, spi_start, gpio_stop, spi_stop,
     next_state = state;
 
     case (state)
-      
+
       STATE_RESET : begin
         en_rsa_i = 1'b0;
         rst_rsa_i = 1'b0;
         eoc_i = 1'b0;
         next_state = STATE_IDLE;
       end
-      
+
       STATE_IDLE : begin
         en_rsa_i = 1'b0;
         rst_rsa_i = 1'b0;
@@ -82,16 +82,16 @@ module rsa_en_logic (rstb, clk, ena, gpio_start, spi_start, gpio_stop, spi_stop,
           next_state = STATE_EN;
         end else begin
           next_state = STATE_IDLE;
-        end 
-      end 
-      
+        end
+      end
+
       STATE_EN : begin
         en_rsa_i = 1'b1;
         rst_rsa_i = 1'b0;
         eoc_i = 1'b0;
         next_state = STATE_RST_RELEASE;
       end
-      
+
       STATE_RST_RELEASE : begin
         en_rsa_i = 1'b1;
         rst_rsa_i = 1'b1;
@@ -102,7 +102,7 @@ module rsa_en_logic (rstb, clk, ena, gpio_start, spi_start, gpio_stop, spi_stop,
           next_state = STATE_WAIT_EOC;
         end
       end
-      
+
       STATE_WAIT_EOC : begin
         en_rsa_i = 1'b1;
         rst_rsa_i = 1'b1;
@@ -117,13 +117,21 @@ module rsa_en_logic (rstb, clk, ena, gpio_start, spi_start, gpio_stop, spi_stop,
           end
         end
       end
-      
+
       STATE_EOC : begin
         en_rsa_i = 1'b1;
         rst_rsa_i = 1'b1;
         eoc_i = 1'b1;
         next_state = STATE_IDLE;
       end
+
+      default : begin
+        en_rsa_i = 1'b0;
+        rst_rsa_i = 1'b0;
+        eoc_i = 1'b0;
+        next_state = STATE_RESET;
+      end
+
     endcase
 
   end

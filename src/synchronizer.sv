@@ -4,17 +4,17 @@ module synchronizer (rstb, clk, ena, data_in, data_out);
   input clk;
   input ena;
   input data_in;
-  
+
   output data_out;
 
-  reg data_sync;
-  reg data_sync2;
+  logic data_sync;
+  logic data_sync2;
 
-  always @(negedge(rstb) or posedge(clk)) begin
+  always_ff @(negedge(rstb) or posedge(clk)) begin
     if (!rstb) begin
       data_sync <= '0;
       data_sync2 <= '0;
-    end else begin 
+    end else begin
       if (ena == 1'b1) begin
         data_sync <= data_in;
         data_sync2 <= data_sync;
