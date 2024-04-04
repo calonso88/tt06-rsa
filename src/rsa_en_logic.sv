@@ -22,8 +22,8 @@ module rsa_en_logic (rstb, clk, ena, gpio_start, spi_start, gpio_stop, spi_stop,
   // End of convertion (for GPIO and SPI)
   output eoc;
 
-  // Parameters - FSM states
-  typedef enum {
+  // FSM states type
+  typedef enum logic {
     STATE_RESET, STATE_IDLE, STATE_EN, STATE_RST_RELEASE, STATE_WAIT_EOC, STATE_EOC, STATE_4
   } rsa_fsm_state;
 
@@ -59,7 +59,7 @@ module rsa_en_logic (rstb, clk, ena, gpio_start, spi_start, gpio_stop, spi_stop,
 
   always_comb begin
 
-    // defautl assingments
+    // default assignments
     en_rsa_i = 1'b0;
     rst_rsa_i = 1'b0;
     eoc_i = 1'b0;
