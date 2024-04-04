@@ -12,28 +12,28 @@ def set_bit(value, bit_index):
   return value | (1 << bit_index)
 
 def pull_cs_high(dut):
-  dut.ui_in.value = 0x1
-  #dut.ui_in.value = dut.ui_in.value | (0x1)
+  #dut.ui_in.value = 0x1
+  dut.ui_in.value = dut.ui_in.value | (0x1)
 
 def pull_cs_low(dut):
-  dut.ui_in.value = 0x0
-  #dut.ui_in.value = dut.ui_in.value & ~(0x1)
+  #dut.ui_in.value = 0x0
+  dut.ui_in.value = dut.ui_in.value & ~(0x1)
 
 def spi_clk_high(dut):
-  dut.ui_in.value = 0x2
-  #dut.ui_in.value = dut.ui_in.value | (0x2)
+  #dut.ui_in.value = 0x2
+  dut.ui_in.value = dut.ui_in.value | (0x2)
 
 def spi_clk_low(dut):
-  dut.ui_in.value = 0x0
-  #dut.ui_in.value = dut.ui_in.value & ~(0x2)
+  #dut.ui_in.value = 0x0
+  dut.ui_in.value = dut.ui_in.value & ~(0x2)
 
 def spi_mosi_high(dut):
-  dut.ui_in.value = 0x4
-  #dut.ui_in.value = dut.ui_in.value | (0x4)
+  #dut.ui_in.value = 0x4
+  dut.ui_in.value = dut.ui_in.value | (0x4)
 
 def spi_mosi_low(dut):
-  dut.ui_in.value = 0x0
-  #dut.ui_in.value = dut.ui_in.value & ~(0x4)
+  #dut.ui_in.value = 0x0
+  dut.ui_in.value = dut.ui_in.value & ~(0x4)
 
 def spi_miso_read(dut):
   return get_bit (dut.uo_out.value, 3)
