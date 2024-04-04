@@ -192,32 +192,30 @@ async def test_spi(dut):
   
   # Read reg[0]
   reg0 = await spi_read (dut, 0, 0x00)
-  dut._log.info("reg[0] = ", reg0)
+  #dut._log.info("reg[0] = ", reg0)
   # Read reg[1]
   reg1 = await spi_read (dut, 1, 0x00)
-  dut._log.info("reg[1] = ", reg1)
+  #dut._log.info("reg[1] = ", reg1)
   # Read reg[2]
   reg2 = await spi_read (dut, 2, 0x00)
-  dut._log.info("reg[2] = ", reg2)
+  #dut._log.info("reg[2] = ", reg2)
   # Read reg[3]
   reg3 = await spi_read (dut, 3, 0x00)
-  dut._log.info("reg[3] = ", reg3)
+  #dut._log.info("reg[3] = ", reg3)
   # Read reg[4]
   reg4 = await spi_read (dut, 4, 0x00)
-  dut._log.info("reg[4] = ", reg4)
+  #dut._log.info("reg[4] = ", reg4)
   # Read reg[5]
   reg5 = await spi_read (dut, 5, 0x00)
-  dut._log.info("reg[5] = ", reg5)
+  #dut._log.info("reg[5] = ", reg5)
   # Read reg[6]
   reg6 = await spi_read (dut, 6, 0x00)
-  dut._log.info("reg[6] = ", reg6)
+  #dut._log.info("reg[6] = ", reg6)
   # Read reg[7]
   reg7 = await spi_read (dut, 7, 0x00)
-  dut._log.info("reg[7] = ", reg7)
+  #dut._log.info("reg[7] = ", reg7)
 
   await ClockCycles(dut.clk, 100)
-
-
 
   assert reg0 == 0xF0
   assert reg1 == 0xDE
