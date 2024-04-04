@@ -23,7 +23,7 @@ module rsa_en_logic (rstb, clk, ena, gpio_start, spi_start, gpio_stop, spi_stop,
   output eoc;
 
   // FSM states type
-  typedef enum logic {
+  typedef enum logic [2:0] {
     STATE_RESET, STATE_IDLE, STATE_EN, STATE_RST_RELEASE, STATE_WAIT_EOC, STATE_EOC, STATE_4
   } rsa_fsm_state;
 
