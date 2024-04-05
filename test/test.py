@@ -244,7 +244,7 @@ async def test_spi(dut):
 
 
   # Write reg[0] = 0xDE
-  await spi_write (dut, 0, 0xF0)
+  spi_write (dut, 0, 0xF0)
   # Write reg[1] = 0xDE
   #await spi_write (dut, 1, 0xDE)
   # Write reg[2] = 0xAD
