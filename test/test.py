@@ -29,32 +29,50 @@ def clear_bit(value, bit_index):
 def pull_cs_high(dut):
   #dut.ui_in.value = 0x1
   #dut.ui_in.value = dut.ui_in.value | (0x1)
-  dut.ui_in.value = set_bit(dut.ui_in.value.integer, 0)
+  cocotb.log.info(f"Into pull_cs_high function")
+  temp = set_bit(dut.ui_in.value, 0)
+  cocotb.log.info(f"Temp: {temp}")
+  dut.ui_in.value = temp
 
 def pull_cs_low(dut):
   #dut.ui_in.value = 0x0
   #dut.ui_in.value = dut.ui_in.value & ~(0x1)
-  dut.ui_in.value = clear_bit(dut.ui_in.value.integer, 0)
+  cocotb.log.info(f"Into pull_cs_low function")
+  temp = clear_bit(dut.ui_in.value, 0)
+  cocotb.log.info(f"Temp: {temp}")
+  dut.ui_in.value = temp
 
 def spi_clk_high(dut):
   #dut.ui_in.value = 0x2
   #dut.ui_in.value = dut.ui_in.value | (0x2)
-  dut.ui_in.value = set_bit(dut.ui_in.value.integer, 1)
+  cocotb.log.info(f"Into spi_clk_high function")
+  temp = set_bit(dut.ui_in.value, 1)
+  cocotb.log.info(f"Temp: {temp}")
+  dut.ui_in.value = temp
 
 def spi_clk_low(dut):
   #dut.ui_in.value = 0x0
   #dut.ui_in.value = dut.ui_in.value & ~(0x2)
-  dut.ui_in.value = clear_bit(dut.ui_in.value.integer, 1)
+  cocotb.log.info(f"Into spi_clk_high function")
+  temp = clear_bit(dut.ui_in.value, 1)
+  cocotb.log.info(f"Temp: {temp}")
+  dut.ui_in.value = temp
 
 def spi_mosi_high(dut):
   #dut.ui_in.value = 0x4
   #dut.ui_in.value = dut.ui_in.value | (0x4)
-  dut.ui_in.value = set_bit(dut.ui_in.value.integer, 2)
+  cocotb.log.info(f"Into spi_mosi_high function")
+  temp = set_bit(dut.ui_in.value, 2)
+  cocotb.log.info(f"Temp: {temp}")
+  dut.ui_in.value = temp
 
 def spi_mosi_low(dut):
   #dut.ui_in.value = 0x0
   #dut.ui_in.value = dut.ui_in.value & ~(0x4)
-  dut.ui_in.value = clear_bit(dut.ui_in.value.integer, 2)
+  cocotb.log.info(f"Into spi_mosi_low function")
+  temp = clear_bit(dut.ui_in.value, 2)
+  cocotb.log.info(f"Temp: {temp}")
+  dut.ui_in.value = temp
 
 def spi_miso_read(dut):
   return get_bit (dut.uo_out.value, 3)
