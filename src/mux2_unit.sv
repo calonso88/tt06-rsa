@@ -9,15 +9,15 @@ module mux2_unit #(parameter int WIDTH = 4) (a, b, sel, dout);
   logic [WIDTH-1:0] s_out;
 
   logic [WIDTH-1:0] zero;
-  logic [WIDTH-2:0] one_array;
+  logic [WIDTH-2:0] zero_array;
   logic one_bit;
   logic [WIDTH-1:0] one;
 
   assign zero = '0;
-  assign one_array = '1;
+  assign zero_array = '0;
   assign one_bit = 1'b1;
 
-  assign one = {one_array, one_bit};
+  assign one = {zero_array, one_bit};
 
   always_comb begin
     case (sel)

@@ -238,6 +238,9 @@ async def test_spi(dut):
   e = 7
   d = 7
   const = 1
+  bits = 8+2
+
+  
 
   cocotb.log.info(f"Public key: ( {e}, {m} )")
   cocotb.log.info(f"Private key: ( {d}, {m} )")
