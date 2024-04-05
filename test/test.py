@@ -261,7 +261,7 @@ async def test_spi(dut):
   #await spi_write (dut, 7, 0x0F)
   
   # Read reg[0]
-  reg0 = await spi_read (dut, 0, 0x00)
+  reg0 = await spi_read (dut, 7, 0x00)
   #reg0 = await spi_read (dut, 0, 0x00)
   #dut._log.info("reg[0] = ", reg0)
   # Read reg[1]
