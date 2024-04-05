@@ -62,7 +62,7 @@ def spi_mosi_high(dut):
   #dut.ui_in.value = 0x4
   #dut.ui_in.value = dut.ui_in.value | (0x4)
   cocotb.log.info(f"Into spi_mosi_high function")
-  cocotb.log.info(f"Input value: {dut.ui_in}")
+  cocotb.log.info(f"Input value: {dut.ui_in.value}")
   temp = set_bit(dut.ui_in.value, 2)
   cocotb.log.info(f"Temp: {temp}")
   dut.ui_in.value = temp
