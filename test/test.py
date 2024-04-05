@@ -229,21 +229,45 @@ async def test_spi(dut):
 
   # Set the input values, wait one clock cycle, and check the output
   dut._log.info("Test")
+
+
+  p = 3
+  q = 5
+  m = p * q
+  #phi_n = (p-1) * (q-1)
+  e = 7
+  d = 7
+  const = 1
+
+  cocotb.log.info(f"Public key: ( {e}, {m} )")
+  cocotb.log.info(f"Private key: ( {d}, {m} )")
+  cocotb.log.info(f"Montgomert constant: {const}")
   
-  # Assert high SPI_CS
-  pull_cs_high(dut)
-  await ClockCycles(dut.clk, 10)
-  # Assert low SPI_CS
-  pull_cs_low(dut)
-  await ClockCycles(dut.clk, 10)
+  plain_text = 0x2
+  cocotb.log.info(f"Plain text: {plain_text}")
 
-  # Assert high SPI_CS
-  pull_cs_high(dut)
-  await ClockCycles(dut.clk, 10)
-  # Assert low SPI_CS
-  pull_cs_low(dut)
-  await ClockCycles(dut.clk, 10)
+  # Write reg[2] ( plain_text )
+  await spi_write (dut, 2, plain_text)
+  # Write reg[3] ( e )
+  await spi_write (dut, 3, e)
+  # Write reg[4] ( M )
+  await spi_write (dut, 4, m)
+  # Write reg[5] ( const )
+  await spi_write (dut, 5, const)
 
+  # Write reg[1] (Start)
+  await spi_write (dut, 1, 1)
+
+  encrypted_text = ( plain_text ** e ) % m
+  cocotb.log.info(f"Encrypted text: {encrypted_text}")
+
+  await ClockCycles(dut.clk, 500)
+
+  # Read reg[6] ( encrypted_text_design )
+  encrypted_text_design = await spi_read (dut, 6, 0x00)
+  cocotb.log.info(f"Encrypted text design: {encrypted_text_design}")
+
+  assert encrypted_text_design == encrypted_text 
 
   # Write reg[0] = 0xF0
   await spi_write (dut, 0, 0xF0)
@@ -289,3 +313,6 @@ async def test_spi(dut):
   assert reg5 == 0x55
   #assert reg6 == 0xAA
   assert reg7 == 0x0F
+
+
+
