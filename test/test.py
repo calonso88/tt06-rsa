@@ -29,56 +29,56 @@ def clear_bit(value, bit_index):
 def pull_cs_high(dut):
   #dut.ui_in.value = 0x1
   #dut.ui_in.value = dut.ui_in.value | (0x1)
-  cocotb.log.info(f"Into pull_cs_high function")
+  #cocotb.log.info(f"Into pull_cs_high function")
   temp = set_bit(dut.ui_in.value, 0)
-  cocotb.log.info(f"Temp: {temp}")
+  #cocotb.log.info(f"Temp: {temp}")
   dut.ui_in.value = temp
 
 def pull_cs_low(dut):
   #dut.ui_in.value = 0x0
   #dut.ui_in.value = dut.ui_in.value & ~(0x1)
-  cocotb.log.info(f"Into pull_cs_low function")
+  #cocotb.log.info(f"Into pull_cs_low function")
   temp = clear_bit(dut.ui_in.value, 0)
-  cocotb.log.info(f"Temp: {temp}")
+  #cocotb.log.info(f"Temp: {temp}")
   dut.ui_in.value = temp
 
 def spi_clk_high(dut):
   #dut.ui_in.value = 0x2
   #dut.ui_in.value = dut.ui_in.value | (0x2)
-  cocotb.log.info(f"Into spi_clk_high function")
+  #cocotb.log.info(f"Into spi_clk_high function")
   temp = set_bit(dut.ui_in.value, 1)
-  cocotb.log.info(f"Temp: {temp}")
+  #cocotb.log.info(f"Temp: {temp}")
   dut.ui_in.value = temp
 
 def spi_clk_low(dut):
   #dut.ui_in.value = 0x0
   #dut.ui_in.value = dut.ui_in.value & ~(0x2)
-  cocotb.log.info(f"Into spi_clk_low function")
+  #cocotb.log.info(f"Into spi_clk_low function")
   temp = clear_bit(dut.ui_in.value, 1)
-  cocotb.log.info(f"Temp: {temp}")
+  #cocotb.log.info(f"Temp: {temp}")
   dut.ui_in.value = temp
 
 def spi_mosi_high(dut):
   #dut.ui_in.value = 0x4
   #dut.ui_in.value = dut.ui_in.value | (0x4)
-  cocotb.log.info(f"Into spi_mosi_high function")
-  cocotb.log.info(f"Input value: {dut.ui_in.value}")
+  #cocotb.log.info(f"Into spi_mosi_high function")
+  #cocotb.log.info(f"Input value: {dut.ui_in.value}")
   temp = set_bit(dut.ui_in.value, 2)
-  cocotb.log.info(f"Temp: {temp}")
+  #cocotb.log.info(f"Temp: {temp}")
   dut.ui_in.value = temp
 
 def spi_mosi_low(dut):
   #dut.ui_in.value = 0x0
   #dut.ui_in.value = dut.ui_in.value & ~(0x4)
-  cocotb.log.info(f"Into spi_mosi_low function")
+  #cocotb.log.info(f"Into spi_mosi_low function")
   temp = clear_bit(dut.ui_in.value, 2)
-  cocotb.log.info(f"Temp: {temp}")
+  #cocotb.log.info(f"Temp: {temp}")
   dut.ui_in.value = temp
 
 def spi_miso_read(dut):
-  cocotb.log.info(f"Into spi_miso_read function")
-  cocotb.log.info(f"MISO VALUE: {dut.uo_out.value}")
-  cocotb.log.info(f"OUTPUT of function VALUE: { (get_bit (dut.uo_out.value, 3) >> 3)  }")
+  #cocotb.log.info(f"Into spi_miso_read function")
+  #cocotb.log.info(f"MISO VALUE: {dut.uo_out.value}")
+  #cocotb.log.info(f"OUTPUT of function VALUE: { (get_bit (dut.uo_out.value, 3) >> 3)  }")
   return (get_bit (dut.uo_out.value, 3) >> 3)
 
 async def spi_write (dut, address, data):
@@ -245,56 +245,47 @@ async def test_spi(dut):
   await ClockCycles(dut.clk, 10)
 
 
-  # Write reg[0] = 0xDE
-  await spi_write (dut, 7, 0xF0)
+  # Write reg[0] = 0xF0
+  await spi_write (dut, 0, 0xF0)
   # Write reg[1] = 0xDE
-  #await spi_write (dut, 1, 0xDE)
+  await spi_write (dut, 1, 0xDE)
   # Write reg[2] = 0xAD
-  #await spi_write (dut, 2, 0xAD)
+  await spi_write (dut, 2, 0xAD)
   # Write reg[3] = 0xBE
-  #await spi_write (dut, 3, 0xBE)
+  await spi_write (dut, 3, 0xBE)
   # Write reg[4] = 0xEF
-  #await spi_write (dut, 4, 0xEF)
+  await spi_write (dut, 4, 0xEF)
   # Write reg[5] = 0x55
-  #await spi_write (dut, 5, 0x55)
+  await spi_write (dut, 5, 0x55)
   # Write reg[6] = 0xAA
-  #await spi_write (dut, 6, 0xAA)
-  # Write reg[7] = 0x55
-  #await spi_write (dut, 7, 0x0F)
+  await spi_write (dut, 6, 0xAA)
+  # Write reg[7] = 0x0F
+  await spi_write (dut, 7, 0x0F)
   
   # Read reg[0]
-  reg0 = await spi_read (dut, 7, 0x00)
-  #reg0 = await spi_read (dut, 0, 0x00)
-  #dut._log.info("reg[0] = ", reg0)
+  reg0 = await spi_read (dut, 0, 0x00)
   # Read reg[1]
-  #reg1 = await spi_read (dut, 1, 0x00)
-  #dut._log.info("reg[1] = ", reg1)
+  reg1 = await spi_read (dut, 1, 0x00)
   # Read reg[2]
-  #reg2 = await spi_read (dut, 2, 0x00)
-  #dut._log.info("reg[2] = ", reg2)
+  reg2 = await spi_read (dut, 2, 0x00)
   # Read reg[3]
-  #reg3 = await spi_read (dut, 3, 0x00)
-  #dut._log.info("reg[3] = ", reg3)
+  reg3 = await spi_read (dut, 3, 0x00)
   # Read reg[4]
-  #reg4 = await spi_read (dut, 4, 0x00)
-  #dut._log.info("reg[4] = ", reg4)
+  reg4 = await spi_read (dut, 4, 0x00)
   # Read reg[5]
-  #reg5 = await spi_read (dut, 5, 0x00)
-  #dut._log.info("reg[5] = ", reg5)
+  reg5 = await spi_read (dut, 5, 0x00)
   # Read reg[6]
-  #reg6 = await spi_read (dut, 6, 0x00)
-  #dut._log.info("reg[6] = ", reg6)
+  reg6 = await spi_read (dut, 6, 0x00)
   # Read reg[7]
-  #reg7 = await spi_read (dut, 7, 0x00)
-  #dut._log.info("reg[7] = ", reg7)
+  reg7 = await spi_read (dut, 7, 0x00)
 
   await ClockCycles(dut.clk, 100)
 
   assert reg0 == 0xF0
-  #assert reg1 == 0xDE
-  #assert reg2 == 0xAD
-  #assert reg3 == 0xBE
-  #assert reg4 == 0xEF
-  #assert reg5 == 0x55
-  #assert reg6 == 0xAA
-  #assert reg7 == 0x0F
+  assert reg1 == 0xDE
+  assert reg2 == 0xAD
+  assert reg3 == 0xBE
+  assert reg4 == 0xEF
+  assert reg5 == 0x55
+  assert reg6 == 0xAA
+  assert reg7 == 0x0F
