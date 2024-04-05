@@ -86,7 +86,7 @@ module spi_wrapper #(parameter int WIDTH = 8) (rstb, clk, ena, spi_cs_n, spi_clk
           mem[reg_addr] <= reg_data_o;
         end else if (eoc == 1'b1) begin
           mem[6] <= rsa_c;
-        //end
+        end
       end
     end
   end
