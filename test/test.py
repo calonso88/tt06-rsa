@@ -155,7 +155,7 @@ async def spi_read (dut, address, data):
   await ClockCycles(dut.clk, 10)
   spi_clk_low(dut)
 
-  iterator = 1
+  iterator = 0
   while iterator < 4:
     # Don't care - bit 6, bit 5, bit 4 and bit 3
     await ClockCycles(dut.clk, 10)
@@ -195,8 +195,8 @@ async def spi_read (dut, address, data):
       spi_mosi_high(dut)
     await ClockCycles(dut.clk, 10)
     spi_clk_high(dut)
-    miso_bit = spi_miso_read(dut)
-    miso_byte = miso_byte | set_bit (miso_bit, iterator)
+    #miso_bit = spi_miso_read(dut)
+    #miso_byte = miso_byte | set_bit (miso_bit, iterator)
     await ClockCycles(dut.clk, 10)
     spi_clk_low(dut)
     iterator -= 1
