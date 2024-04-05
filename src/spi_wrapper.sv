@@ -68,8 +68,8 @@ module spi_wrapper #(parameter int WIDTH = 8) (rstb, clk, ena, spi_cs_n, spi_clk
   );
 
   // Register read access
-  //assign reg_data_i = (reg_addr == 0) ? status : mem[reg_addr];
-  assign reg_data_i = mem[reg_addr];
+  assign reg_data_i = (reg_addr == 0) ? status : mem[reg_addr];
+  //assign reg_data_i = mem[reg_addr];
 
   // Index for reset unpacked register array
   int i;
@@ -84,8 +84,8 @@ module spi_wrapper #(parameter int WIDTH = 8) (rstb, clk, ena, spi_cs_n, spi_clk
       if (ena == 1'b1) begin
         if (reg_data_o_vld) begin
           mem[reg_addr] <= reg_data_o;
-        end //else if (eoc == 1'b1) begin
-          //mem[6] <= rsa_c;
+        end else if (eoc == 1'b1) begin
+          mem[6] <= rsa_c;
         //end
       end
     end
