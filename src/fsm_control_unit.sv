@@ -32,7 +32,7 @@ module fsm_control_unit (en, rstb, clk, expE, rst_mmm, ld_a, ld_r, lock1, lock2,
   logic ld_e;
 
   assign rst_exp = rst_exp_flop & rstb;
-  assign rst_counter = ((counter == 8'd133) ? 1'b0 : 1'b1) & rstb;
+  assign rst_counter = ((counter == 8'd255) ? 1'b0 : 1'b1) & rstb;
 
   always_ff @(negedge(rst_exp) or posedge(clk)) begin
     if (!rst_exp) begin
