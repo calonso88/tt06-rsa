@@ -53,7 +53,7 @@ def spi_clk_high(dut):
 def spi_clk_low(dut):
   #dut.ui_in.value = 0x0
   #dut.ui_in.value = dut.ui_in.value & ~(0x2)
-  cocotb.log.info(f"Into spi_clk_high function")
+  cocotb.log.info(f"Into spi_clk_low function")
   temp = clear_bit(dut.ui_in.value, 1)
   cocotb.log.info(f"Temp: {temp}")
   dut.ui_in.value = temp
@@ -244,7 +244,7 @@ async def test_spi(dut):
 
 
   # Write reg[0] = 0xDE
-  spi_write (dut, 0, 0xF0)
+  await spi_write (dut, 0, 0xF0)
   # Write reg[1] = 0xDE
   #await spi_write (dut, 1, 0xDE)
   # Write reg[2] = 0xAD
@@ -261,7 +261,7 @@ async def test_spi(dut):
   #await spi_write (dut, 7, 0x0F)
   
   # Read reg[0]
-  reg0 = spi_read (dut, 0, 0x00)
+  reg0 = await spi_read (dut, 0, 0x00)
   #reg0 = await spi_read (dut, 0, 0x00)
   #dut._log.info("reg[0] = ", reg0)
   # Read reg[1]
