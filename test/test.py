@@ -92,10 +92,11 @@ async def spi_write (dut, address, data):
   spi_clk_high(dut)
   await ClockCycles(dut.clk, 10)
   spi_clk_low(dut)
-
+  
   iterator = 1
   while iterator < 4:
     # Don't care - bit 6, bit 5, bit 4 and bit 3
+    await ClockCycles(dut.clk, 10)
     spi_mosi_low(dut)
     await ClockCycles(dut.clk, 10)
     spi_clk_high(dut)
@@ -106,6 +107,7 @@ async def spi_write (dut, address, data):
   iterator = 2
   while iterator >= 0:
     # Address[iterator] - bit 2, bit 1 and bit 0
+    await ClockCycles(dut.clk, 10)
     address_bit = get_bit(address, iterator)
     if (address_bit == 0):
       spi_mosi_low(dut)
@@ -120,6 +122,7 @@ async def spi_write (dut, address, data):
   iterator = 7
   while iterator >= 0:
     # Data[iterator]
+    await ClockCycles(dut.clk, 10)
     data_bit = get_bit(data, iterator)
     if (data_bit == 0):
       spi_mosi_low(dut)
@@ -153,6 +156,7 @@ async def spi_read (dut, address, data):
   iterator = 1
   while iterator < 4:
     # Don't care - bit 6, bit 5, bit 4 and bit 3
+    await ClockCycles(dut.clk, 10)
     spi_mosi_low(dut)
     await ClockCycles(dut.clk, 10)
     spi_clk_high(dut)
@@ -163,6 +167,7 @@ async def spi_read (dut, address, data):
   iterator = 2
   while iterator >= 0:
     # Address[iterator] - bit 2, bit 1 and bit 0
+    await ClockCycles(dut.clk, 10)
     address_bit = get_bit(address, iterator)
     if (address_bit == 0):
       spi_mosi_low(dut)
@@ -180,6 +185,7 @@ async def spi_read (dut, address, data):
   iterator = 7
   while iterator >= 0:
     # Data[iterator]
+    await ClockCycles(dut.clk, 10)
     data_bit = get_bit(data, iterator)
     if (data_bit == 0):
       spi_mosi_low(dut)
@@ -253,7 +259,7 @@ async def test_spi(dut):
   #await spi_write (dut, 7, 0x0F)
   
   # Read reg[0]
-  #reg0 = spi_read (dut, 0, 0x00)
+  reg0 = spi_read (dut, 0, 0x00)
   #reg0 = await spi_read (dut, 0, 0x00)
   #dut._log.info("reg[0] = ", reg0)
   # Read reg[1]
@@ -280,7 +286,7 @@ async def test_spi(dut):
 
   await ClockCycles(dut.clk, 100)
 
-  #assert reg0 == 0xF0
+  assert reg0 == 0xF0
   #assert reg1 == 0xDE
   #assert reg2 == 0xAD
   #assert reg3 == 0xBE
