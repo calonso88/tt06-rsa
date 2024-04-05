@@ -94,7 +94,7 @@ async def spi_write (dut, address, data):
   await ClockCycles(dut.clk, 10)
   spi_clk_low(dut)
   
-  iterator = 1
+  iterator = 0
   while iterator < 4:
     # Don't care - bit 6, bit 5, bit 4 and bit 3
     await ClockCycles(dut.clk, 10)
@@ -244,7 +244,7 @@ async def test_spi(dut):
 
 
   # Write reg[0] = 0xDE
-  await spi_write (dut, 0, 0xF0)
+  await spi_write (dut, 7, 0xF0)
   # Write reg[1] = 0xDE
   #await spi_write (dut, 1, 0xDE)
   # Write reg[2] = 0xAD
