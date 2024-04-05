@@ -56,7 +56,8 @@ module tt_um_calonso88_rsa_top (
   // Output ports
   assign gpio_irq = irq;
   assign uo_out[3] = spi_miso;
-  assign uo_out[4] = gpio_irq;
+  //assign uo_out[4] = gpio_irq;
+  assign uo_out[4] = 0;
 
   // Input ports
   assign spi_cs_n   = ui_in[0];
