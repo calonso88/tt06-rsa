@@ -85,6 +85,7 @@ async def spi_write (dut, address, data):
   pull_cs_high(dut)
   await ClockCycles(dut.clk, 10)
   pull_cs_low(dut)
+  await ClockCycles(dut.clk, 10)
   
   # Write command bit - bit 7 - MSBIT in first byte
   spi_mosi_high(dut)
@@ -145,6 +146,7 @@ async def spi_read (dut, address, data):
   pull_cs_high(dut)
   await ClockCycles(dut.clk, 10)
   pull_cs_low(dut)
+  await ClockCycles(dut.clk, 10)
   
   # Read command bit - bit 7 - MSBIT in first byte
   spi_mosi_low(dut)
