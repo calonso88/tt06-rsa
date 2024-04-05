@@ -78,8 +78,8 @@ def spi_mosi_low(dut):
 def spi_miso_read(dut):
   cocotb.log.info(f"Into spi_miso_read function")
   cocotb.log.info(f"MISO VALUE: {dut.uo_out.value}")
-  cocotb.log.info(f"OUTPUT of function VALUE: {get_bit (dut.uo_out.value, 3)}")
-  return get_bit (dut.uo_out.value, 3)
+  cocotb.log.info(f"OUTPUT of function VALUE: { (get_bit (dut.uo_out.value, 3) >> 3)  }")
+  return (get_bit (dut.uo_out.value, 3) >> 3)
 
 async def spi_write (dut, address, data):
   
@@ -198,7 +198,7 @@ async def spi_read (dut, address, data):
     await ClockCycles(dut.clk, 10)
     spi_clk_high(dut)
     miso_bit = spi_miso_read(dut)
-    miso_byte = miso_byte | set_bit (miso_bit, iterator)
+    miso_byte = miso_byte | (miso_bit << iterator)
     await ClockCycles(dut.clk, 10)
     spi_clk_low(dut)
     iterator -= 1
