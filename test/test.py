@@ -78,6 +78,7 @@ def spi_mosi_low(dut):
 def spi_miso_read(dut):
   cocotb.log.info(f"Into spi_miso_read function")
   cocotb.log.info(f"MISO VALUE: {dut.uo_out.value}")
+  cocotb.log.info(f"OUTPUT of function VALUE: {get_bit (dut.uo_out.value, 3)}")
   return get_bit (dut.uo_out.value, 3)
 
 async def spi_write (dut, address, data):
