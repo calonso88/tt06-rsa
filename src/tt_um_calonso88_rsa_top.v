@@ -56,8 +56,8 @@ module tt_um_calonso88_rsa_top (
   // Output ports
   assign gpio_irq = irq;
   assign uo_out[3] = spi_miso;
-  //assign uo_out[4] = gpio_irq;
-  assign uo_out[4] = 0;
+  assign uo_out[4] = gpio_irq;
+  //assign uo_out[4] = 0;
 
   // Input ports
   assign spi_cs_n   = ui_in[0];
@@ -73,9 +73,9 @@ module tt_um_calonso88_rsa_top (
   spi_wrapper #(.WIDTH(REG_WIDTH)) spi_wrapper_i (.rstb(rst_n), .clk(clk), .ena(ena), .spi_cs_n(spi_cs_n), .spi_clk(spi_clk), .spi_mosi(spi_mosi), .spi_miso(spi_miso), .spi_start_cmd(spi_start_cmd), .spi_stop_cmd(spi_stop_cmd), .rsa_p(rsa_p), .rsa_e(rsa_e), .rsa_m(rsa_m), .rsa_const(rsa_const), .rsa_c(rsa_c), .eoc(irq), .spare());
 
   // Controller
-  //rsa_en_logic rsa_en_logic_i (.rstb(rst_n), .clk(clk), .ena(ena), .gpio_start(gpio_start_cmd), .spi_start(spi_start_cmd), .gpio_stop(gpio_stop_cmd), .spi_stop(spi_stop_cmd), .en_rsa(en_rsa), .rst_rsa(rst_rsa), .eoc_rsa_unit(rsa_eoc), .eoc(irq));
+  rsa_en_logic rsa_en_logic_i (.rstb(rst_n), .clk(clk), .ena(ena), .gpio_start(gpio_start_cmd), .spi_start(spi_start_cmd), .gpio_stop(gpio_stop_cmd), .spi_stop(spi_stop_cmd), .en_rsa(en_rsa), .rst_rsa(rst_rsa), .eoc_rsa_unit(rsa_eoc), .eoc(irq));
 
   // RSA Instance
-  //rsa_unit #(.WIDTH(REG_WIDTH)) rsa_i (.en(en_rsa), .rstb(rst_rsa), .clk(clk), .P(rsa_p), .E(rsa_e), .M(rsa_m), .Const(rsa_const), .eoc(rsa_eoc), .C(rsa_c));
+  rsa_unit #(.WIDTH(REG_WIDTH)) rsa_i (.en(en_rsa), .rstb(rst_rsa), .clk(clk), .P(rsa_p), .E(rsa_e), .M(rsa_m), .Const(rsa_const), .eoc(rsa_eoc), .C(rsa_c));
 
 endmodule
