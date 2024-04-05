@@ -6,24 +6,24 @@ from cocotb.clock import Clock
 from cocotb.triggers import ClockCycles
 
 def get_bit(value, bit_index):
-  cocotb.log.info(f"Into get_bit function")
-  cocotb.log.info(f"Value: {value}, Bit index: {bit_index}")
+  #cocotb.log.info(f"Into get_bit function")
+  #cocotb.log.info(f"Value: {value}, Bit index: {bit_index}")
   temp = value & (1 << bit_index)
-  cocotb.log.info(f"Temp: {temp}")
+  #cocotb.log.info(f"Temp: {temp}")
   return temp
 
 def set_bit(value, bit_index):
-  cocotb.log.info(f"Into set_bit function")
-  cocotb.log.info(f"Value: {value}, Bit index: {bit_index}")
+  #cocotb.log.info(f"Into set_bit function")
+  #cocotb.log.info(f"Value: {value}, Bit index: {bit_index}")
   temp = value | (1 << bit_index)
-  cocotb.log.info(f"Temp: {temp}")
+  #cocotb.log.info(f"Temp: {temp}")
   return temp
 
 def clear_bit(value, bit_index):
-  cocotb.log.info(f"Into clear_bit function")
-  cocotb.log.info(f"Value: {value}, Bit index: {bit_index}")
+  #cocotb.log.info(f"Into clear_bit function")
+  #cocotb.log.info(f"Value: {value}, Bit index: {bit_index}")
   temp = value & ~(1 << bit_index)
-  cocotb.log.info(f"Temp: {temp}")
+  #cocotb.log.info(f"Temp: {temp}")
   return temp
 
 def pull_cs_high(dut):
@@ -235,7 +235,7 @@ async def test_spi(dut):
 
 
   # Write reg[0] = 0xDE
-  #await spi_write (dut, 0, 0xF0)
+  await spi_write (dut, 0, 0xF0)
   # Write reg[1] = 0xDE
   #await spi_write (dut, 1, 0xDE)
   # Write reg[2] = 0xAD
