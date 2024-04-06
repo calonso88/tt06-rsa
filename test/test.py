@@ -252,12 +252,12 @@ async def test_spi(dut):
     q = random.randint(3, 85)
     q_is_prime = is_prime(q)
     m = p * q
-    cocotb.log.info(f"RSA RANDOM, P: {p}, Q: {q}, M: {m}")
+    #cocotb.log.info(f"RSA RANDOM, P: {p}, Q: {q}, M: {m}")
     if ( ( m < 255 ) and ( p != q ) and ( p_is_prime == 1 ) and ( q_is_prime == 1 ) ):
       break
 
   phi_m = (p-1) * (q-1)
-  cocotb.log.info(f"RSA SORTED, P: {p}, Q: {q}, M: {m}, PHI(M): {phi_m}")
+  cocotb.log.info(f"RSA, P: {p}, Q: {q}, M: {m}, PHI(M): {phi_m}")
   
   while True:
     e = random.randint(3, phi_m)
