@@ -15,7 +15,7 @@ def is_prime(num):
       # If num is divisible by any number between
       # 2 and n / 2, it is not prime
       if (num % i) == 0:
-        print(num, "is not a prime number")
+        #print(num, "is not a prime number")
         return 0
     
     return 1
@@ -271,7 +271,7 @@ async def test_spi(dut):
   e = 7
   d = 23
   bits = 8+2
-  const = 2 ** (2 * bits)
+  const = (2 ** (2 * bits)) % m
   
 
   cocotb.log.info(f"Public key: ( {e}, {m} )")
