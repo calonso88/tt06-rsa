@@ -266,6 +266,11 @@ async def test_spi(dut):
       break
 
 
+  p = 17
+  q = 11
+  m = p * q
+  e = 7
+
   #d = invmod(e, phi_m)  ->  d*e == 1 mod phi_m
   d = pow(e, -1, phi_m)
 
@@ -303,6 +308,9 @@ async def test_spi(dut):
 
   encrypted_text = ( plain_text ** e ) % m
   cocotb.log.info(f"Encrypted text: {encrypted_text}")
+
+  decrypted_text = ( encrypted_text ** d ) % m
+  cocotb.log.info(f"Decrypted text: {decrypted_text}")
 
   await ClockCycles(dut.clk, 500)
 
