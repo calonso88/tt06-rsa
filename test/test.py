@@ -266,25 +266,12 @@ async def test_spi(dut):
       break
 
 
-  p = 17
-  q = 11
-  m = p * q
-  phi_m = (p-1) * (q-1)
-  
-  e = 7
-
   #d = invmod(e, phi_m)  ->  d*e == 1 mod phi_m
   d = pow(e, -1, phi_m)
-
-  #p = 17
-  #q = 11
-  #m = p * q
-  #e = 7
-  #d = 23
   
   # Number of bits for RSA implementation
   bits = 8+2
-  # Montgomeyr constant
+  # Montgomery constant
   const = (2 ** (2 * bits)) % m
   
 
@@ -293,7 +280,9 @@ async def test_spi(dut):
   cocotb.log.info(f"Montgomert constant: {const}")
   
   #plain_text = 0x2
-  plain_text = 0x58
+  #plain_text = 0x58
+  plain_text = random.randint(0, m-1)
+
   cocotb.log.info(f"Plain text: {plain_text}")
 
   # Write reg[2] ( plain_text )
@@ -320,6 +309,7 @@ async def test_spi(dut):
   encrypted_text_design = await spi_read (dut, 6, 0x00)
   cocotb.log.info(f"Encrypted text design: {encrypted_text_design}")
 
+  assert plain_text == decrypted_text
   assert encrypted_text_design == encrypted_text 
 
   # Write reg[0] = 0xF0
