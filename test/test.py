@@ -265,12 +265,19 @@ async def test_spi(dut):
     if ( ( e < phi_m ) and ( e_is_prime == 1 ) ):
       break
 
-  p = 17
-  q = 11
-  m = p * q
-  e = 7
-  d = 23
+
+  #d = invmod(e, phi_m)  ->  d*e == 1 mod phi_m
+  d = pow(e, -1, phi_m)
+
+  #p = 17
+  #q = 11
+  #m = p * q
+  #e = 7
+  #d = 23
+  
+  # Number of bits for RSA implementation
   bits = 8+2
+  # Montgomeyr constant
   const = (2 ** (2 * bits)) % m
   
 
