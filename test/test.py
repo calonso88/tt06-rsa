@@ -269,6 +269,8 @@ async def test_spi(dut):
   p = 17
   q = 11
   m = p * q
+  phi_m = (p-1) * (q-1)
+  
   e = 7
 
   #d = invmod(e, phi_m)  ->  d*e == 1 mod phi_m
