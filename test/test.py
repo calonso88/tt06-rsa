@@ -1,5 +1,7 @@
 # SPDX-FileCopyrightText: © 2023 Uri Shaked <uri@tinytapeout.com>
 # SPDX-License-Identifier: MIT
+import sympy
+import random
 
 import cocotb
 from cocotb.clock import Clock
@@ -230,23 +232,40 @@ async def test_spi(dut):
   # Set the input values, wait one clock cycle, and check the output
   dut._log.info("Test")
 
+  while True:
+    p = random.randint(3, 85)
+    p_is_prime = sympy.isprime(p)
+    q = random.randint(3, 85)
+    q_is_prime = sympy.isprime(q)
+    m = p * q
+    cocotb.log.info(f"RSA RANDOM, P: {p}, Q: {q}, M: {m}")
+    if ( ( m < 255 ) and ( p != q ) and ( p_is_prime == 1 ) and ( q_is_prime == 1 ) ):
+      break
 
-  p = 3
-  q = 5
+  phi_m = (p-1) * (q-1)
+  cocotb.log.info(f"RSA SORTED, P: {p}, Q: {q}, M: {m}, PHI(M): {phi_m}")
+  
+  while True:
+    e = random.ranint(3, phi_m)
+    e_is_prime = sympy.isprime(e)
+    if ( ( e < phi_m ) and ( e_is_prime == 1 ) ):
+      break
+
+  p = 17
+  q = 11
   m = p * q
-  #phi_n = (p-1) * (q-1)
   e = 7
-  d = 7
-  const = 1
+  d = 23
   bits = 8+2
-
+  const = 2 ** (2 * bits)
   
 
   cocotb.log.info(f"Public key: ( {e}, {m} )")
   cocotb.log.info(f"Private key: ( {d}, {m} )")
   cocotb.log.info(f"Montgomert constant: {const}")
   
-  plain_text = 0x2
+  #plain_text = 0x2
+  plain_text = 0x58
   cocotb.log.info(f"Plain text: {plain_text}")
 
   # Write reg[2] ( plain_text )
