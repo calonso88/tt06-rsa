@@ -1,11 +1,25 @@
 # SPDX-FileCopyrightText: © 2023 Uri Shaked <uri@tinytapeout.com>
 # SPDX-License-Identifier: MIT
-import sympy
 import random
 
 import cocotb
 from cocotb.clock import Clock
 from cocotb.triggers import ClockCycles
+
+def is_prime(num):
+  if (num < 2) :
+    return 0;
+  else :
+    # Iterate from 2 to n // 2
+    for i in range(2, ((num // 2) + 1)) :
+      # If num is divisible by any number between
+      # 2 and n / 2, it is not prime
+      if (num % i) == 0:
+        print(num, "is not a prime number")
+        return 0
+    
+    return 1
+
 
 def get_bit(value, bit_index):
   #cocotb.log.info(f"Into get_bit function")
@@ -234,9 +248,9 @@ async def test_spi(dut):
 
   while True:
     p = random.randint(3, 85)
-    p_is_prime = sympy.isprime(p)
+    p_is_prime = is_prime(p)
     q = random.randint(3, 85)
-    q_is_prime = sympy.isprime(q)
+    q_is_prime = is_prime(q)
     m = p * q
     cocotb.log.info(f"RSA RANDOM, P: {p}, Q: {q}, M: {m}")
     if ( ( m < 255 ) and ( p != q ) and ( p_is_prime == 1 ) and ( q_is_prime == 1 ) ):
@@ -247,7 +261,7 @@ async def test_spi(dut):
   
   while True:
     e = random.ranint(3, phi_m)
-    e_is_prime = sympy.isprime(e)
+    e_is_prime = is_prime(e)
     if ( ( e < phi_m ) and ( e_is_prime == 1 ) ):
       break
 
