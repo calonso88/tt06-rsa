@@ -260,7 +260,7 @@ async def test_spi(dut):
   cocotb.log.info(f"RSA SORTED, P: {p}, Q: {q}, M: {m}, PHI(M): {phi_m}")
   
   while True:
-    e = random.ranint(3, phi_m)
+    e = random.randint(3, phi_m)
     e_is_prime = is_prime(e)
     if ( ( e < phi_m ) and ( e_is_prime == 1 ) ):
       break
