@@ -60,7 +60,7 @@ module tt_um_calonso88_rsa_top (
   assign uo_out[4] = gpio_irq;
 
   // Assign IOs as output
-  //assign uio_oe       = '1;
+  //assign uio_oe       = '0;
   // Assign spare to output
   //assign uio_out[7:0] = spare;
 
