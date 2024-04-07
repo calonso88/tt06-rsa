@@ -21,7 +21,7 @@ module mmm_unit #(parameter int WIDTH = 4) (en, rstb, clk, rst_mmm, ld_a, ld_r, 
   logic qj;
   logic [WIDTH-1:0] mux_out;
   logic [WIDTH-1:0] rjo;
-  logic[WIDTH-1:0] R_i;
+  logic [WIDTH-1:0] R_i;
 
   assign rst_mmm_i = rstb & rst_mmm;
 
