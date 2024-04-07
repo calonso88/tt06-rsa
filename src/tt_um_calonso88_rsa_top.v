@@ -46,18 +46,21 @@ module tt_um_calonso88_rsa_top (
   wire [REG_WIDTH-1:0] rsa_m;
   wire [REG_WIDTH-1:0] rsa_const;
   wire [REG_WIDTH-1:0] rsa_c;
+  wire [REG_WIDTH-1:0] spare;
 
   // All output pins must be assigned. If not used, assign to 0.
   assign uo_out[2:0]  = 0;
   assign uo_out[7:5]  = 0;
-  assign uio_out[7:0] = 0;
-  assign uio_oe       = 0;
 
   // Output ports
   assign gpio_irq = irq;
   assign uo_out[3] = spi_miso;
   assign uo_out[4] = gpio_irq;
-  //assign uo_out[4] = 0;
+
+  // Assign IOs as output
+  assign uio_oe       = 0;
+  // Assign spare to output
+  assign uio_out[7:0] = spare;
 
   // Input ports
   assign spi_cs_n   = ui_in[0];
@@ -70,7 +73,7 @@ module tt_um_calonso88_rsa_top (
   gpio_wrapper gpio_wrapper_i (.rstb(rst_n), .clk(clk), .ena(ena), .gpio_start(gpio_start), .gpio_stop(gpio_stop), .gpio_start_cmd(gpio_start_cmd), .gpio_stop_cmd(gpio_stop_cmd));
 
   // SPI wrapper
-  spi_wrapper #(.WIDTH(REG_WIDTH)) spi_wrapper_i (.rstb(rst_n), .clk(clk), .ena(ena), .spi_cs_n(spi_cs_n), .spi_clk(spi_clk), .spi_mosi(spi_mosi), .spi_miso(spi_miso), .spi_start_cmd(spi_start_cmd), .spi_stop_cmd(spi_stop_cmd), .rsa_p(rsa_p), .rsa_e(rsa_e), .rsa_m(rsa_m), .rsa_const(rsa_const), .rsa_c(rsa_c), .eoc(irq), .spare());
+  spi_wrapper #(.WIDTH(REG_WIDTH)) spi_wrapper_i (.rstb(rst_n), .clk(clk), .ena(ena), .spi_cs_n(spi_cs_n), .spi_clk(spi_clk), .spi_mosi(spi_mosi), .spi_miso(spi_miso), .spi_start_cmd(spi_start_cmd), .spi_stop_cmd(spi_stop_cmd), .rsa_p(rsa_p), .rsa_e(rsa_e), .rsa_m(rsa_m), .rsa_const(rsa_const), .rsa_c(rsa_c), .eoc(irq), .spare(spare));
 
   // Controller
   rsa_en_logic rsa_en_logic_i (.rstb(rst_n), .clk(clk), .ena(ena), .gpio_start(gpio_start_cmd), .spi_start(spi_start_cmd), .gpio_stop(gpio_stop_cmd), .spi_stop(spi_stop_cmd), .en_rsa(en_rsa), .rst_rsa(rst_rsa), .eoc_rsa_unit(rsa_eoc), .eoc(irq));
