@@ -21,7 +21,6 @@ project:
     - "full_adder.sv"
     - "gpio_wrapper.sv"
     - "half_adder.sv"
-    - "kogge_stone_adder.sv"
     - "mmm_unit.sv"
     - "mux1_unit.sv"
     - "mux2_unit.sv"
@@ -37,7 +36,6 @@ project:
     - "shiftreg2.sv"
     - "shiftreg3.sv"
     - "spi_wrapper.sv"
-    - "spireg_wrapper.v"
     - "spireg.v"
     - "synchronizer.sv"
 
