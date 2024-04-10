@@ -51,8 +51,6 @@ module tt_um_calonso88_rsa_top (
   // All output pins must be assigned. If not used, assign to 0.
   assign uo_out[2:0]  = '0;
   assign uo_out[7:5]  = '0;
-  //assign uio_out[7:0] = '0;
-  //assign uio_oe       = '0;
 
   // Output ports
   assign gpio_irq = irq;
@@ -63,22 +61,6 @@ module tt_um_calonso88_rsa_top (
   assign uio_oe       = '1;
   // Assign spare to output
   assign uio_out[7:0] = spare;
-
-  // I/Os pins as inputs
-  //assign uio_oe[0]    = 1'b0; // SCI_CSN
-  //assign sci_csn      = uio_in[0];
-  //assign uio_oe[1]    = 1'b0;
-  //assign sci_req      = uio_in[1]; // SCI_REQ
-  // I/Os pins as outputs
-  //assign uio_oe[2]    = 1'b1; // SCI_RESP
-  //assign uio_out[2]   = sci_resp;
-  //assign uio_oe[3]    = 1'b1; // SCI_ACK
-  //assign uio_out[3]   = sci_ack;
-  // Unused I/Os
-  //assign uio_oe[7:4]  = 4'b0000;
-  //assign uio_out[7:4] = 4'b0000;
-  //assign uio_out[1:0] = 2'b00;
-
 
   // Input ports
   assign spi_cs_n   = ui_in[0];
