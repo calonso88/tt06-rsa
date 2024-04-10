@@ -354,7 +354,7 @@ module fsm_control_unit (ena, rstb, clk, expE, rst_mmm, ld_a, ld_r, lock1, lock2
         rst_exp_flop = 1'b0;
         f2 = 1'b0;
         eoc = 1'b0;
-        ld_e = 1'b0
+        ld_e = 1'b0;
         clear_counter_steps = 1'b0;
         clear_counter_rounds = 1'b0;
         increment_steps = 1'b0;
