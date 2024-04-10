@@ -1,4 +1,4 @@
-module fsm_control_unit (ena, rstb, clk, expE, rst_mmm, ld_a, ld_r, lock1, lock2, sel1, sel2, eoc);
+module fsm_control_unit_new (ena, rstb, clk, expE, rst_mmm, ld_a, ld_r, lock1, lock2, sel1, sel2, eoc);
 
   input ena;
   input rstb;
