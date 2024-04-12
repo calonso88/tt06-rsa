@@ -25,8 +25,8 @@ module fsm_control_unit_new #(parameter int WIDTH = 8) (ena, rstb, clk, expE, rs
   logic [1:0] sel1;
   logic sel2;
   logic [WIDTH+1:0] reg_exp;
-  logic [(clog2(WIDTH+2))-1:0] counter_steps; // [3:0]
-  logic [(clog2(WIDTH+2))-1:0] counter_rounds; // [3:0]
+  logic [($clog2(WIDTH+2))-1:0] counter_steps; // [3:0]
+  logic [($clog2(WIDTH+2))-1:0] counter_rounds; // [3:0]
   logic rst_exp_flop;
   logic f2;
   logic eoc;
