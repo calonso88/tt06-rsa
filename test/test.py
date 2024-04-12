@@ -284,7 +284,7 @@ async def test_spi(dut):
   cocotb.log.info(f"RSA, P: {p}, Q: {q}, M: {m}, PHI(M): {phi_m}")
   cocotb.log.info(f"Public key: ( {e}, {m} )")
   cocotb.log.info(f"Private key: ( {d}, {m} )")
-  cocotb.log.info(f"Montgomert constant: {const}")
+  cocotb.log.info(f"Montgomery constant: {const}")
   
   #plain_text = 0x2
   #plain_text = 0x58
