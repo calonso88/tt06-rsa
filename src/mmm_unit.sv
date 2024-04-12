@@ -1,9 +1,9 @@
-module mmm_unit #(parameter int WIDTH = 4) (en, rstb, clk, rst_mmm, ld_a, ld_r, lock, A, B, M, R);
+module mmm_unit #(parameter int WIDTH = 4) (ena, rstb, clk, clear, ld_a, ld_r, lock, A, B, M, R);
 
-  input en;
+  input ena;
   input rstb;
   input clk;
-  input rst_mmm;
+  input clear;
   input ld_a;
   input ld_r;
   input lock;
@@ -13,7 +13,6 @@ module mmm_unit #(parameter int WIDTH = 4) (en, rstb, clk, rst_mmm, ld_a, ld_r, 
   input [WIDTH-1:0] M;
   output [WIDTH-1:0] R;
 
-  logic rst_mmm_i;
   logic [WIDTH-1:0] MB;
 
   logic A_bit;
@@ -22,8 +21,6 @@ module mmm_unit #(parameter int WIDTH = 4) (en, rstb, clk, rst_mmm, ld_a, ld_r, 
   logic [WIDTH-1:0] mux_out;
   logic [WIDTH-1:0] rjo;
   logic [WIDTH-1:0] R_i;
-
-  assign rst_mmm_i = rstb & rst_mmm;
 
   ripple_carry_adder #(.WIDTH(WIDTH)) adder1 (.a(B), .b(M), .ci(1'b0), .sum(MB), .co());
 
@@ -39,9 +36,9 @@ module mmm_unit #(parameter int WIDTH = 4) (en, rstb, clk, rst_mmm, ld_a, ld_r, 
 
   ripple_carry_adder #(.WIDTH(WIDTH)) adder2 (.a(reg_rji), .b(mux_out), .ci(1'b0), .sum(rjo), .co());
 
-  shiftreg1 #(.WIDTH(WIDTH)) shiftreg_A_aux   (.en(en), .rstb(rstb), .clk(clk), .rst_mmm_i(rst_mmm_i), .ld_a(ld_a), .A(A), .A_bit(A_bit));
-  shiftreg2 #(.WIDTH(WIDTH)) shiftreg_reg_rji (.en(en), .rstb(rstb), .clk(clk), .rst_mmm_i(rst_mmm_i), .ld_a(ld_a), .rjo(rjo), .reg_rji(reg_rji));
-  shiftreg3 #(.WIDTH(WIDTH)) shiftreg_result  (.en(en), .rstb(rstb), .clk(clk), .rst_mmm_i(rst_mmm_i), .lock(lock), .ld_r(ld_r), .reg_rji(reg_rji), .A(A), .R_i(R_i));
+  shiftreg1 #(.WIDTH(WIDTH)) shiftreg_A_aux   (.ena(ena), .rstb(rstb), .clk(clk), .clear(clear), .load(ld_a), .A(A), .A_bit(A_bit));
+  shiftreg2 #(.WIDTH(WIDTH)) shiftreg_reg_rji (.ena(ena), .rstb(rstb), .clk(clk), .clear(clear), .load(ld_a), .rjo(rjo), .reg_rji(reg_rji));
+  shiftreg3 #(.WIDTH(WIDTH)) shiftreg_result  (.ena(ena), .rstb(rstb), .clk(clk), .clear(clear), .lock(lock), .ld_r(ld_r), .reg_rji(reg_rji), .A(A), .R_i(R_i));
 
   assign R = R_i;
 
