@@ -31,9 +31,9 @@ module fsm_control_unit_new (ena, rstb, clk, expE, rst_mmm, ld_a, ld_r, lock1, l
   logic f2;
   logic eoc;
 
-  logic clear_counter_step;
+  logic clear_counter_steps;
   logic clear_counter_rounds;
-  logic increment_step;
+  logic increment_steps;
   logic increment_rounds;
 
   // FSM states type
