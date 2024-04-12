@@ -107,6 +107,7 @@ module fsm_control_unit_new #(parameter int WIDTH = 8) (ena, rstb, clk, expE, rs
 
   always_comb begin
 
+    /*
     // default assignments
     rst_mmm = 1'b0;
     ld_a = 1'b0;
@@ -124,6 +125,7 @@ module fsm_control_unit_new #(parameter int WIDTH = 8) (ena, rstb, clk, expE, rs
     increment_steps = 1'b0;
     increment_rounds = 1'b0;
     next_state = state;
+    */
 
     case (state)
 
