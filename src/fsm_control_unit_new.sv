@@ -30,6 +30,7 @@ module fsm_control_unit_new #(parameter int WIDTH = 8) (ena, rstb, clk, expE, rs
   logic rst_exp_flop;
   logic f2;
   logic eoc;
+  logic ld_e;
 
   logic clear_counter_steps;
   logic clear_counter_rounds;
