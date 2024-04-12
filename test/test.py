@@ -257,7 +257,7 @@ async def test_spi(dut):
       break
 
   phi_m = (p-1) * (q-1)
-  cocotb.log.info(f"RSA, P: {p}, Q: {q}, M: {m}, PHI(M): {phi_m}")
+  #cocotb.log.info(f"RSA, P: {p}, Q: {q}, M: {m}, PHI(M): {phi_m}")
   
   while True:
     e = random.randint(3, phi_m)
@@ -281,7 +281,7 @@ async def test_spi(dut):
   # Montgomery constant
   const = (2 ** (2 * bits)) % m
   
-
+  cocotb.log.info(f"RSA, P: {p}, Q: {q}, M: {m}, PHI(M): {phi_m}")
   cocotb.log.info(f"Public key: ( {e}, {m} )")
   cocotb.log.info(f"Private key: ( {d}, {m} )")
   cocotb.log.info(f"Montgomert constant: {const}")
