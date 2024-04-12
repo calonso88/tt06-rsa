@@ -166,7 +166,7 @@ module fsm_control_unit_new #(parameter int WIDTH = 8) (ena, rstb, clk, expE, rs
         increment_rounds = 1'b0;
         next_state = STATE_MAP;
       end
-
+/*
       STATE_MAP : begin
         rst_mmm = 1'b1;
         ld_a = 1'b1;
@@ -366,7 +366,7 @@ module fsm_control_unit_new #(parameter int WIDTH = 8) (ena, rstb, clk, expE, rs
         increment_rounds = 1'b0;
         next_state = state;
       end
-
+*/
     endcase
 
   end

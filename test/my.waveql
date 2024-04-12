@@ -12,7 +12,7 @@ rsa_en_logic_i
 start_comb
 state
 ..
-rsa_i
+rsa_unit_i
 en
 rstb
 P
@@ -28,3 +28,12 @@ clk
 state
 next_state
 eoc
+const_counter_compare
+clear_counter_rounds
+clear_counter_steps
+counter_rounds
+counter_steps
+increment_rounds
+increment_steps
+reg_exp
+expE
