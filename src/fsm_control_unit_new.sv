@@ -14,9 +14,6 @@ module fsm_control_unit_new #(parameter int WIDTH = 8) (ena, rstb, clk, expE, rs
   output sel2;
   output eoc;
 
-  logic rst_counter;
-  logic rst_exp;
-
   logic rst_mmm;
   logic ld_a;
   logic ld_r;
