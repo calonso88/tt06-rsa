@@ -265,6 +265,13 @@ async def test_spi(dut):
     if ( ( e < phi_m ) and ( e_is_prime == 1 ) ):
       break
 
+  # DEBUG
+  p = 3
+  q = 5
+  m = p * q
+  phi_m = (p-1) * (q-1)
+  e = 7
+  # DEBUG
 
   #d = invmod(e, phi_m)  ->  d*e == 1 mod phi_m
   d = pow(e, -1, phi_m)
