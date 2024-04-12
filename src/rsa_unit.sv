@@ -52,7 +52,7 @@ module rsa_unit #(parameter int WIDTH = 8) (en, rstb, clk, P, E, M, Const, C, eo
 
   mmm_unit #(.WIDTH(WIDTH+2)) mmm_square (.en(en), .rstb(rstb), .clk(clk), .rst_mmm(rst_mmm), .ld_a(ld_a), .ld_r(ld_r), .lock(lock2), .A(square_a), .B(square_b), .M(M_ex), .R(P_i));
 
-  fsm_control_unit rsa_control (.en(en), .rstb(rstb), .clk(clk), .expE(E_ex), .rst_mmm(rst_mmm), .ld_a(ld_a), .ld_r(ld_r), .lock1(lock1), .lock2(lock2), .sel1(sel1), .sel2(sel2), .eoc(eoc));
+  fsm_control_unit #(.WIDTH(WIDTH+2)) fsm_control (.en(en), .rstb(rstb), .clk(clk), .expE(E_ex), .rst_mmm(rst_mmm), .ld_a(ld_a), .ld_r(ld_r), .lock1(lock1), .lock2(lock2), .sel1(sel1), .sel2(sel2), .eoc(eoc));
 
   register_crypt #(.WIDTH(WIDTH+2)) reg_crypt (.en(en), .rstb(rstb), .clk(clk), .eoc(eoc), .R_i(R_i), .C_ex(C_ex));
 
