@@ -29,6 +29,8 @@ module fsm_control_unit_new #(parameter int WIDTH = 8) (ena, rstb, clk, expE, rs
   logic eoc;
   logic ld_e;
 
+  logic [($clog2(WIDTH-1))-1:0] const_counter_compare; // [3:0]
+
   logic clear_counter_steps;
   logic clear_counter_rounds;
   logic increment_steps;
@@ -41,6 +43,9 @@ module fsm_control_unit_new #(parameter int WIDTH = 8) (ena, rstb, clk, expE, rs
 
   // FSM states
   fsm_control_state state, next_state;
+
+  // Value for comparison
+  assign const_counter_compare = WIDTH;
 
   // Counter steps
   always_ff @(negedge(rstb) or posedge(clk)) begin
@@ -176,7 +181,7 @@ module fsm_control_unit_new #(parameter int WIDTH = 8) (ena, rstb, clk, expE, rs
         clear_counter_rounds = 1'b0;
         increment_steps = 1'b1;
         increment_rounds = 1'b0;
-        if ( counter_steps == WIDTH+2 ) begin // 4'd10
+        if ( counter_steps == const_counter_compare ) begin // 4'd10
           next_state = STATE_POST_MAP;
         end
       end
@@ -235,7 +240,7 @@ module fsm_control_unit_new #(parameter int WIDTH = 8) (ena, rstb, clk, expE, rs
         clear_counter_rounds = 1'b0;
         increment_steps = 1'b1;
         increment_rounds = 1'b0;
-        if ( counter_steps == WIDTH+2 ) begin // 4'd10
+        if ( counter_steps == const_counter_compare ) begin // 4'd10
           next_state = STATE_POST_MMM;
         end
       end
@@ -256,7 +261,7 @@ module fsm_control_unit_new #(parameter int WIDTH = 8) (ena, rstb, clk, expE, rs
         clear_counter_rounds = 1'b0;
         increment_steps = 1'b0;
         increment_rounds = 1'b1;
-        if ( counter_rounds == WIDTH+2 ) begin // 4'd10
+        if ( counter_rounds == const_counter_compare ) begin // 4'd10
           next_state = STATE_PRE_REMAP;
         end else begin
           next_state = STATE_PRE_MMM;
@@ -298,7 +303,7 @@ module fsm_control_unit_new #(parameter int WIDTH = 8) (ena, rstb, clk, expE, rs
         clear_counter_rounds = 1'b0;
         increment_steps = 1'b1;
         increment_rounds = 1'b0;
-        if ( counter_steps == WIDTH+2 ) begin // 4'd10
+        if ( counter_steps == const_counter_compare ) begin // 4'd10
           next_state = POST_REMAP;
         end
       end

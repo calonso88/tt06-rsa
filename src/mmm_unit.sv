@@ -38,7 +38,7 @@ module mmm_unit #(parameter int WIDTH = 4) (ena, rstb, clk, clear, ld_a, ld_r, l
 
   shiftreg1 #(.WIDTH(WIDTH)) shiftreg_A_aux   (.ena(ena), .rstb(rstb), .clk(clk), .clear(clear), .load(ld_a), .A(A), .A_bit(A_bit));
   shiftreg2 #(.WIDTH(WIDTH)) shiftreg_reg_rji (.ena(ena), .rstb(rstb), .clk(clk), .clear(clear), .load(ld_a), .rjo(rjo), .reg_rji(reg_rji));
-  shiftreg3 #(.WIDTH(WIDTH)) shiftreg_result  (.ena(ena), .rstb(rstb), .clk(clk), .clear(clear), .lock(lock), .ld_r(ld_r), .reg_rji(reg_rji), .A(A), .R_i(R_i));
+  shiftreg3 #(.WIDTH(WIDTH)) shiftreg_result  (.ena(ena), .rstb(rstb), .clk(clk), .clear(clear), .load(ld_r), .lock(lock), .reg_rji(reg_rji), .A(A), .R_i(R_i));
 
   assign R = R_i;
 
