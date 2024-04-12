@@ -18,7 +18,7 @@ module shiftreg3 #(parameter int WIDTH = 4) (ena, rstb, clk, clear, lock, ld_r, 
       R_i <= '0;
     end else begin
       if (ena == 1'b1) begin
-        if (clear = 1'b0) begin
+        if (clear == 1'b0) begin
           R_i <= '0;
         end else begin
           if (ld_r == 1'b1) begin

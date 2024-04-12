@@ -16,7 +16,7 @@ module shiftreg1 #(parameter int WIDTH = 4) (ena, rstb, clk, clear, load, A, A_b
       A_aux <= '0;
     end else begin
       if (ena == 1'b1) begin
-        if (clear = 1'b0) begin
+        if (clear == 1'b0) begin
           A_aux <= '0';
         end else begin
           if (load == 1'b1) begin
