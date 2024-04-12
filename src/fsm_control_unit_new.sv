@@ -1,9 +1,9 @@
-module fsm_control_unit_new (ena, rstb, clk, expE, rst_mmm, ld_a, ld_r, lock1, lock2, sel1, sel2, eoc);
+module fsm_control_unit_new #(parameter int WIDTH = 8) (ena, rstb, clk, expE, rst_mmm, ld_a, ld_r, lock1, lock2, sel1, sel2, eoc);
 
   input ena;
   input rstb;
   input clk;
-  input [9:0] expE;
+  input [WIDTH+1:0] expE;
 
   output rst_mmm;
   output ld_a;
@@ -24,9 +24,9 @@ module fsm_control_unit_new (ena, rstb, clk, expE, rst_mmm, ld_a, ld_r, lock1, l
   logic lock2;
   logic [1:0] sel1;
   logic sel2;
-  logic [9:0] reg_exp;
-  logic [3:0] counter_steps;
-  logic [3:0] counter_rounds;
+  logic [WIDTH+1:0] reg_exp;
+  logic [(clog2(WIDTH+2))-1:0] counter_steps; // [3:0]
+  logic [(clog2(WIDTH+2))-1:0] counter_rounds; // [3:0]
   logic rst_exp_flop;
   logic f2;
   logic eoc;
@@ -178,7 +178,7 @@ module fsm_control_unit_new (ena, rstb, clk, expE, rst_mmm, ld_a, ld_r, lock1, l
         clear_counter_rounds = 1'b0;
         increment_steps = 1'b1;
         increment_rounds = 1'b0;
-        if ( counter_steps == 4'd10 ) begin
+        if ( counter_steps == WIDTH+2 ) begin // 4'd10
           next_state = STATE_POST_MAP;
         end
       end
@@ -237,7 +237,7 @@ module fsm_control_unit_new (ena, rstb, clk, expE, rst_mmm, ld_a, ld_r, lock1, l
         clear_counter_rounds = 1'b0;
         increment_steps = 1'b1;
         increment_rounds = 1'b0;
-        if ( counter_steps == 4'd10 ) begin
+        if ( counter_steps == WIDTH+2 ) begin // 4'd10
           next_state = STATE_POST_MMM;
         end
       end
@@ -258,7 +258,7 @@ module fsm_control_unit_new (ena, rstb, clk, expE, rst_mmm, ld_a, ld_r, lock1, l
         clear_counter_rounds = 1'b0;
         increment_steps = 1'b0;
         increment_rounds = 1'b1;
-        if ( counter_rounds == 4'd10 ) begin
+        if ( counter_rounds == WIDTH+2 ) begin // 4'd10
           next_state = STATE_PRE_REMAP;
         end else begin
           next_state = STATE_PRE_MMM;
@@ -300,7 +300,7 @@ module fsm_control_unit_new (ena, rstb, clk, expE, rst_mmm, ld_a, ld_r, lock1, l
         clear_counter_rounds = 1'b0;
         increment_steps = 1'b1;
         increment_rounds = 1'b0;
-        if ( counter_steps == 4'd10 ) begin
+        if ( counter_steps == WIDTH+2 ) begin // 4'd10
           next_state = POST_REMAP;
         end
       end
