@@ -101,7 +101,11 @@ module fsm_control_unit_new #(parameter int WIDTH = 8) (rstb, clk, ena, clear, e
       state <= STATE_RESET;
     end else begin
       if (ena == 1'b1) begin
-        state <= next_state;
+        if (clear == 1'b0) begin
+          state <= STATE_RESET;
+        end else begin
+          state <= next_state;
+        end
       end
     end
   end
@@ -182,9 +186,11 @@ module fsm_control_unit_new #(parameter int WIDTH = 8) (rstb, clk, ena, clear, e
         clear_counter_rounds = 1'b0;
         increment_steps = 1'b1;
         increment_rounds = 1'b0;
-//        if ( counter_steps == const_counter_compare ) begin // 4'd10
+        if ( counter_steps == const_counter_compare ) begin // 4'd10
           next_state = STATE_POST_MAP;
-//        end
+        end else begin
+          next_state = STATE_MAP;
+        end
       end
 
       STATE_POST_MAP : begin
@@ -241,9 +247,11 @@ module fsm_control_unit_new #(parameter int WIDTH = 8) (rstb, clk, ena, clear, e
         clear_counter_rounds = 1'b0;
         increment_steps = 1'b1;
         increment_rounds = 1'b0;
-//        if ( counter_steps == const_counter_compare ) begin // 4'd10
+        if ( counter_steps == const_counter_compare ) begin // 4'd10
           next_state = STATE_POST_MMM;
-//        end
+        end else begin
+          next_state = STATE_MMM;
+        end
       end
 
       STATE_POST_MMM : begin
@@ -262,11 +270,11 @@ module fsm_control_unit_new #(parameter int WIDTH = 8) (rstb, clk, ena, clear, e
         clear_counter_rounds = 1'b0;
         increment_steps = 1'b0;
         increment_rounds = 1'b1;
-//        if ( counter_rounds == const_counter_compare ) begin // 4'd10
+        if ( counter_rounds == const_counter_compare ) begin // 4'd10
           next_state = STATE_PRE_REMAP;
-//        end else begin
-//          next_state = STATE_PRE_MMM;
-//        end
+        end else begin
+          next_state = STATE_PRE_MMM;
+        end
       end
 
       STATE_PRE_REMAP : begin
@@ -304,9 +312,11 @@ module fsm_control_unit_new #(parameter int WIDTH = 8) (rstb, clk, ena, clear, e
         clear_counter_rounds = 1'b0;
         increment_steps = 1'b1;
         increment_rounds = 1'b0;
-//        if ( counter_steps == const_counter_compare ) begin // 4'd10
+        if ( counter_steps == const_counter_compare ) begin // 4'd10
           next_state = POST_REMAP;
-//        end
+        end else begin
+          next_state = STATE_REMAP;
+        end
       end
 
       POST_REMAP : begin

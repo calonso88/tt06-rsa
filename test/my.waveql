@@ -22,9 +22,10 @@ Const
 C
 eoc
 fsm_control
-ena
 rstb
 clk
+ena
+clear
 state
 next_state
 eoc
