@@ -1,10 +1,10 @@
-module fsm_control_unit_new #(parameter int WIDTH = 8) (rstb, clk, ena, clear, expE, clear_mmm, ld_a, ld_r, lock1, lock2, sel1, sel2, eoc);
+module fsm_control_unit_new #(parameter int WIDTH = 8) (rstb, clk, ena, clear, E, clear_mmm, ld_a, ld_r, lock1, lock2, sel1, sel2, eoc);
 
   input rstb;
   input clk;
   input ena;
   input clear;
-  input [WIDTH-1:0] expE;
+  input [WIDTH-1:0] E;
 
   output clear_mmm;
   output ld_a;
@@ -22,20 +22,20 @@ module fsm_control_unit_new #(parameter int WIDTH = 8) (rstb, clk, ena, clear, e
   logic lock2;
   logic [1:0] sel1;
   logic sel2;
-  logic [WIDTH-1:0] reg_exp;
+  logic eoc;
+
+  logic [WIDTH-1:0] exp;
+  logic clear_exp;
+  logic load_exp;
+  logic shift_exp;
+
   logic [($clog2(WIDTH-1))-1:0] counter_steps; // [3:0]
   logic [($clog2(WIDTH-1))-1:0] counter_rounds; // [3:0]
-  logic rst_exp_flop;
-  logic f2;
-  logic eoc;
-  logic ld_e;
-
-  logic [($clog2(WIDTH-1))-1:0] const_counter_compare; // [3:0]
-
   logic clear_counter_steps;
   logic clear_counter_rounds;
   logic increment_steps;
   logic increment_rounds;
+  logic [($clog2(WIDTH-1))-1:0] const_counter_compare; // [3:0]
 
   // FSM states type
   typedef enum logic [3:0] {
@@ -81,15 +81,15 @@ module fsm_control_unit_new #(parameter int WIDTH = 8) (rstb, clk, ena, clear, e
   // Exponent shift register
   always_ff @(negedge(rstb) or posedge(clk)) begin
     if (!rstb) begin
-      reg_exp <= '0;
+      exp <= '0;
     end else begin
       if (ena == 1'b1) begin
-        if (rst_exp_flop == 1'b0) begin
-          reg_exp <= '0;
-        end else if (ld_e == 1'b1) begin
-          reg_exp <= expE;
-        end else if (f2 == 1'b1) begin
-          reg_exp <= (reg_exp >> 1);
+        if (clear_exp == 1'b0) begin
+          exp <= '0;
+        end else if (load_exp == 1'b1) begin
+          exp <= E;
+        end else if (shift_exp == 1'b1) begin
+          exp <= (exp >> 1);
         end
       end
     end
@@ -120,10 +120,10 @@ module fsm_control_unit_new #(parameter int WIDTH = 8) (rstb, clk, ena, clear, e
     lock2 = 1'b0;
     sel1 = 2'b00;
     sel2 = 1'b0;
-    rst_exp_flop = 1'b0;
-    f2 = 1'b0;
+    clear_exp = 1'b0;
+    shift_exp = 1'b0;
     eoc = 1'b0;
-    ld_e = 1'b0;
+    load_exp = 1'b0;
     clear_counter_steps = 1'b0;
     clear_counter_rounds = 1'b0;
     increment_steps = 1'b0;
@@ -140,10 +140,10 @@ module fsm_control_unit_new #(parameter int WIDTH = 8) (rstb, clk, ena, clear, e
         lock2 = 1'b0;
         sel1 = 2'b00;
         sel2 = 1'b0;
-        rst_exp_flop = 1'b0;
-        f2 = 1'b0;
+        clear_exp = 1'b0;
+        shift_exp = 1'b0;
         eoc = 1'b0;
-        ld_e = 1'b0;
+        load_exp = 1'b0;
         clear_counter_steps = 1'b0;
         clear_counter_rounds = 1'b0;
         increment_steps = 1'b0;
@@ -159,10 +159,10 @@ module fsm_control_unit_new #(parameter int WIDTH = 8) (rstb, clk, ena, clear, e
         lock2 = 1'b1;
         sel1 = 2'b00;
         sel2 = 1'b0;
-        rst_exp_flop = 1'b0;
-        f2 = 1'b0;
+        clear_exp = 1'b0;
+        shift_exp = 1'b0;
         eoc = 1'b0;
-        ld_e = 1'b0;
+        load_exp = 1'b0;
         clear_counter_steps = 1'b0;
         clear_counter_rounds = 1'b0;
         increment_steps = 1'b0;
@@ -178,10 +178,10 @@ module fsm_control_unit_new #(parameter int WIDTH = 8) (rstb, clk, ena, clear, e
         lock2 = 1'b1;
         sel1 = 2'b00;
         sel2 = 1'b0;
-        rst_exp_flop = 1'b0;
-        f2 = 1'b0;
+        clear_exp = 1'b0;
+        shift_exp = 1'b0;
         eoc = 1'b0;
-        ld_e = 1'b0;
+        load_exp = 1'b0;
         clear_counter_steps = 1'b0;
         clear_counter_rounds = 1'b0;
         increment_steps = 1'b1;
@@ -201,10 +201,10 @@ module fsm_control_unit_new #(parameter int WIDTH = 8) (rstb, clk, ena, clear, e
         lock2 = 1'b1;
         sel1 = 2'b00;
         sel2 = 1'b0;
-        rst_exp_flop = 1'b1;
-        f2 = 1'b1;
+        clear_exp = 1'b1;
+        shift_exp = 1'b1;
         eoc = 1'b0;
-        ld_e = 1'b1;
+        load_exp = 1'b1;
         clear_counter_steps = 1'b1;
         clear_counter_rounds = 1'b0;
         increment_steps = 1'b0;
@@ -216,14 +216,14 @@ module fsm_control_unit_new #(parameter int WIDTH = 8) (rstb, clk, ena, clear, e
         clear_mmm = 1'b1;
         ld_a = 1'b1;
         ld_r = 1'b0;
-        lock1 = reg_exp[0];
+        lock1 = exp[0];
         lock2 = 1'b1;
         sel1 = 2'b01;
         sel2 = 1'b1;
-        rst_exp_flop = 1'b1;
-        f2 = 1'b0;
+        clear_exp = 1'b1;
+        shift_exp = 1'b0;
         eoc = 1'b0;
-        ld_e = 1'b0;
+        load_exp = 1'b0;
         clear_counter_steps = 1'b0;
         clear_counter_rounds = 1'b0;
         increment_steps = 1'b0;
@@ -235,14 +235,14 @@ module fsm_control_unit_new #(parameter int WIDTH = 8) (rstb, clk, ena, clear, e
         clear_mmm = 1'b1;
         ld_a = 1'b0;
         ld_r = 1'b0;
-        lock1 = reg_exp[0];
+        lock1 = exp[0];
         lock2 = 1'b1;
         sel1 = 2'b01;
         sel2 = 1'b1;
-        rst_exp_flop = 1'b1;
-        f2 = 1'b0;
+        clear_exp = 1'b1;
+        shift_exp = 1'b0;
         eoc = 1'b0;
-        ld_e = 1'b0;
+        load_exp = 1'b0;
         clear_counter_steps = 1'b0;
         clear_counter_rounds = 1'b0;
         increment_steps = 1'b1;
@@ -258,14 +258,14 @@ module fsm_control_unit_new #(parameter int WIDTH = 8) (rstb, clk, ena, clear, e
         clear_mmm = 1'b1;
         ld_a = 1'b0;
         ld_r = 1'b1;
-        lock1 = reg_exp[0];
+        lock1 = exp[0];
         lock2 = 1'b1;
         sel1 = 2'b01;
         sel2 = 1'b1;
-        rst_exp_flop = 1'b1;
-        f2 = 1'b1;
+        clear_exp = 1'b1;
+        shift_exp = 1'b1;
         eoc = 1'b0;
-        ld_e = 1'b0;
+        load_exp = 1'b0;
         clear_counter_steps = 1'b1;
         clear_counter_rounds = 1'b0;
         increment_steps = 1'b0;
@@ -285,10 +285,10 @@ module fsm_control_unit_new #(parameter int WIDTH = 8) (rstb, clk, ena, clear, e
         lock2 = 1'b0;
         sel1 = 2'b10;
         sel2 = 1'b1;
-        rst_exp_flop = 1'b1;
-        f2 = 1'b0;
+        clear_exp = 1'b1;
+        shift_exp = 1'b0;
         eoc = 1'b0;
-        ld_e = 1'b0;
+        load_exp = 1'b0;
         clear_counter_steps = 1'b0;
         clear_counter_rounds = 1'b0;
         increment_steps = 1'b0;
@@ -304,10 +304,10 @@ module fsm_control_unit_new #(parameter int WIDTH = 8) (rstb, clk, ena, clear, e
         lock2 = 1'b0;
         sel1 = 2'b10;
         sel2 = 1'b1;
-        rst_exp_flop = 1'b1;
-        f2 = 1'b0;
+        clear_exp = 1'b1;
+        shift_exp = 1'b0;
         eoc = 1'b0;
-        ld_e = 1'b0;
+        load_exp = 1'b0;
         clear_counter_steps = 1'b0;
         clear_counter_rounds = 1'b0;
         increment_steps = 1'b1;
@@ -327,10 +327,10 @@ module fsm_control_unit_new #(parameter int WIDTH = 8) (rstb, clk, ena, clear, e
         lock2 = 1'b0;
         sel1 = 2'b10;
         sel2 = 1'b1;
-        rst_exp_flop = 1'b1;
-        f2 = 1'b0;
+        clear_exp = 1'b1;
+        shift_exp = 1'b0;
         eoc = 1'b0;
-        ld_e = 1'b0;
+        load_exp = 1'b0;
         clear_counter_steps = 1'b0;
         clear_counter_rounds = 1'b0;
         increment_steps = 1'b0;
@@ -346,10 +346,10 @@ module fsm_control_unit_new #(parameter int WIDTH = 8) (rstb, clk, ena, clear, e
         lock2 = 1'b0;
         sel1 = 2'b10;
         sel2 = 1'b1;
-        rst_exp_flop = 1'b1;
-        f2 = 1'b0;
+        clear_exp = 1'b1;
+        shift_exp = 1'b0;
         eoc = 1'b1;
-        ld_e = 1'b0;
+        load_exp = 1'b0;
         clear_counter_steps = 1'b0;
         clear_counter_rounds = 1'b0;
         increment_steps = 1'b0;
@@ -365,10 +365,10 @@ module fsm_control_unit_new #(parameter int WIDTH = 8) (rstb, clk, ena, clear, e
         lock2 = 1'b0;
         sel1 = 2'b00;
         sel2 = 1'b0;
-        rst_exp_flop = 1'b0;
-        f2 = 1'b0;
+        clear_exp = 1'b0;
+        shift_exp = 1'b0;
         eoc = 1'b0;
-        ld_e = 1'b0;
+        load_exp = 1'b0;
         clear_counter_steps = 1'b0;
         clear_counter_rounds = 1'b0;
         increment_steps = 1'b0;

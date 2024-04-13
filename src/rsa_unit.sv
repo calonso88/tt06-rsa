@@ -53,7 +53,7 @@ module rsa_unit #(parameter int WIDTH = 8) (rstb, clk, ena, clear, P, E, M, Cons
 
   mmm_unit #(.WIDTH(WIDTH+2)) mmm_square (.ena(ena), .rstb(rstb), .clk(clk), .clear(clear_mmm), .ld_a(ld_a), .ld_r(ld_r), .lock(lock_square), .A(square_a), .B(square_b), .M(M_ex), .R(P_i));
 
-  fsm_control_unit_new #(.WIDTH(WIDTH+2)) fsm_control (.ena(ena), .rstb(rstb), .clk(clk), .clear(clear), .expE(E_ex), .clear_mmm(clear_mmm), .ld_a(ld_a), .ld_r(ld_r), .lock1(lock_multiply), .lock2(lock_square), .sel1(sel_multiply), .sel2(sel_square), .eoc(eoc));
+  fsm_control_unit_new #(.WIDTH(WIDTH+2)) fsm_control (.ena(ena), .rstb(rstb), .clk(clk), .clear(clear), .E(E_ex), .clear_mmm(clear_mmm), .ld_a(ld_a), .ld_r(ld_r), .lock1(lock_multiply), .lock2(lock_square), .sel1(sel_multiply), .sel2(sel_square), .eoc(eoc));
 
   register_crypt #(.WIDTH(WIDTH+2)) reg_crypt (.ena(ena), .rstb(rstb), .clk(clk), .clear(1'b1), .load(eoc), .R_i(R_i), .C_ex(C_ex));
 
