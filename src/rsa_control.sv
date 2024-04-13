@@ -1,4 +1,4 @@
-module fsm_control_unit_new #(parameter int WIDTH = 8) (rstb, clk, ena, clear, E, clear_mmm, ld_a, ld_r, lock1, lock2, sel1, sel2, eoc);
+module rsa_control #(parameter int WIDTH = 8) (rstb, clk, ena, clear, E, clear_mmm, ld_a, ld_r, lock1, lock2, sel1, sel2, eoc);
 
   input rstb;
   input clk;

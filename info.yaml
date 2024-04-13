@@ -17,7 +17,7 @@ project:
   source_files:        
     - "tt_um_calonso88_rsa_top.v"
     - "falling_edge_detector.sv"
-    - "fsm_control_unit_new.sv"
+    - "rsa_control.sv"
     - "full_adder.sv"
     - "gpio_wrapper.sv"
     - "half_adder.sv"
