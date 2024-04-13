@@ -266,11 +266,11 @@ async def test_spi(dut):
       break
 
   # DEBUG
-  #p = 3
-  #q = 5
-  #m = p * q
-  #phi_m = (p-1) * (q-1)
-  #e = 7
+  p = 3
+  q = 11
+  m = p * q
+  phi_m = (p-1) * (q-1)
+  e = 7
   # DEBUG
 
   #d = invmod(e, phi_m)  ->  d*e == 1 mod phi_m
@@ -283,6 +283,7 @@ async def test_spi(dut):
 
   plain_text = random.randint(0, m-1)
   # DEBUG
+  plain_text = 0x1
   #plain_text = 0x2
   #plain_text = 0x58
   # DEBUG
