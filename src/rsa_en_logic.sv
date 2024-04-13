@@ -1,4 +1,4 @@
-module rsa_en_logic (rstb, clk, ena, gpio_start, spi_start, gpio_stop, spi_stop, en_rsa, rst_rsa, eoc_rsa_unit, eoc);
+module rsa_en_logic (rstb, clk, ena, gpio_start, spi_start, gpio_stop, spi_stop, en_rsa, clear_rsa, eoc_rsa_unit, eoc);
 
   // Inputs
   input rstb;
@@ -15,7 +15,7 @@ module rsa_en_logic (rstb, clk, ena, gpio_start, spi_start, gpio_stop, spi_stop,
 
   // Control outputs for rsa_unit
   output en_rsa;
-  output rst_rsa;
+  output clear_rsa;
   // End of convertion (encryption from rsa_unit)
   input eoc_rsa_unit;
 
@@ -34,7 +34,7 @@ module rsa_en_logic (rstb, clk, ena, gpio_start, spi_start, gpio_stop, spi_stop,
   logic start_comb;
   logic stop_comb;
   logic en_rsa_i;
-  logic rst_rsa_i;
+  logic clear_rsa_i;
   logic eoc_i;
 
   // Combine both GPIO and SPI
@@ -43,7 +43,7 @@ module rsa_en_logic (rstb, clk, ena, gpio_start, spi_start, gpio_stop, spi_stop,
 
   // Outputs
   assign en_rsa = en_rsa_i;
-  assign rst_rsa = rst_rsa_i;
+  assign clear_rsa = clear_rsa_i;
   assign eoc = eoc_i;
 
   // Next state transition
@@ -61,7 +61,7 @@ module rsa_en_logic (rstb, clk, ena, gpio_start, spi_start, gpio_stop, spi_stop,
 
     // default assignments
     en_rsa_i = 1'b0;
-    rst_rsa_i = 1'b0;
+    clear_rsa_i = 1'b0;
     eoc_i = 1'b0;
     next_state = state;
 
@@ -69,14 +69,14 @@ module rsa_en_logic (rstb, clk, ena, gpio_start, spi_start, gpio_stop, spi_stop,
 
       STATE_RESET : begin
         en_rsa_i = 1'b0;
-        rst_rsa_i = 1'b0;
+        clear_rsa_i = 1'b0;
         eoc_i = 1'b0;
         next_state = STATE_IDLE;
       end
 
       STATE_IDLE : begin
         en_rsa_i = 1'b0;
-        rst_rsa_i = 1'b0;
+        clear_rsa_i = 1'b0;
         eoc_i = 1'b0;
         if (start_comb == 1'b1) begin
           next_state = STATE_EN;
@@ -87,14 +87,18 @@ module rsa_en_logic (rstb, clk, ena, gpio_start, spi_start, gpio_stop, spi_stop,
 
       STATE_EN : begin
         en_rsa_i = 1'b1;
-        rst_rsa_i = 1'b0;
+        clear_rsa_i = 1'b0;
         eoc_i = 1'b0;
-        next_state = STATE_RST_RELEASE;
+        if (stop_comb == 1'b1) begin
+          next_state = STATE_IDLE;
+        end else begin
+          next_state = STATE_RST_RELEASE;
+        end
       end
 
       STATE_RST_RELEASE : begin
         en_rsa_i = 1'b1;
-        rst_rsa_i = 1'b1;
+        clear_rsa_i = 1'b1;
         eoc_i = 1'b0;
         if (stop_comb == 1'b1) begin
           next_state = STATE_IDLE;
@@ -105,7 +109,7 @@ module rsa_en_logic (rstb, clk, ena, gpio_start, spi_start, gpio_stop, spi_stop,
 
       STATE_WAIT_EOC : begin
         en_rsa_i = 1'b1;
-        rst_rsa_i = 1'b1;
+        clear_rsa_i = 1'b1;
         eoc_i = 1'b0;
         if (stop_comb == 1'b1) begin
           next_state = STATE_IDLE;
@@ -120,14 +124,14 @@ module rsa_en_logic (rstb, clk, ena, gpio_start, spi_start, gpio_stop, spi_stop,
 
       STATE_EOC : begin
         en_rsa_i = 1'b1;
-        rst_rsa_i = 1'b1;
+        clear_rsa_i = 1'b1;
         eoc_i = 1'b1;
         next_state = STATE_IDLE;
       end
 
       default : begin
         en_rsa_i = 1'b0;
-        rst_rsa_i = 1'b0;
+        clear_rsa_i = 1'b0;
         eoc_i = 1'b0;
         next_state = STATE_RESET;
       end

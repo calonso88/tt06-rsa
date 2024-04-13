@@ -32,9 +32,9 @@ module tt_um_calonso88_rsa_top (
   wire gpio_stop_cmd;
 
   // RSA En FSM Auxiliars
-  wire en_rsa;
-  wire rst_rsa;
-  wire rsa_eoc;
+  wire en_rsa_unit;
+  wire clear_rsa_unit;
+  wire rsa_unit_eoc;
   wire irq;
 
   // RSA Unit size
@@ -76,9 +76,9 @@ module tt_um_calonso88_rsa_top (
   spi_wrapper #(.WIDTH(REG_WIDTH)) spi_wrapper_i (.rstb(rst_n), .clk(clk), .ena(ena), .spi_cs_n(spi_cs_n), .spi_clk(spi_clk), .spi_mosi(spi_mosi), .spi_miso(spi_miso), .spi_start_cmd(spi_start_cmd), .spi_stop_cmd(spi_stop_cmd), .rsa_p(rsa_p), .rsa_e(rsa_e), .rsa_m(rsa_m), .rsa_const(rsa_const), .rsa_c(rsa_c), .eoc(irq), .spare(spare));
 
   // Controller
-  rsa_en_logic rsa_en_logic_i (.rstb(rst_n), .clk(clk), .ena(ena), .gpio_start(gpio_start_cmd), .spi_start(spi_start_cmd), .gpio_stop(gpio_stop_cmd), .spi_stop(spi_stop_cmd), .en_rsa(en_rsa), .rst_rsa(rst_rsa), .eoc_rsa_unit(rsa_eoc), .eoc(irq));
+  rsa_en_logic rsa_en_logic_i (.rstb(rst_n), .clk(clk), .ena(ena), .gpio_start(gpio_start_cmd), .spi_start(spi_start_cmd), .gpio_stop(gpio_stop_cmd), .spi_stop(spi_stop_cmd), .en_rsa(en_rsa_unit), .clear_rsa(clear_rsa_unit), .eoc_rsa_unit(rsa_unit_eoc), .eoc(irq));
 
   // RSA Instance
-  rsa_unit #(.WIDTH(REG_WIDTH)) rsa_unit_i (.en(en_rsa), .rstb(rst_n), .clear(rst_rsa), .clk(clk), .P(rsa_p), .E(rsa_e), .M(rsa_m), .Const(rsa_const), .eoc(rsa_eoc), .C(rsa_c));
+  rsa_unit #(.WIDTH(REG_WIDTH)) rsa_unit_i (.rstb(rst_n), .clk(clk), .ena(en_rsa_unit), .clear(clear_rsa_unit),  .P(rsa_p), .E(rsa_e), .M(rsa_m), .Const(rsa_const), .eoc(rsa_unit_eoc), .C(rsa_c));
 
 endmodule

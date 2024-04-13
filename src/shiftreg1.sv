@@ -1,8 +1,8 @@
-module shiftreg1 #(parameter int WIDTH = 4) (ena, rstb, clk, clear, load, A, A_bit);
+module shiftreg1 #(parameter int WIDTH = 4) (rstb, clk, ena, clear, load, A, A_bit);
 
-  input ena;
   input rstb;
   input clk;
+  input ena;
   input clear;
   input load;
   input [WIDTH-1:0] A;

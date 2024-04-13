@@ -1,8 +1,8 @@
-module register_crypt #(parameter int WIDTH = 4) (ena, rstb, clk, clear, load, R_i, C_ex);
+module register_crypt #(parameter int WIDTH = 4) (rstb, clk, ena, clear, load, R_i, C_ex);
 
-  input ena;
   input rstb;
   input clk;
+  input ena;
   input clear;
   input load;
   input [WIDTH-1:0] R_i;

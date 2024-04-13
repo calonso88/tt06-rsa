@@ -1,8 +1,8 @@
-module mmm_unit #(parameter int WIDTH = 4) (ena, rstb, clk, clear, ld_a, ld_r, lock, A, B, M, R);
+module mmm_unit #(parameter int WIDTH = 4) (rstb, clk, ena, clear, ld_a, ld_r, lock, A, B, M, R);
 
-  input ena;
   input rstb;
   input clk;
+  input ena;
   input clear;
   input ld_a;
   input ld_r;

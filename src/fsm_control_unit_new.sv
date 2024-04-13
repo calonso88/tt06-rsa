@@ -1,8 +1,8 @@
-module fsm_control_unit_new #(parameter int WIDTH = 8) (ena, rstb, clk, clear, expE, rst_mmm, ld_a, ld_r, lock1, lock2, sel1, sel2, eoc);
+module fsm_control_unit_new #(parameter int WIDTH = 8) (rstb, clk, ena, clear, expE, rst_mmm, ld_a, ld_r, lock1, lock2, sel1, sel2, eoc);
 
-  input ena;
   input rstb;
   input clk;
+  input ena;
   input clear;
   input [WIDTH-1:0] expE;
 
@@ -129,7 +129,7 @@ module fsm_control_unit_new #(parameter int WIDTH = 8) (ena, rstb, clk, clear, e
     case (state)
 
       STATE_RESET : begin
-        rst_mmm = clear;
+        rst_mmm = 1'b0;
         ld_a = 1'b0;
         ld_r = 1'b0;
         lock1 = 1'b0;
@@ -182,9 +182,9 @@ module fsm_control_unit_new #(parameter int WIDTH = 8) (ena, rstb, clk, clear, e
         clear_counter_rounds = 1'b0;
         increment_steps = 1'b1;
         increment_rounds = 1'b0;
-        if ( counter_steps == const_counter_compare ) begin // 4'd10
+//        if ( counter_steps == const_counter_compare ) begin // 4'd10
           next_state = STATE_POST_MAP;
-        end
+//        end
       end
 
       STATE_POST_MAP : begin
@@ -241,9 +241,9 @@ module fsm_control_unit_new #(parameter int WIDTH = 8) (ena, rstb, clk, clear, e
         clear_counter_rounds = 1'b0;
         increment_steps = 1'b1;
         increment_rounds = 1'b0;
-        if ( counter_steps == const_counter_compare ) begin // 4'd10
+//        if ( counter_steps == const_counter_compare ) begin // 4'd10
           next_state = STATE_POST_MMM;
-        end
+//        end
       end
 
       STATE_POST_MMM : begin
@@ -262,11 +262,11 @@ module fsm_control_unit_new #(parameter int WIDTH = 8) (ena, rstb, clk, clear, e
         clear_counter_rounds = 1'b0;
         increment_steps = 1'b0;
         increment_rounds = 1'b1;
-        if ( counter_rounds == const_counter_compare ) begin // 4'd10
+//        if ( counter_rounds == const_counter_compare ) begin // 4'd10
           next_state = STATE_PRE_REMAP;
-        end else begin
-          next_state = STATE_PRE_MMM;
-        end
+//        end else begin
+//          next_state = STATE_PRE_MMM;
+//        end
       end
 
       STATE_PRE_REMAP : begin
@@ -304,9 +304,9 @@ module fsm_control_unit_new #(parameter int WIDTH = 8) (ena, rstb, clk, clear, e
         clear_counter_rounds = 1'b0;
         increment_steps = 1'b1;
         increment_rounds = 1'b0;
-        if ( counter_steps == const_counter_compare ) begin // 4'd10
+//        if ( counter_steps == const_counter_compare ) begin // 4'd10
           next_state = POST_REMAP;
-        end
+//        end
       end
 
       POST_REMAP : begin
