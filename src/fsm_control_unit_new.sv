@@ -1,8 +1,9 @@
-module fsm_control_unit_new #(parameter int WIDTH = 8) (ena, rstb, clk, expE, rst_mmm, ld_a, ld_r, lock1, lock2, sel1, sel2, eoc);
+module fsm_control_unit_new #(parameter int WIDTH = 8) (ena, rstb, clk, clear, expE, rst_mmm, ld_a, ld_r, lock1, lock2, sel1, sel2, eoc);
 
   input ena;
   input rstb;
   input clk;
+  input clear;
   input [WIDTH-1:0] expE;
 
   output rst_mmm;
@@ -107,7 +108,6 @@ module fsm_control_unit_new #(parameter int WIDTH = 8) (ena, rstb, clk, expE, rs
 
   always_comb begin
 
-    /*
     // default assignments
     rst_mmm = 1'b0;
     ld_a = 1'b0;
@@ -125,12 +125,11 @@ module fsm_control_unit_new #(parameter int WIDTH = 8) (ena, rstb, clk, expE, rs
     increment_steps = 1'b0;
     increment_rounds = 1'b0;
     next_state = state;
-    */
 
     case (state)
 
       STATE_RESET : begin
-        rst_mmm = 1'b0;
+        rst_mmm = clear;
         ld_a = 1'b0;
         ld_r = 1'b0;
         lock1 = 1'b0;
@@ -166,7 +165,7 @@ module fsm_control_unit_new #(parameter int WIDTH = 8) (ena, rstb, clk, expE, rs
         increment_rounds = 1'b0;
         next_state = STATE_MAP;
       end
-/*
+
       STATE_MAP : begin
         rst_mmm = 1'b1;
         ld_a = 1'b1;
@@ -366,7 +365,7 @@ module fsm_control_unit_new #(parameter int WIDTH = 8) (ena, rstb, clk, expE, rs
         increment_rounds = 1'b0;
         next_state = state;
       end
-*/
+
     endcase
 
   end
