@@ -246,126 +246,146 @@ async def test_spi(dut):
   # Set the input values, wait one clock cycle, and check the output
   dut._log.info("Test")
 
-  while True:
-    p = random.randint(3, 85)
-    p_is_prime = is_prime(p)
-    q = random.randint(3, 85)
-    q_is_prime = is_prime(q)
-    m = p * q
-    #cocotb.log.info(f"RSA RANDOM, P: {p}, Q: {q}, M: {m}")
-    if ( ( m < 255 ) and ( p != q ) and ( p_is_prime == 1 ) and ( q_is_prime == 1 ) ):
-      break
 
-  phi_m = (p-1) * (q-1)
-  #cocotb.log.info(f"RSA, P: {p}, Q: {q}, M: {m}, PHI(M): {phi_m}")
+  # Number of bits in implementation
+  bits = 8
+  max_value = (2 ** bits) - 1
+  min_prime = 3
+  max_upper_boundary = max_value / min_prime
+
   
-  while True:
-    e = random.randint(3, phi_m)
-    e_is_prime = is_prime(e)
-    if ( ( e < phi_m ) and ( e_is_prime == 1 ) ):
-      break
-
-  # DEBUG
-  #p = 3
-  #q = 11
-  #m = p * q
-  #phi_m = (p-1) * (q-1)
-  #e = 7
-  # DEBUG
-
-  #d = invmod(e, phi_m)  ->  d*e == 1 mod phi_m
-  d = pow(e, -1, phi_m)
+  # ITERATIONS 
+  iterations = 0
   
-  # Number of bits for RSA implementation
-  bits = 8+2
-  # Montgomery constant
-  const = (2 ** (2 * bits)) % m
+  while iterations < 10:
 
-  while True:
-    plain_text = random.randint(0, m-1)
-    if (plain_text != 0):
-      break
+    while True:
+      p = random.randint(min_prime, max_upper_boundary)
+      p_is_prime = is_prime(p)
+      q = random.randint(min_prime, max_upper_boundary)
+      q_is_prime = is_prime(q)
+      m = p * q
+      #cocotb.log.info(f"RSA RANDOM, P: {p}, Q: {q}, M: {m}")
+      if ( ( m < max_value ) and ( p != q ) and ( p_is_prime == 1 ) and ( q_is_prime == 1 ) ):
+        break
+
+    phi_m = (p-1) * (q-1)
+    #cocotb.log.info(f"RSA, P: {p}, Q: {q}, M: {m}, PHI(M): {phi_m}")
+    
+    while True:
+      e = random.randint(min_prime, phi_m)
+      e_is_prime = is_prime(e)
+      if ( ( e < phi_m ) and ( e_is_prime == 1 ) ):
+        break
+
+    # DEBUG
+    #p = 3
+    #q = 11
+    #m = p * q
+    #phi_m = (p-1) * (q-1)
+    #e = 7
+    # DEBUG
+
+    #d = invmod(e, phi_m)  ->  d*e == 1 mod phi_m
+    d = pow(e, -1, phi_m)
+    
+    # Number of bits for RSA implementation
+    hwbits = 8+2
+    # Montgomery constant
+    const = (2 ** (2 * hwbits)) % m
+
+    while True:
+      plain_text = random.randint(0, m-1)
+      if (plain_text != 0):
+        break
+    
+    # DEBUG
+    #plain_text = 0x1
+    #plain_text = 0x2
+    #plain_text = 0x58
+    # DEBUG
+    
+    cocotb.log.info(f"RSA, P: {p}, Q: {q}, M: {m}, PHI(M): {phi_m}")
+    cocotb.log.info(f"Public key: ( {e}, {m} )")
+    cocotb.log.info(f"Private key: ( {d}, {m} )")
+    cocotb.log.info(f"Montgomery constant: {const}")
+    cocotb.log.info(f"Plain text: {plain_text}")
+
+    # Write reg[2] ( plain_text )
+    await spi_write (dut, 2, plain_text)
+    # Write reg[3] ( e )
+    await spi_write (dut, 3, e)
+    # Write reg[4] ( M )
+    await spi_write (dut, 4, m)
+    # Write reg[5] ( const )
+    await spi_write (dut, 5, const)
+
+    # Write reg[1] (Start)
+    await spi_write (dut, 1, 1)
+
+    encrypted_text = ( plain_text ** e ) % m
+    cocotb.log.info(f"Encrypted text: {encrypted_text}")
+
+    decrypted_text = ( encrypted_text ** d ) % m
+    cocotb.log.info(f"Decrypted text: {decrypted_text}")
+
+    await ClockCycles(dut.clk, 500)
+
+    # Read reg[6] ( encrypted_text_design )
+    encrypted_text_design = await spi_read (dut, 6, 0x00)
+    cocotb.log.info(f"Encrypted text design: {encrypted_text_design}")
+
+    assert plain_text == decrypted_text
+    assert encrypted_text_design == encrypted_text 
+
+    # Write reg[0] = 0xF0
+    await spi_write (dut, 0, 0xF0)
+    # Write reg[1] = 0xDE
+    await spi_write (dut, 1, 0xDE)
+    # Write reg[2] = 0xAD
+    await spi_write (dut, 2, 0xAD)
+    # Write reg[3] = 0xBE
+    await spi_write (dut, 3, 0xBE)
+    # Write reg[4] = 0xEF
+    await spi_write (dut, 4, 0xEF)
+    # Write reg[5] = 0x55
+    await spi_write (dut, 5, 0x55)
+    # Write reg[6] = 0xAA
+    await spi_write (dut, 6, 0xAA)
+    # Write reg[7] = 0x0F
+    await spi_write (dut, 7, 0x0F)
   
-  # DEBUG
-  #plain_text = 0x1
-  #plain_text = 0x2
-  #plain_text = 0x58
-  # DEBUG
-  
-  cocotb.log.info(f"RSA, P: {p}, Q: {q}, M: {m}, PHI(M): {phi_m}")
-  cocotb.log.info(f"Public key: ( {e}, {m} )")
-  cocotb.log.info(f"Private key: ( {d}, {m} )")
-  cocotb.log.info(f"Montgomery constant: {const}")
-  cocotb.log.info(f"Plain text: {plain_text}")
+    # Read reg[0]
+    reg0 = await spi_read (dut, 0, 0x00)
+    # Read reg[1]
+    reg1 = await spi_read (dut, 1, 0x00)
+    # Read reg[2]
+    reg2 = await spi_read (dut, 2, 0x00)
+    # Read reg[3]
+    reg3 = await spi_read (dut, 3, 0x00)
+    # Read reg[4]
+    reg4 = await spi_read (dut, 4, 0x00)
+    # Read reg[5]
+    reg5 = await spi_read (dut, 5, 0x00)
+    # Read reg[6]
+    reg6 = await spi_read (dut, 6, 0x00)
+    # Read reg[7]
+    reg7 = await spi_read (dut, 7, 0x00)
 
-  # Write reg[2] ( plain_text )
-  await spi_write (dut, 2, plain_text)
-  # Write reg[3] ( e )
-  await spi_write (dut, 3, e)
-  # Write reg[4] ( M )
-  await spi_write (dut, 4, m)
-  # Write reg[5] ( const )
-  await spi_write (dut, 5, const)
+    await ClockCycles(dut.clk, 10)
 
-  # Write reg[1] (Start)
-  await spi_write (dut, 1, 1)
+    #assert reg0 == 0xF0
+    assert reg1 == 0xDE
+    assert reg2 == 0xAD
+    assert reg3 == 0xBE
+    assert reg4 == 0xEF
+    assert reg5 == 0x55
+    #assert reg6 == 0xAA
+    assert reg7 == 0x0F
 
-  encrypted_text = ( plain_text ** e ) % m
-  cocotb.log.info(f"Encrypted text: {encrypted_text}")
 
-  decrypted_text = ( encrypted_text ** d ) % m
-  cocotb.log.info(f"Decrypted text: {decrypted_text}")
-
-  await ClockCycles(dut.clk, 500)
-
-  # Read reg[6] ( encrypted_text_design )
-  encrypted_text_design = await spi_read (dut, 6, 0x00)
-  cocotb.log.info(f"Encrypted text design: {encrypted_text_design}")
-
-  assert plain_text == decrypted_text
-  assert encrypted_text_design == encrypted_text 
-
-  # Write reg[0] = 0xF0
-  await spi_write (dut, 0, 0xF0)
-  # Write reg[1] = 0xDE
-  await spi_write (dut, 1, 0xDE)
-  # Write reg[2] = 0xAD
-  await spi_write (dut, 2, 0xAD)
-  # Write reg[3] = 0xBE
-  await spi_write (dut, 3, 0xBE)
-  # Write reg[4] = 0xEF
-  await spi_write (dut, 4, 0xEF)
-  # Write reg[5] = 0x55
-  await spi_write (dut, 5, 0x55)
-  # Write reg[6] = 0xAA
-  await spi_write (dut, 6, 0xAA)
-  # Write reg[7] = 0x0F
-  await spi_write (dut, 7, 0x0F)
-  
-  # Read reg[0]
-  reg0 = await spi_read (dut, 0, 0x00)
-  # Read reg[1]
-  reg1 = await spi_read (dut, 1, 0x00)
-  # Read reg[2]
-  reg2 = await spi_read (dut, 2, 0x00)
-  # Read reg[3]
-  reg3 = await spi_read (dut, 3, 0x00)
-  # Read reg[4]
-  reg4 = await spi_read (dut, 4, 0x00)
-  # Read reg[5]
-  reg5 = await spi_read (dut, 5, 0x00)
-  # Read reg[6]
-  reg6 = await spi_read (dut, 6, 0x00)
-  # Read reg[7]
-  reg7 = await spi_read (dut, 7, 0x00)
+    iterations = iterations + 1
 
   await ClockCycles(dut.clk, 10)
 
-  #assert reg0 == 0xF0
-  assert reg1 == 0xDE
-  assert reg2 == 0xAD
-  assert reg3 == 0xBE
-  assert reg4 == 0xEF
-  assert reg5 == 0x55
-  #assert reg6 == 0xAA
-  assert reg7 == 0x0F
+  await ClockCycles(dut.clk, 10)
