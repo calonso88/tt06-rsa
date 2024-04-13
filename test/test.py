@@ -290,9 +290,9 @@ async def test_spi(dut):
     d = pow(e, -1, phi_m)
     
     # Number of bits for RSA implementation
+    hwbits = bits + 2
     # DEBUG
-    hwbits = 8 + 2
-    ####################hwbits = bits + 2
+    #hwbits = 8 + 2
     # DEBUG
     
     # Montgomery constant
@@ -341,7 +341,7 @@ async def test_spi(dut):
 
     assert plain_text == decrypted_text
     # DEBUG
-    #assert encrypted_text_design == encrypted_text 
+    assert encrypted_text_design == encrypted_text 
     # DEBUG
 
     # Write reg[0] = 0xF0

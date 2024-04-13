@@ -29,13 +29,13 @@ module rsa_control #(parameter int WIDTH = 8) (rstb, clk, ena, clear, E, clear_m
   logic load_exp;
   logic shift_exp;
 
-  logic [($clog2(WIDTH-1))-1:0] counter_steps; // [3:0]
-  logic [($clog2(WIDTH-1))-1:0] counter_rounds; // [3:0]
+  logic [($clog2(WIDTH-1))-1:0] counter_steps;
+  logic [($clog2(WIDTH-1))-1:0] counter_rounds;
   logic clear_counter_steps;
   logic clear_counter_rounds;
   logic increment_steps;
   logic increment_rounds;
-  logic [($clog2(WIDTH-1))-1:0] const_counter_compare; // [3:0]
+  logic [($clog2(WIDTH-1))-1:0] const_counter_compare;
 
   // FSM states type
   typedef enum logic [3:0] {
@@ -186,7 +186,7 @@ module rsa_control #(parameter int WIDTH = 8) (rstb, clk, ena, clear, E, clear_m
         clear_counter_rounds = 1'b0;
         increment_steps = 1'b1;
         increment_rounds = 1'b0;
-        if ( counter_steps == const_counter_compare ) begin // 4'd10
+        if ( counter_steps == const_counter_compare ) begin
           next_state = STATE_POST_MAP;
         end else begin
           next_state = STATE_MAP;
@@ -247,7 +247,7 @@ module rsa_control #(parameter int WIDTH = 8) (rstb, clk, ena, clear, E, clear_m
         clear_counter_rounds = 1'b0;
         increment_steps = 1'b1;
         increment_rounds = 1'b0;
-        if ( counter_steps == const_counter_compare ) begin // 4'd10
+        if ( counter_steps == const_counter_compare ) begin
           next_state = STATE_POST_MMM;
         end else begin
           next_state = STATE_MMM;
@@ -270,7 +270,7 @@ module rsa_control #(parameter int WIDTH = 8) (rstb, clk, ena, clear, E, clear_m
         clear_counter_rounds = 1'b0;
         increment_steps = 1'b0;
         increment_rounds = 1'b1;
-        if ( counter_rounds == const_counter_compare ) begin // 4'd10
+        if ( counter_rounds == const_counter_compare ) begin
           next_state = STATE_PRE_REMAP;
         end else begin
           next_state = STATE_PRE_MMM;
@@ -312,7 +312,7 @@ module rsa_control #(parameter int WIDTH = 8) (rstb, clk, ena, clear, E, clear_m
         clear_counter_rounds = 1'b0;
         increment_steps = 1'b1;
         increment_rounds = 1'b0;
-        if ( counter_steps == const_counter_compare ) begin // 4'd10
+        if ( counter_steps == const_counter_compare ) begin
           next_state = POST_REMAP;
         end else begin
           next_state = STATE_REMAP;
