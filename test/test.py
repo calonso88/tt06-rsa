@@ -281,7 +281,11 @@ async def test_spi(dut):
   # Montgomery constant
   const = (2 ** (2 * bits)) % m
 
-  plain_text = random.randint(0, m-1)
+  while True:
+    plain_text = random.randint(0, m-1)
+    if (plain_text != 0):
+      break
+  
   # DEBUG
   #plain_text = 0x1
   #plain_text = 0x2
