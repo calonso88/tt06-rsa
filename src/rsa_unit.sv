@@ -1,8 +1,9 @@
-module rsa_unit #(parameter int WIDTH = 8) (en, rstb, clk, P, E, M, Const, C, eoc);
+module rsa_unit #(parameter int WIDTH = 8) (en, rstb, clk, clear, P, E, M, Const, C, eoc);
 
   input en;
   input rstb;
   input clk;
+  input clear;
 
   input [WIDTH-1:0] P;
   input [WIDTH-1:0] E;
