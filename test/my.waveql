@@ -20,7 +20,7 @@ M
 Const
 C
 eoc
-fsm_control
+rsa_control_fsm
 rstb
 clk
 ena

@@ -39,7 +39,7 @@ module rsa_control #(parameter int WIDTH = 8) (rstb, clk, ena, clear, E, clear_m
 
   // FSM states type
   typedef enum logic [3:0] {
-    STATE_RESET, STATE_PRE_MAP, STATE_MAP, STATE_POST_MAP, STATE_PRE_MMM, STATE_MMM, STATE_POST_MMM, STATE_PRE_REMAP, STATE_REMAP, POST_REMAP, STATE_EOC
+    STATE_RESET, STATE_PRE_MAP, STATE_MAP, STATE_POST_MAP, STATE_PRE_MMM, STATE_MMM, STATE_POST_MMM, STATE_PRE_REMAP, STATE_REMAP, POST_REMAP, STATE_EOC, STATE_IDLE
   } fsm_control_state;
 
   // FSM states
@@ -354,7 +354,26 @@ module rsa_control #(parameter int WIDTH = 8) (rstb, clk, ena, clear, E, clear_m
         clear_counter_rounds = 1'b0;
         increment_steps = 1'b0;
         increment_rounds = 1'b0;
-        next_state = STATE_EOC;
+        next_state = STATE_IDLE;
+      end
+
+      STATE_IDLE : begin
+        clear_mmm = 1'b0;
+        ld_a = 1'b0;
+        ld_r = 1'b0;
+        lock1 = 1'b0;
+        lock2 = 1'b0;
+        sel1 = 2'b10;
+        sel2 = 1'b0;
+        clear_exp = 1'b0;
+        shift_exp = 1'b0;
+        eoc = 1'b0;
+        load_exp = 1'b0;
+        clear_counter_steps = 1'b0;
+        clear_counter_rounds = 1'b0;
+        increment_steps = 1'b0;
+        increment_rounds = 1'b0;
+        next_state = STATE_IDLE;
       end
 
       default : begin
