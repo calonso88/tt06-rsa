@@ -39,7 +39,7 @@ module rsa_en_logic (rstb, clk, ena, gpio_start, spi_start, gpio_stop, spi_stop,
 
   // Combine both GPIO and SPI
   assign start_comb = gpio_start | spi_start;
-  assign stop_comb = gpio_stop & spi_stop;
+  assign stop_comb = gpio_stop | spi_stop;
 
   // Outputs
   assign en_rsa = en_rsa_i;

@@ -1,4 +1,4 @@
-module fsm_control_unit_new #(parameter int WIDTH = 8) (rstb, clk, ena, clear, expE, rst_mmm, ld_a, ld_r, lock1, lock2, sel1, sel2, eoc);
+module fsm_control_unit_new #(parameter int WIDTH = 8) (rstb, clk, ena, clear, expE, clear_mmm, ld_a, ld_r, lock1, lock2, sel1, sel2, eoc);
 
   input rstb;
   input clk;
@@ -6,7 +6,7 @@ module fsm_control_unit_new #(parameter int WIDTH = 8) (rstb, clk, ena, clear, e
   input clear;
   input [WIDTH-1:0] expE;
 
-  output rst_mmm;
+  output clear_mmm;
   output ld_a;
   output ld_r;
   output lock1;
@@ -15,7 +15,7 @@ module fsm_control_unit_new #(parameter int WIDTH = 8) (rstb, clk, ena, clear, e
   output sel2;
   output eoc;
 
-  logic rst_mmm;
+  logic clear_mmm;
   logic ld_a;
   logic ld_r;
   logic lock1;
@@ -113,7 +113,7 @@ module fsm_control_unit_new #(parameter int WIDTH = 8) (rstb, clk, ena, clear, e
   always_comb begin
 
     // default assignments
-    rst_mmm = 1'b0;
+    clear_mmm = 1'b0;
     ld_a = 1'b0;
     ld_r = 1'b0;
     lock1 = 1'b0;
@@ -133,7 +133,7 @@ module fsm_control_unit_new #(parameter int WIDTH = 8) (rstb, clk, ena, clear, e
     case (state)
 
       STATE_RESET : begin
-        rst_mmm = 1'b0;
+        clear_mmm = 1'b0;
         ld_a = 1'b0;
         ld_r = 1'b0;
         lock1 = 1'b0;
@@ -152,7 +152,7 @@ module fsm_control_unit_new #(parameter int WIDTH = 8) (rstb, clk, ena, clear, e
       end
 
       STATE_PRE_MAP : begin
-        rst_mmm = 1'b1;
+        clear_mmm = 1'b1;
         ld_a = 1'b1;
         ld_r = 1'b0;
         lock1 = 1'b1;
@@ -171,7 +171,7 @@ module fsm_control_unit_new #(parameter int WIDTH = 8) (rstb, clk, ena, clear, e
       end
 
       STATE_MAP : begin
-        rst_mmm = 1'b1;
+        clear_mmm = 1'b1;
         ld_a = 1'b0;
         ld_r = 1'b0;
         lock1 = 1'b1;
@@ -194,7 +194,7 @@ module fsm_control_unit_new #(parameter int WIDTH = 8) (rstb, clk, ena, clear, e
       end
 
       STATE_POST_MAP : begin
-        rst_mmm = 1'b1;
+        clear_mmm = 1'b1;
         ld_a = 1'b0;
         ld_r = 1'b1;
         lock1 = 1'b1;
@@ -213,7 +213,7 @@ module fsm_control_unit_new #(parameter int WIDTH = 8) (rstb, clk, ena, clear, e
       end
 
       STATE_PRE_MMM : begin
-        rst_mmm = 1'b1;
+        clear_mmm = 1'b1;
         ld_a = 1'b1;
         ld_r = 1'b0;
         lock1 = reg_exp[0];
@@ -232,7 +232,7 @@ module fsm_control_unit_new #(parameter int WIDTH = 8) (rstb, clk, ena, clear, e
       end
 
       STATE_MMM : begin
-        rst_mmm = 1'b1;
+        clear_mmm = 1'b1;
         ld_a = 1'b0;
         ld_r = 1'b0;
         lock1 = reg_exp[0];
@@ -255,7 +255,7 @@ module fsm_control_unit_new #(parameter int WIDTH = 8) (rstb, clk, ena, clear, e
       end
 
       STATE_POST_MMM : begin
-        rst_mmm = 1'b1;
+        clear_mmm = 1'b1;
         ld_a = 1'b0;
         ld_r = 1'b1;
         lock1 = reg_exp[0];
@@ -278,7 +278,7 @@ module fsm_control_unit_new #(parameter int WIDTH = 8) (rstb, clk, ena, clear, e
       end
 
       STATE_PRE_REMAP : begin
-        rst_mmm = 1'b1;
+        clear_mmm = 1'b1;
         ld_a = 1'b1;
         ld_r = 1'b0;
         lock1 = 1'b1;
@@ -297,7 +297,7 @@ module fsm_control_unit_new #(parameter int WIDTH = 8) (rstb, clk, ena, clear, e
       end
 
       STATE_REMAP : begin
-        rst_mmm = 1'b1;
+        clear_mmm = 1'b1;
         ld_a = 1'b0;
         ld_r = 1'b0;
         lock1 = 1'b1;
@@ -320,7 +320,7 @@ module fsm_control_unit_new #(parameter int WIDTH = 8) (rstb, clk, ena, clear, e
       end
 
       POST_REMAP : begin
-        rst_mmm = 1'b1;
+        clear_mmm = 1'b1;
         ld_a = 1'b0;
         ld_r = 1'b1;
         lock1 = 1'b1;
@@ -339,7 +339,7 @@ module fsm_control_unit_new #(parameter int WIDTH = 8) (rstb, clk, ena, clear, e
       end
 
       STATE_EOC : begin
-        rst_mmm = 1'b1;
+        clear_mmm = 1'b1;
         ld_a = 1'b0;
         ld_r = 1'b1;
         lock1 = 1'b1;
@@ -358,7 +358,7 @@ module fsm_control_unit_new #(parameter int WIDTH = 8) (rstb, clk, ena, clear, e
       end
 
       default : begin
-        rst_mmm = 1'b0;
+        clear_mmm = 1'b0;
         ld_a = 1'b0;
         ld_r = 1'b0;
         lock1 = 1'b0;
