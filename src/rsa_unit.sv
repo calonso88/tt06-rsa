@@ -55,6 +55,6 @@ module rsa_unit #(parameter int WIDTH = 8) (en, rstb, clk, P, E, M, Const, C, eo
   //                       fsm_control_unit fsm_control (.en(en), .rstb(rstb), .clk(clk), .expE(E_ex), .rst_mmm(rst_mmm), .ld_a(ld_a), .ld_r(ld_r), .lock1(lock1), .lock2(lock2), .sel1(sel1), .sel2(sel2), .eoc(eoc));
   fsm_control_unit_new #(.WIDTH(WIDTH+2)) fsm_control (.ena(en), .rstb(rstb), .clk(clk), .expE(E_ex), .rst_mmm(rst_mmm), .ld_a(ld_a), .ld_r(ld_r), .lock1(lock1), .lock2(lock2), .sel1(sel1), .sel2(sel2), .eoc(eoc));
 
-  register_crypt #(.WIDTH(WIDTH+2)) reg_crypt (.ena(en), .rstb(rstb), .clk(clk), .load(eoc), .R_i(R_i), .C_ex(C_ex));
+  register_crypt #(.WIDTH(WIDTH+2)) reg_crypt (.ena(en), .rstb(rstb), .clk(clk), .clear(1'b1), .load(eoc), .R_i(R_i), .C_ex(C_ex));
 
 endmodule
