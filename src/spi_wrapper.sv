@@ -1,4 +1,4 @@
-module spi_wrapper #(parameter int WIDTH = 8) (rstb, clk, ena, spi_cs_n, spi_clk, spi_mosi, spi_miso, spi_start_cmd, spi_stop_cmd, rsa_p, rsa_e, rsa_m, rsa_const, rsa_c, eoc, spare);
+module spi_wrapper #(parameter int WIDTH = 8) (rstb, clk, ena, spi_cs_n, spi_clk, spi_mosi, spi_miso, spi_start_cmd, spi_stop_cmd, rsa_p, rsa_e, rsa_m, rsa_const, rsa_c, irq, spare);
 
   input rstb;
   input clk;
@@ -18,14 +18,13 @@ module spi_wrapper #(parameter int WIDTH = 8) (rstb, clk, ena, spi_cs_n, spi_clk
   output [WIDTH-1:0] rsa_const;
   input [WIDTH-1:0] rsa_c;
 
-  input eoc;
+  input irq;
   output [WIDTH-1:0] spare;
 
   // Address width for register bank
   localparam int ADDR_WIDTH = 3;
   localparam int REG_WIDTH = WIDTH;
 
-  //
   //  Address map:
   //  Addr 0 - Read Status, Write is Spare register
   //  Addr 1 - Actions, Bit0 (Start), Bit1 (Stop)
@@ -69,12 +68,11 @@ module spi_wrapper #(parameter int WIDTH = 8) (rstb, clk, ena, spi_cs_n, spi_clk
 
   // Register read access
   assign reg_data_i = (reg_addr == 0) ? status : mem[reg_addr];
-  //assign reg_data_i = mem[reg_addr];
 
   // Index for reset unpacked register array
   int i;
 
-  // Register write and update encryption with eoc
+  // Register write and update encryption with irq
   always_ff @(posedge clk or negedge rstb) begin
     if (!rstb) begin
       for (i = 0; i < 2**ADDR_WIDTH; i++) begin
@@ -84,7 +82,7 @@ module spi_wrapper #(parameter int WIDTH = 8) (rstb, clk, ena, spi_cs_n, spi_clk
       if (ena == 1'b1) begin
         if (reg_data_o_vld) begin
           mem[reg_addr] <= reg_data_o;
-        end else if (eoc == 1'b1) begin
+        end else if (irq == 1'b1) begin
           mem[6] <= rsa_c;
         end
       end
@@ -106,10 +104,8 @@ module spi_wrapper #(parameter int WIDTH = 8) (rstb, clk, ena, spi_cs_n, spi_clk
   assign rsa_const = mem[5];
 
   // Status
-  assign status[0] = eoc;
+  assign status[0] = irq;
   assign status[REG_WIDTH-1:1] = '0;
-  //assign status = '0;
-  //assign rsa_c = '0;
 
   // Spare
   assign spare = mem[7];

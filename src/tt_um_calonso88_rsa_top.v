@@ -73,7 +73,7 @@ module tt_um_calonso88_rsa_top (
   gpio_wrapper gpio_wrapper_i (.rstb(rst_n), .clk(clk), .ena(ena), .gpio_start(gpio_start), .gpio_stop(gpio_stop), .gpio_start_cmd(gpio_start_cmd), .gpio_stop_cmd(gpio_stop_cmd));
 
   // SPI wrapper
-  spi_wrapper #(.WIDTH(REG_WIDTH)) spi_wrapper_i (.rstb(rst_n), .clk(clk), .ena(ena), .spi_cs_n(spi_cs_n), .spi_clk(spi_clk), .spi_mosi(spi_mosi), .spi_miso(spi_miso), .spi_start_cmd(spi_start_cmd), .spi_stop_cmd(spi_stop_cmd), .rsa_p(rsa_p), .rsa_e(rsa_e), .rsa_m(rsa_m), .rsa_const(rsa_const), .rsa_c(rsa_c), .eoc(irq), .spare(spare));
+  spi_wrapper #(.WIDTH(REG_WIDTH)) spi_wrapper_i (.rstb(rst_n), .clk(clk), .ena(ena), .spi_cs_n(spi_cs_n), .spi_clk(spi_clk), .spi_mosi(spi_mosi), .spi_miso(spi_miso), .spi_start_cmd(spi_start_cmd), .spi_stop_cmd(spi_stop_cmd), .rsa_p(rsa_p), .rsa_e(rsa_e), .rsa_m(rsa_m), .rsa_const(rsa_const), .rsa_c(rsa_c), .irq(irq), .spare(spare));
 
   // Controller
   rsa_en_logic rsa_en_logic_i (.rstb(rst_n), .clk(clk), .ena(ena), .gpio_start(gpio_start_cmd), .spi_start(spi_start_cmd), .gpio_stop(gpio_stop_cmd), .spi_stop(spi_stop_cmd), .en_rsa(ena_rsa), .clear_rsa(clear_rsa), .eoc_rsa(eoc_rsa), .irq(irq));
