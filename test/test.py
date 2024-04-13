@@ -248,7 +248,7 @@ async def test_spi(dut):
 
 
   # Number of bits in implementation
-  bits = 8
+  bits = 5
   max_value = (2 ** bits) - 1
   min_prime = 3
   max_upper_boundary = max_value // min_prime
@@ -266,7 +266,7 @@ async def test_spi(dut):
       q_is_prime = is_prime(q)
       m = p * q
       #cocotb.log.info(f"RSA RANDOM, P: {p}, Q: {q}, M: {m}")
-      if ( ( m < max_value ) and ( p != q ) and ( p_is_prime == 1 ) and ( q_is_prime == 1 ) ):
+      if ( ( m <= max_value ) and ( p != q ) and ( p_is_prime == 1 ) and ( q_is_prime == 1 ) ):
         break
 
     phi_m = (p-1) * (q-1)
@@ -290,7 +290,11 @@ async def test_spi(dut):
     d = pow(e, -1, phi_m)
     
     # Number of bits for RSA implementation
-    hwbits = bits + 2
+    # DEBUG
+    hwbits = 8 + 2
+    ####################hwbits = bits + 2
+    # DEBUG
+    
     # Montgomery constant
     const = (2 ** (2 * hwbits)) % m
 
