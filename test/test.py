@@ -251,7 +251,7 @@ async def test_spi(dut):
   bits = 8
   max_value = (2 ** bits) - 1
   min_prime = 3
-  max_upper_boundary = max_value / min_prime
+  max_upper_boundary = max_value // min_prime
 
   
   # ITERATIONS 
