@@ -290,7 +290,7 @@ async def test_spi(dut):
     d = pow(e, -1, phi_m)
     
     # Number of bits for RSA implementation
-    hwbits = 8+2
+    hwbits = bits + 2
     # Montgomery constant
     const = (2 ** (2 * hwbits)) % m
 
