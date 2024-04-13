@@ -172,7 +172,7 @@ module fsm_control_unit_new #(parameter int WIDTH = 8) (rstb, clk, ena, clear, e
 
       STATE_MAP : begin
         rst_mmm = 1'b1;
-        ld_a = 1'b1;
+        ld_a = 1'b0;
         ld_r = 1'b0;
         lock1 = 1'b1;
         lock2 = 1'b1;

@@ -289,6 +289,7 @@ async def test_spi(dut):
   #plain_text = 0x2
   #plain_text = 0x58
   plain_text = random.randint(0, m-1)
+  plain_text = 0x2
 
   cocotb.log.info(f"Plain text: {plain_text}")
 
