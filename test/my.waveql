@@ -4,7 +4,7 @@ rsa_m
 rsa_e
 rsa_const
 rsa_p
-rsa_eoc
+eoc_rsa
 gpio_start
 spi_start_cmd
 rsa_en_logic_i
@@ -12,7 +12,7 @@ start_comb
 state
 ..
 rsa_unit_i
-en
+ena
 rstb
 P
 E
@@ -30,12 +30,12 @@ next_state
 eoc
 counter_rounds
 counter_steps
-reg_exp
+exp
 sel1
 sel2
 lock1
 lock2
-rst_mmm
+clear_mmm
 ld_a
 ld_r
 ..

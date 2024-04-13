@@ -46,7 +46,7 @@ module fsm_control_unit_new #(parameter int WIDTH = 8) (rstb, clk, ena, clear, E
   fsm_control_state state, next_state;
 
   // Value for comparison
-  assign const_counter_compare = WIDTH;
+  assign const_counter_compare = WIDTH-1;
 
   // Counter steps
   always_ff @(negedge(rstb) or posedge(clk)) begin
