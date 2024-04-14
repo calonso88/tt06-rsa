@@ -24,19 +24,19 @@ def mem (p, e, m, nbits):
   const_m = (2 ** (2 * nbits)) % m
 
   # Mapping
-  p_int = mmm (const_m, p, m)
-  r_int = mmm (const_m, 1, m)
+  p_int = mmm (const_m, p, m, nbits)
+  r_int = mmm (const_m, 1, m, nbits)
   
   idx = 0
   while idx < nbits:
     if ( ( get_bit(e, idx) >> idx ) == 1 ):
-      r_int = mmm (r_int, p_int, m)
+      r_int = mmm (r_int, p_int, m, nbits)
     
-    p_int = mmm (p_int, p_int, m)
+    p_int = mmm (p_int, p_int, m, nbits)
     idx = idx + 1
 
   # Remapping  
-  r = mmm (1, r_int, m)
+  r = mmm (1, r_int, m, nbits)
   return r
 
 
@@ -375,7 +375,7 @@ async def test_spi(dut):
 
     # Write reg[0] = 0x00
     await spi_write (dut, 0, 0x00)
-    
+
     # Read reg[6] ( encrypted_text_design )
     encrypted_text_design = await spi_read (dut, 6, 0x00)
     cocotb.log.info(f"Encrypted text design: {encrypted_text_design}")
