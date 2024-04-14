@@ -305,7 +305,7 @@ async def test_spi(dut):
         break
 
     phi_m = (p-1) * (q-1)
-    #cocotb.log.info(f"RSA, P: {p}, Q: {q}, M: {m}, PHI(M): {phi_m}")
+    cocotb.log.info(f"RSA, P: {p}, Q: {q}, M: {m}, PHI(M): {phi_m}")
     
     while True:
       e = random.randint(min_prime, phi_m)
@@ -314,7 +314,9 @@ async def test_spi(dut):
         break
       #if (cryptomath.gcd(e, phi_m) == 1):
       #  break
-
+    
+    cocotb.log.info(f"Public key: ( {e}, {m} )")
+    
     # DEBUG
     #p = 3
     #q = 11
@@ -327,6 +329,8 @@ async def test_spi(dut):
     d = pow(e, -1, phi_m)
     #d = cryptomath.findModInverse(e, phi_m)
     
+    cocotb.log.info(f"Private key: ( {d}, {m} )")
+
     # Number of bits for RSA implementation
     hwbits = bits + 2
     # DEBUG
@@ -336,24 +340,30 @@ async def test_spi(dut):
     # Montgomery constant
     const = (2 ** (2 * hwbits)) % m
 
+    cocotb.log.info(f"Montgomery constant: {const}")
+
     while True:
       plain_text = random.randint(0, m-1)
       if (plain_text != 0):
         break
     
+    cocotb.log.info(f"Plain text: {plain_text}")
+
     # DEBUG
     #plain_text = 0x1
     #plain_text = 0x2
     #plain_text = 0x58
     # DEBUG
     
-    cocotb.log.info(f"RSA, P: {p}, Q: {q}, M: {m}, PHI(M): {phi_m}")
-    cocotb.log.info(f"Public key: ( {e}, {m} )")
-    cocotb.log.info(f"Private key: ( {d}, {m} )")
-    cocotb.log.info(f"Montgomery constant: {const}")
-    cocotb.log.info(f"Plain text: {plain_text}")
+    #cocotb.log.info(f"RSA, P: {p}, Q: {q}, M: {m}, PHI(M): {phi_m}")
+    #cocotb.log.info(f"Public key: ( {e}, {m} )")
+    #cocotb.log.info(f"Private key: ( {d}, {m} )")
+    #cocotb.log.info(f"Montgomery constant: {const}")
+    #cocotb.log.info(f"Plain text: {plain_text}")
 
-
+    # Write reg[0] = 0x00
+    await spi_write (dut, 0, 0x00)
+    
     # Write reg[2] ( plain_text )
     await spi_write (dut, 2, plain_text)
     # Write reg[3] ( e )
