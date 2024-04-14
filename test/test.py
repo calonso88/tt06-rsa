@@ -19,6 +19,27 @@ def mmm (a, b, m, nbits):
     idx = idx + 1
   return r;
 
+def mem (p, e, m, nbits):
+  # Mapping constant
+  const_m = (2 ** (2 * nbits)) % m
+
+  # Mapping
+  p_int = mmm (const_m, p, m)
+  r_int = mmm (const_m, 1, m)
+  
+  idx = 0
+  while idx < nbits:
+    if ( ( get_bit(e, idx) >> idx ) == 1 ):
+      r_int = mmm (r_int, p_int, m)
+    
+    p_int = mmm (p_int, p_int, m)
+    idx = idx + 1
+
+  # Remapping  
+  r = mmm (1, r_int, m)
+  return r
+
+
 def is_prime(num):
   if (num < 2) :
     return 0;
@@ -328,6 +349,7 @@ async def test_spi(dut):
     cocotb.log.info(f"Montgomery constant: {const}")
     cocotb.log.info(f"Plain text: {plain_text}")
 
+
     # Write reg[2] ( plain_text )
     await spi_write (dut, 2, plain_text)
     # Write reg[3] ( e )
@@ -343,22 +365,29 @@ async def test_spi(dut):
     encrypted_text = ( plain_text ** e ) % m
     cocotb.log.info(f"Encrypted text: {encrypted_text}")
 
+    encrypted_text_mem = mem (plain_text, e, m, hwbits)
+    cocotb.log.info(f"Encrypted text MMExp: {encrypted_text_mem}")
+
     decrypted_text = ( encrypted_text ** d ) % m
     cocotb.log.info(f"Decrypted text: {decrypted_text}")
 
     await ClockCycles(dut.clk, 500)
 
+    # Write reg[0] = 0x00
+    await spi_write (dut, 0, 0x00)
+    
     # Read reg[6] ( encrypted_text_design )
     encrypted_text_design = await spi_read (dut, 6, 0x00)
     cocotb.log.info(f"Encrypted text design: {encrypted_text_design}")
 
     assert plain_text == decrypted_text
     # DEBUG
-    assert encrypted_text_design == encrypted_text 
+    assert encrypted_text == encrypted_text_mem
+    assert encrypted_text == encrypted_text_design
     # DEBUG
 
-    # Write reg[0] = 0xF0
-    await spi_write (dut, 0, 0xF0)
+    # Write reg[0] = 0x00
+    await spi_write (dut, 0, 0x00)
     # Write reg[1] = 0xDE
     await spi_write (dut, 1, 0xDE)
     # Write reg[2] = 0xAD
