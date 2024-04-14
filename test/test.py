@@ -8,15 +8,15 @@ from cocotb.triggers import ClockCycles
 
 def mmm (a, b, m, nbits):
   r = 0
-  count = 0
-  while counter < nbits:
+  idx = 0
+  while idx < nbits:
     r0 = r % 2
     b0 = b % 2
-    a_bit = 1 # tbd update later
+    a_bit = ( get_bit(a, idx) >> idx )
     q0 = r0 + b0 * a_bit
     q0 = q0 % 2
     r = ( r + a_bit * b + q0 * m ) // 2
-    counter = counter + 1
+    idx = idx + 1
   return r;
 
 def is_prime(num):
