@@ -25,6 +25,7 @@ Const
 C
 eoc
 rsa_control_fsm
+
 rstb
 clk
 ena
@@ -42,6 +43,7 @@ lock2
 clear_mmm
 ld_a
 ld_r
+clear_mmm
 ..
 reg_crypt
 clear
