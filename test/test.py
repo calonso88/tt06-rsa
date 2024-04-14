@@ -27,6 +27,8 @@ def mem (p, e, m, nbits):
   # Mapping
   p_int = mmm (const_m, p, m, nbits)
   r_int = mmm (const_m, 1, m, nbits)
+
+  cocotb.log.info(f"MEM mapping P, R: ( {p_int}, {r_int} )")
   
   idx = 0
   while idx < nbits:
@@ -34,6 +36,7 @@ def mem (p, e, m, nbits):
       r_int = mmm (r_int, p_int, m, nbits)
     
     p_int = mmm (p_int, p_int, m, nbits)
+    cocotb.log.info(f"MEM idx, P, R: ( {idx}], {p_int}, {r_int} )")
     idx = idx + 1
 
   # Remapping  
