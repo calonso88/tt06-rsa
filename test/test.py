@@ -363,7 +363,7 @@ async def test_spi(dut):
 
     # Write reg[0] = 0x00
     await spi_write (dut, 0, 0x00)
-    
+
     # Write reg[2] ( plain_text )
     await spi_write (dut, 2, plain_text)
     # Write reg[3] ( e )
@@ -397,7 +397,7 @@ async def test_spi(dut):
     assert plain_text == decrypted_text
     assert encrypted_text == encrypted_text_mem
     # DEBUG
-    #assert encrypted_text == encrypted_text_design
+    assert encrypted_text == encrypted_text_design
     # DEBUG
 
     # Write reg[0] = 0x00
