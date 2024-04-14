@@ -1,6 +1,7 @@
 # SPDX-FileCopyrightText: © 2023 Uri Shaked <uri@tinytapeout.com>
 # SPDX-License-Identifier: MIT
 import random
+import cryptomath
 
 import cocotb
 from cocotb.clock import Clock
@@ -308,8 +309,10 @@ async def test_spi(dut):
     
     while True:
       e = random.randint(min_prime, phi_m)
-      e_is_prime = is_prime(e)
-      if ( ( e < phi_m ) and ( e_is_prime == 1 ) ):
+      #e_is_prime = is_prime(e)
+      #if ( ( e < phi_m ) and ( e_is_prime == 1 ) ):
+      #  break
+      if (cryptomath.gcd(e, phi_m) == 1):
         break
 
     # DEBUG
@@ -321,7 +324,8 @@ async def test_spi(dut):
     # DEBUG
 
     #d = invmod(e, phi_m)  ->  d*e == 1 mod phi_m
-    d = pow(e, -1, phi_m)
+    #d = pow(e, -1, phi_m)
+    d = cryptomath.findModInverse(e, phi_m)
     
     # Number of bits for RSA implementation
     hwbits = bits + 2
