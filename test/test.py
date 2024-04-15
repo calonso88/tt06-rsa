@@ -2,6 +2,7 @@
 # SPDX-License-Identifier: MIT
 import random
 #import cryptomath
+import math
 
 import cocotb
 from cocotb.clock import Clock
