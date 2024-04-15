@@ -296,7 +296,7 @@ async def test_spi(dut):
   # ITERATIONS 
   iterations = 0
   
-  while iterations < 10:
+  while iterations < 100:
 
     while True:
       p = random.randint(min_prime, max_upper_boundary)
