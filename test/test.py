@@ -312,8 +312,10 @@ async def test_spi(dut):
     
     while True:
       e = random.randint(min_prime, phi_m)
-      e_is_prime = is_prime(e)
-      if ( ( e < phi_m ) and ( e_is_prime == 1 ) ):
+      #e_is_prime = is_prime(e)
+      e_gdc = math.gcd(e, phi_m)
+      #if ( ( e < phi_m ) and ( e_is_prime == 1 ) ):
+      if ( ( e < phi_m ) and ( e_gdc == 1 ) ):
         break
       #if (cryptomath.gcd(e, phi_m) == 1):
       #  break
